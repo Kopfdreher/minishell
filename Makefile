@@ -9,20 +9,29 @@ GREEN		= \033[0;32m
 BLUE		= \033[0;36m
 RESET		= \033[0m
 
+# Directories
+SRC_DIR		= src
+OBJ_DIR		= obj
+INC_DIR		= includes
+
+# Includes 
+INC_FILES	= $(addsuffix .h, minishell)
+INCS		= $(addprefix $(INC_DIR)/, $(INC_FILES))
+
+# Source files
+SRC_FILES	= $(addsuffix .c, main)
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+
+# Object files
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+
+
 # Paths
 LIBFT_DIR	= ./libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
-MLX_DIR		= ./minilibx-linux
-MLX_LIB		= $(MLX_DIR)/libmlx_Linux.a
-
-HEADERS		= so_long.h
-
 # Includes & Linking
-INCLUDES	= -I. -I$(LIBFT_DIR) -I$(MLX_DIR) -I/usr/include
-LDFLAGS		= -L$(LIBFT_DIR) -lft \
-			  -L$(MLX_DIR) -lmlx_Linux \
-			  -L/usr/lib -lXext -lX11 -lm -lz
+INCLUDES	= -I $(INC_DIR) -I$(LIBFT_DIR)
 
 # Source files
 SRCS 		= $(addsuffix .c, main my_mlx draw_helper key_press free_exit \
