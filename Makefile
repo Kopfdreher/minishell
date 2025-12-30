@@ -37,7 +37,7 @@ all: $(NAME)
 # Main Traget
 $(NAME): $(OBJS) $(LIBFT) 
 		@echo "$(BLUE)|--Linking $(NAME)----------------|$(RESET)"
-		@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
+		@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -lncurses -o $(NAME)
 		@echo "$(GREEN)|--$(NAME) created successfully!--|$(RESET)"
 
 # Libft
