@@ -36,9 +36,9 @@ all: $(NAME)
 
 # Main Traget
 $(NAME): $(OBJS) $(LIBFT) 
-		@echo "$(BLUE)|--Linking $(NAME)------------------|$(RESET)"
+		@echo "$(BLUE)|--Linking $(NAME)----------------|$(RESET)"
 		@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
-		@echo "$(GREEN)|--$(NAME) created successfully!----|$(RESET)"
+		@echo "$(GREEN)|--$(NAME) created successfully!--|$(RESET)"
 
 # Libft
 $(LIBFT):
@@ -55,15 +55,15 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS)
 # Remove all Object-Files
 clean:
 		@echo "$(BLUE)|--Cleaning Objects-----------------|$(RESET)"
-		@rm -f $(OBJS)
-		@make clean -C $(LIBFT_DIR)
+		@rm -rf $(OBJ_DIR)
+		@make clean -C $(LIBFT_DIR) > /dev/null
 		@echo "$(GREEN)|--Cleaned successfully!------------|$(RESET)"
 
 # Remove all Object- and Archive-Files
 fclean: clean
 		@echo "$(BLUE)|--Cleaning Executables-------------|$(RESET)"
-		@rm -f $(NAME)
-		@make fclean -C $(LIBFT_DIR)
+		@rm -f $(NAME) > /dev/null
+		@make fclean -C $(LIBFT_DIR) > /dev/null
 		@echo "$(GREEN)|--Cleaned successfully!------------|$(RESET)"
 
 # Rebuild
