@@ -9,7 +9,8 @@
 /*   Updated: 2025/12/30 20:44:06 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/minishell.h"
+
+#include "minishell.h"
 
 int	main(void)
 {
@@ -20,7 +21,7 @@ int	main(void)
 		line = readline("minishell> ");
 		if (!line)
 			break;
-		printf("%s\n", line);
+		//printf("%s\n", line);
 		free(line);
 	}
 }
