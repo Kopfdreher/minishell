@@ -15,11 +15,11 @@ OBJ_DIR		= obj
 INC_DIR		= includes
 
 # Includes 
-INC_FILES	= $(addsuffix .h, minishell)
+INC_FILES	= $(addsuffix .h, minishell builtins defines execution parsing)
 INCS		= $(addprefix $(INC_DIR)/, $(INC_FILES))
 
 # Source files
-SRC_FILES	= $(addsuffix .c, main)
+SRC_FILES	= $(addsuffix .c, main init_env init_shell)
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

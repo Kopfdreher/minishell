@@ -12,16 +12,35 @@
 
 #include "minishell.h"
 
-int	main(void)
-{
-	char	*line;
+volatile sig_atomic_t	g_signal_status = 0;
 
-	while (-1)
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	shell;
+
+	(void)argc;
+	(void)argv;
+	init_shell(&shell, envp);
+	shell.env_list = init_env(envp);
+	while (shell.running)
 	{
-		line = readline("minishell> ");
-		if (!line)
-			break;
-		//printf("%s\n", line);
-		free(line);
+		shell.input = readline("minishell$ ");
+		if (!shell.input)
+		{
+			write(1, "exit\n", 5);
+			break ;
+		}
+		if (shell.input[0] != '\0')
+			add_history(shell.input);
+		// future steps
+		// tokenize(&shell);
+		// parse_cmds(&shell);
+		// execute_cmds(&shell);
+		// cleanup_cycle(&shell);
+		free(shell.input);
 	}
+	free_env_list(&shell.env_list);
+	close(shell.original_stdin);
+	close(shell.original_stdout);
+	return (shell.exit_status);
 }

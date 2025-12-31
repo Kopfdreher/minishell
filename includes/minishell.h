@@ -13,10 +13,26 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// Standard Libraries
 # include <stdio.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <signal.h>
+# include <errno.h>
+
+// Our Libft
+# include "../libft/libft.h"
+
+// Our Modules
+# include "defines.h"
+# include "initialize.h"
+# include "parsing.h"
+# include "execution.h"
+# include "builtins.h"
 
 #endif

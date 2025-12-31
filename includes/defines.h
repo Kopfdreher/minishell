@@ -1,0 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   defines.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
+/*   Updated: 2025/12/31 18:58:21 by sgavrilo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef DEFINES_H
+# define DEFINES_H
+
+# include <signal.h> // Needed for sig_atomic_t
+
+// --- MACROS ---
+# define SUCCES 0
+# define FAILURE 1
+# define FALSE 0
+# define TRUE 1
+
+// --- ENUMS ---
+typedef enum e_token_type {
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_APPEND,
+	TOKEN_HEREDOC
+}	t_token_type;
+
+typedef enum e_redir_type {
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	REDIR_HEREDOC
+}	t_redir_type;
+
+typedef enum e_sig_mode {
+	SIG_INTERACTIVE,
+	SIG_EXEC,
+	SIG_HEREDOC
+}	t_sig_mode;
+
+// --- STRUCTS ---
+typedef struct s_env {
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
+typedef struct s_token {
+	char			*value;
+	t_token_type	type;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
+
+typedef struct s_redir {
+	t_redir_type	type;
+	char			*file;
+	int				heredoc_fd;
+	struct s_redir	*next;
+}	t_redir;
+
+typedef struct s_cmd {
+	char			**args;
+	char			*cmd_path;
+	int				is_builtin;
+	t_redir			*redirections;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+	pid_t			pid;
+	int				fd_in;
+	int				fd_out;
+}	t_cmd;
+
+typedef struct s_shell {
+	t_cmd	*cmd_list;
+	t_env	*env_list;
+	t_token	*tokens;
+	char	*input;
+	char	**env_array;
+	int		exit_status;
+	int		running;
+	int		original_stdin;
+	int		original_stdout;
+}	t_shell;
+
+// --- Global ---
+extern volatile sig_atomic_t	g_signal_status;
+
+#endif
