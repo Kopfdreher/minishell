@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal_status = 0;
+//volatile sig_atomic_t	g_signal_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -21,22 +21,24 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_shell(&shell, envp);
-	shell.env_list = init_env(envp);
+	if (!shell.env_list)
+		return (1);
 	while (shell.running)
 	{
 		shell.input = readline("minishell$ ");
-		if (!shell.input)
+		if (!shell.input || !ft_strncmp(shell.input, "exit\0", 5))
 		{
 			write(1, "exit\n", 5);
-			break ;
+			shell.running = FALSE;
 		}
-		if (shell.input[0] != '\0')
+		else if (shell.input[0] != '\0')
 			add_history(shell.input);
 		// future steps
-		// tokenize(&shell);
+		// if (tokenize(&shell) == SUCCESS);
 		// parse_cmds(&shell);
 		// execute_cmds(&shell);
-		// cleanup_cycle(&shell);
+		// if (shell.running == false)
+		// 	cleanup_cycle(&shell);
 		free(shell.input);
 	}
 	free_env_list(&shell.env_list);

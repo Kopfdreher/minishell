@@ -16,7 +16,7 @@
 # include <signal.h> // Needed for sig_atomic_t
 
 // --- MACROS ---
-# define SUCCES 0
+# define SUCCESS 0
 # define FAILURE 1
 # define FALSE 0
 # define TRUE 1
@@ -46,7 +46,7 @@ typedef enum e_sig_mode {
 
 // --- STRUCTS ---
 typedef struct s_env {
-	char			*key;
+	char			*name;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
@@ -90,6 +90,6 @@ typedef struct s_shell {
 }	t_shell;
 
 // --- Global ---
-extern volatile sig_atomic_t	g_signal_status;
+//extern volatile sig_atomic_t	g_signal_status;
 
 #endif

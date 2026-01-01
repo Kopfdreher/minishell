@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/12/31 20:24:45 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/01 18:15:33 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static	t_env *new_env_node(char *str)
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
-	node->key = ft_substr(str, 0, i);
+	node->name = ft_substr(str, 0, i);
 	if (str[i])
 		node->value = ft_strdup(str + i + 1);
 	else
@@ -69,8 +69,8 @@ void	free_env_list(t_env **env_list)
 	while (current)
 	{
 		temp = current->next;
-		if (current->key)
-			free(current->key);
+		if (current->name)
+			free(current->name);
 		if (current->value)
 			free(current->value);
 		free(current);
