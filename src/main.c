@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		// if (tokenize(&shell) == SUCCESS);
 		// parse_cmds(&shell);
 		// execute_cmds(&shell);
-		// if (shell.running == false)
+		// if (shell.running == FALSE)
 		// 	cleanup_cycle(&shell);
 		free(shell.input);
 	}
