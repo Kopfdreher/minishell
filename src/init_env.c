@@ -6,13 +6,13 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/01 22:17:24 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/02 12:05:53 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	t_env *new_env_node(char *str)
+static t_env	*new_env_node(char *str)
 {
 	t_env	*node;
 	int		i;
@@ -63,7 +63,7 @@ void	free_env_list(t_env **env_list)
 	t_env	*current;
 	t_env	*temp;
 
-	if(!env_list || !*env_list)
+	if (!env_list || !*env_list)
 		return ;
 	current = *env_list;
 	while (current)
