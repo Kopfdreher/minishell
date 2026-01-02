@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&shell, envp);
 	if (!shell.env_list)
 		return (1);
-	while (shell.running)
+	while (shell.running == TRUE)
 	{
 		shell.input = readline("minishell$ ");
 		if (!shell.input || !ft_strncmp(shell.input, "exit\0", 5))
@@ -33,13 +33,14 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else if (shell.input[0] != '\0')
 			add_history(shell.input);
+		tokenize(&shell);
 		// future steps
-		// if (tokenize(&shell) == SUCCESS);
 		// parse_cmds(&shell);
 		// execute_cmds(&shell);
 		// if (shell.running == FALSE)
 		// 	cleanup_cycle(&shell);
 		free(shell.input);
+		free_tokens(&shell.tokens);
 	}
 	free_env_list(&shell.env_list);
 	close(shell.original_stdin);

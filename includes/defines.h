@@ -23,20 +23,23 @@
 
 // --- ENUMS ---
 typedef enum e_token_type {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_APPEND,
-	TOKEN_HEREDOC
-}	t_token_type;
-
-typedef enum e_redir_type {
+	WORD,
+	PIPE,
 	REDIR_IN,
 	REDIR_OUT,
-	REDIR_APPEND,
-	REDIR_HEREDOC
-}	t_redir_type;
+	APPEND,
+	HEREDOC
+}	t_token_type;
+
+typedef enum e_quote_type {
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
+}	t_quote_type;
+
+typedef enum e_error_type {
+	SYNTAX
+}	t_error_type;
 
 typedef enum e_sig_mode {
 	SIG_INTERACTIVE,
@@ -54,12 +57,14 @@ typedef struct s_env {
 typedef struct s_token {
 	char			*value;
 	t_token_type	type;
+	t_quote_type	quote;
+	int				merge;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_redir {
-	t_redir_type	type;
+	t_token_type	type;
 	char			*file;
 	int				heredoc_fd;
 	struct s_redir	*next;

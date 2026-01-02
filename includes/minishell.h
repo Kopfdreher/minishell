@@ -34,5 +34,6 @@
 # include "parsing.h"
 # include "execution.h"
 # include "builtins.h"
+# include "error.h"
 
 #endif
