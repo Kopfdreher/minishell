@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:22:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 20:57:40 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 20:44:19 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,12 @@ t_token	*new_token(char	*value, t_token_type type, t_quote_type quote)
 {
 	t_token	*new_node;
 
-	new_node = malloc(sizeof(t_token));
+	new_node = ft_calloc(1, sizeof(t_token));
 	if (!new_node)
 		return (NULL);
 	new_node->value = value;
 	new_node->type = type;
 	new_node->quote = quote;
-	new_node->merge = FALSE;
-	new_node->next = NULL;
-	new_node->prev = NULL;
 	return (new_node);
 }
 

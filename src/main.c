@@ -44,6 +44,7 @@ int	main(int argc, char **argv, char **envp)
 		free(shell.input);
 		free_tokens(&shell.tokens);
 	}
+	rl_clear_history();
 	free_env_list(&shell.env_list);
 	close(shell.original_stdin);
 	close(shell.original_stdout);

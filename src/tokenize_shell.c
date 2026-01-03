@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 12:16:32 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 23:00:16 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 20:12:30 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,18 @@ static int	add_operator_token(t_shell *shell, t_token **last_token, int *i,
 
 static int	create_token(t_shell *shell, t_token **last_token, int *i)
 {
-	int	return_code;
-
-	return_code = SUCCESS;
 	if (shell->input[*i] == '<' && shell->input[*i + 1] == '<')
-		return_code = add_operator_token(shell, last_token, i, HEREDOC);
+		return (add_operator_token(shell, last_token, i, HEREDOC));
 	else if (shell->input[*i] == '>' && shell->input[*i + 1] == '>')
-		return_code = add_operator_token(shell, last_token, i, APPEND);
+		return (add_operator_token(shell, last_token, i, APPEND));
 	else if (shell->input[*i] == '<')
-		return_code = add_operator_token(shell, last_token, i, REDIR_IN);
+		return (add_operator_token(shell, last_token, i, REDIR_IN));
 	else if (shell->input[*i] == '>')
-		return_code = add_operator_token(shell, last_token, i, REDIR_OUT);
+		return (add_operator_token(shell, last_token, i, REDIR_OUT));
 	else if (shell->input[*i] == '|')
-		return_code = add_operator_token(shell, last_token, i, PIPE);
+		return (add_operator_token(shell, last_token, i, PIPE));
 	else
-		return_code = add_word_token(shell, last_token, i);
-	return (return_code);
+		return (add_word_token(shell, last_token, i));
 }
 
 void	tokenize(t_shell *shell)
@@ -59,7 +55,7 @@ void	tokenize(t_shell *shell)
 	i = 0;
 	while (shell->input[i])
 	{
-		if (shell->input[i] == ' ')
+		if (shell->input[i] == ' ') // change ' ' to is_whitespace()
 			i++;
 		else
 		{

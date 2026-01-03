@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:09:53 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 21:33:59 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 20:44:17 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	add_word_token(t_shell *shell, t_token **last_token, int *start)
 	int		len;
 
 	word_token = new_token(NULL, WORD, NO_QUOTE);
-	if (!word_token)
+	if (word_token == NULL)
 		return (FAILURE);
 	if (shell->input[*start] == '"')
 		word_token->quote = DOUBLE_QUOTE;
@@ -81,7 +81,7 @@ int	add_word_token(t_shell *shell, t_token **last_token, int *start)
 		*start += 1;
 	len = get_token_len(&shell->input[*start], word_token);
 	if (len == -1)
-		return (put_error(SYNTAX, "unclosed quote\n", shell), FAILURE);
+		return (put_error(SYNTAX, "`newline'\n", shell), FAILURE);
 	word_token->value = ft_substr(shell->input, *start, len);
 	if (!word_token->value)
 		return (FAILURE);
