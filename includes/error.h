@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:50:22 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 19:50:26 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 19:55:59 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include "defines.h"
 
-void	put_error(t_error_type type, char *str, t_shell *shell);
+void	put_error(t_error_type type, const char *str, t_shell *shell);
 
 #endif

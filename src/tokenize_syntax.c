@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*get_unexpected_token(t_token *token)
+static const char	*get_unexpected_token(t_token *token)
 {
 	if (!token)
 		return ("`newline'\n");
@@ -48,9 +48,7 @@ int	check_syntax(t_shell *shell, t_token *tokens)
 	{
 		if (current->type >= REDIR_IN && current->type <= HEREDOC)
 		{
-			if (!current->next)
-				return (report_syntax_error(shell, NULL));
-			if (current->next->type != WORD)
+			if (!current->next || current->next->type != WORD)
 				return (report_syntax_error(shell, current->next));
 		}
 		if (current->type == PIPE)
