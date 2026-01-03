@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:10 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 21:36:40 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/03 22:05:57 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "defines.h"
 
 // tokenize_shell
-int	tokenize(t_shell *shell);
+int		tokenize(t_shell *shell);
 
 // tokenize_helper
 t_token	*new_token(char	*value, t_token_type token, t_quote_type quote);

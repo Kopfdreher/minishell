@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 12:16:32 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 21:51:23 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/03 22:01:12 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	tokenize(t_shell *shell)
 	while (shell->input[i])
 	{
 		if (shell->input[i] == ' ' || 
-			(shell->input[i] >= 9 && shell->input[i] <= 13))
+			(shell->input[i] >= 9 && shell->input[i] <= 13)) 
 			i++;
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:09:53 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 20:52:06 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 22:28:51 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,21 @@ static int	get_token_len(char *input, t_token *word_token)
 	int				quote_char;
 	t_quote_type	quote;
 
-	len = -1;
+	len = 0;
 	quote = word_token->quote;
 	if (quote != NO_QUOTE)
 	{
 		quote_char = get_quote_char(quote);
-		while (input[++len])
-		{
-			if (input[len] == quote_char)
-			{
-				if (is_merge(input[len + 1]) == TRUE)
-					word_token->merge = TRUE;
-				return (len);
-			}
-		}
-		return (-1);
+		while (input[len] && input[len] != quote_char)
+			len++;
+		if (!input[len])
+			return (-1);
+		if (is_merge(input[len + 1]) == TRUE)
+			word_token->merge = TRUE;
+		return (len);
 	}
-	while (input[++len] && is_separator(input[len]) == FALSE)
-		len = len + 0; // not clean, change
+	while (input[len] && is_separator(input[len]) == FALSE)
+		len++;
 	if (is_merge(input[len]) == TRUE)
 		word_token->merge = TRUE;
 	return (len);
