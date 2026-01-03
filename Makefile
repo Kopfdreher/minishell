@@ -21,7 +21,7 @@ INCS		= $(addprefix $(INC_DIR)/, $(INC_FILES))
 
 # Source files
 SRC_FILES	= $(addsuffix .c, main init_env init_shell tokenize_shell \
-			  tokenize_helper tokenize_print tokenize_word error)
+			  tokenize_helper tokenize_print tokenize_word tokenize_syntax error)
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

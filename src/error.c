@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 21:35:06 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 18:25:06 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static const char	*get_error_type(t_error_type type)
 {
 	if (type == SYNTAX)
-		return ("minishell: syntax error: ");
+		return ("minishell: syntax error near unexpected token ");
 	return ("");
 }
 

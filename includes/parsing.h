@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:10 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/12/31 19:20:11 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 16:52:48 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_tokens(t_token **tokens);
 void	print_tokens(t_token *tokens);
 
 // tokenize_syntax
-int		check_syntax(t_token *tokens);
+int		check_syntax(t_shell *shell, t_token *tokens);
 
 //tokenize_word
 int		add_word_token(t_shell *shell, t_token **last_token, int *i);

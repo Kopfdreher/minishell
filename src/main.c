@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/12/30 20:44:06 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/03 18:26:10 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ int	main(int argc, char **argv, char **envp)
 		else if (shell.input[0] != '\0')
 			add_history(shell.input);
 		tokenize(&shell);
-		// future steps
-		// parse_cmds(&shell);
-		// execute_cmds(&shell);
+		if (check_syntax(&shell, shell.tokens) == SUCCESS)
+		{
+			// parse_cmds(&shell);
+			// execute_cmds(&shell);
+		}
 		// if (shell.running == FALSE)
 		// 	cleanup_cycle(&shell);
 		free(shell.input);
