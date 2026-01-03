@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:09:53 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 20:44:17 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 20:52:06 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	get_token_len(char *input, t_token *word_token)
 		return (-1);
 	}
 	while (input[++len] && is_separator(input[len]) == FALSE)
-		len = len + 0;
+		len = len + 0; // not clean, change
 	if (is_merge(input[len]) == TRUE)
 		word_token->merge = TRUE;
 	return (len);

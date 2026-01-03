@@ -34,7 +34,8 @@ int	main(int argc, char **argv, char **envp)
 		else if (shell.input[0] != '\0')
 			add_history(shell.input);
 		tokenize(&shell);
-		if (check_syntax(&shell, shell.tokens) == SUCCESS)
+		if (check_syntax(&shell, shell.tokens) == SUCCESS) 
+/* integrate syntax check in tokenize() and use &shell as the only param */
 		{
 			// parse_cmds(&shell);
 			// execute_cmds(&shell);
