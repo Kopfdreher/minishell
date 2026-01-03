@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:28:20 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/03 17:04:58 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/03 21:32:36 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static int	report_syntax_error(t_shell *shell, t_token *token)
 	return (FAILURE);
 }
 
-int	check_syntax(t_shell *shell, t_token *tokens)
+int	check_syntax(t_shell *shell)
 {
 	t_token	*current;
 
-	if (!tokens)
+	if (!shell->tokens)
 		return (SUCCESS);
-	current = tokens;
+	current = shell->tokens;
 	if (current->type == PIPE)
 		return (report_syntax_error(shell, current));
 	while (current)

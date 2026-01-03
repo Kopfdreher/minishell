@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 12:16:32 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 20:12:30 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/03 21:51:23 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,31 @@ static int	create_token(t_shell *shell, t_token **last_token, int *i)
 		return (add_word_token(shell, last_token, i));
 }
 
-void	tokenize(t_shell *shell)
+int	tokenize(t_shell *shell)
 {
 	int		i;
 	t_token	*last_token;
 
 	last_token = NULL;
 	if (shell->running == FALSE)
-		return ;
+		return (FAILURE);
 	i = 0;
 	while (shell->input[i])
 	{
-		if (shell->input[i] == ' ') // change ' ' to is_whitespace()
+		if (shell->input[i] == ' ' || 
+			(shell->input[i] >= 9 && shell->input[i] <= 13))
 			i++;
 		else
 		{
 			if (create_token(shell, &last_token, &i) == FAILURE)
 			{
 				free_tokens(&shell->tokens);
-				break ;
+				return (FAILURE);
 			}
 		}
 	}
 	print_tokens(shell->tokens);
+	if (check_syntax(shell) == SUCCESS)
+		return (SUCCESS);
+	return (FAILURE);
 }
