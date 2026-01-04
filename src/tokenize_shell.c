@@ -69,5 +69,5 @@ int	tokenize(t_shell *shell)
 	print_tokens(shell->tokens);
 	if (check_syntax(shell) == FAILURE)
 		return (FAILURE);
-	return (SUCCESS); // changed last rtn to SUCCESS, maybe more readable?
+	return (SUCCESS);
 }
