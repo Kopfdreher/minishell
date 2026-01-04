@@ -44,6 +44,12 @@ static int	create_token(t_shell *shell, t_token **last_token, int *i)
 		return (add_word_token(shell, last_token, i));
 }
 
+static int	is_whitespace(char c)
+{
+	return (c == ' ' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == '\t');
+}
+
 int	tokenize(t_shell *shell)
 {
 	int		i;
@@ -55,20 +61,13 @@ int	tokenize(t_shell *shell)
 	i = 0;
 	while (shell->input[i])
 	{
-		if (shell->input[i] == ' ' || 
-			(shell->input[i] >= 9 && shell->input[i] <= 13)) 
+		if (is_whitespace(shell->input[i]) == TRUE)
 			i++;
-		else
-		{
-			if (create_token(shell, &last_token, &i) == FAILURE)
-			{
-				free_tokens(&shell->tokens);
-				return (FAILURE);
-			}
-		}
+		else if (create_token(shell, &last_token, &i) == FAILURE)
+			return (FAILURE);
 	}
 	print_tokens(shell->tokens);
-	if (check_syntax(shell) == SUCCESS)
-		return (SUCCESS);
-	return (FAILURE);
+	if (check_syntax(shell) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS); // changed last rtn to SUCCESS, maybe more readable?
 }
