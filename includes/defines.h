@@ -63,18 +63,25 @@ typedef struct s_token {
 	struct s_token	*prev;
 }	t_token;
 
+typedef struct s_arg {
+	t_token			*arg_tokens;
+	struct s_arg	*next;
+}	t_arg;
+
 typedef struct s_redir {
 	t_token_type	type;
 	char			*file;
+	t_token			*file_tokens;
 	int				heredoc_fd;
 	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmd {
 	char			**args;
-	char			*cmd_path;
+	char			*path;
 	int				is_builtin;
-	t_redir			*redirections;
+	t_arg			*args_list;
+	t_redir			*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 	pid_t			pid;
