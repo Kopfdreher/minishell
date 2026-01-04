@@ -15,13 +15,21 @@ OBJ_DIR		= obj
 INC_DIR		= includes
 
 # Includes 
-INC_FILES	= $(addsuffix .h, minishell builtins defines execution parsing \
-			  initialize error)
+INC_FILES	= $(addsuffix .h, minishell builtins defines execute parse \
+			  initialize tokenize error)
 INCS		= $(addprefix $(INC_DIR)/, $(INC_FILES))
 
 # Source files
-SRC_FILES	= $(addsuffix .c, main init_env init_shell tokenize_shell \
-			  tokenize_helper tokenize_print tokenize_word tokenize_syntax error)
+ERROR_FILES	= error
+INIT_FILES	= init_env init_shell
+TOKEN_FILES	= tokenize_shell tokenize_helper tokenize_print tokenize_word\
+			  tokenize_syntax
+PARSE_FILES	= parse_shell
+SRC_FILES	= $(addsuffix .c, main\
+			  $(ERROR_FILES)\
+			  $(INIT_FILES)\
+			  $(TOKEN_FILES)\
+			  $(PARSE_FILES))
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

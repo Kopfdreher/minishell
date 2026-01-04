@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#ifndef EXECUTE_H
+# define EXECUTE_H
 
 # include "defines.h"
 
 // Main Loop
-void	execute_cmds(t_shell *shell);
+void	execute(t_shell *shell);
 void	wait_for_children(t_shell *shell);
 
 // Logic

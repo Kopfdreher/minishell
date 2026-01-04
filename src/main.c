@@ -35,8 +35,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(shell.input);
 		if (tokenize(&shell) == SUCCESS) 
 		{
-			// parse_cmds(&shell);
-			// execute_cmds(&shell);
+			parse(&shell);
+			// execute(&shell);
 		}
 		// if (shell.running == FALSE)
 		// 	cleanup_cycle(&shell);

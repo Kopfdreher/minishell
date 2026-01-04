@@ -31,8 +31,9 @@
 // Our Modules
 # include "defines.h"
 # include "initialize.h"
-# include "parsing.h"
-# include "execution.h"
+# include "tokenize.h"
+# include "parse.h"
+# include "execute.h"
 # include "builtins.h"
 # include "error.h"
 
