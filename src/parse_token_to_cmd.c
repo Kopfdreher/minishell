@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:03:16 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/04 17:58:23 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/04 20:20:39 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	add_redir_to_cmd(t_cmd **cmd, t_token **current_token)
 	if (!new_redir)
 		return (FAILURE);
 	new_redir->type = (*current_token)->type;
-	*current_token = (*current_token)->next; // jumping over the operator itself
+	*current_token = (*current_token)->next;
 	new_redir->file_tokens = *current_token;
 	if ((*cmd)->redir_list == NULL)
 		(*cmd)->redir_list = new_redir;
@@ -65,7 +65,7 @@ static int	add_redir_to_cmd(t_cmd **cmd, t_token **current_token)
 static int	is_redir(t_token_type type)
 {
 	return (type == HEREDOC || type == APPEND
-	|| type == REDIR_IN || type == REDIR_OUT);
+		|| type == REDIR_IN || type == REDIR_OUT);
 }
 
 int	add_tokens_to_cmd(t_cmd **cmd, t_token **current_token)

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/04 17:43:04 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/04 19:02:30 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	free_cmds(t_cmd **cmds)
 		free(current);
 		current = next;
 	}
-	cmds = NULL;
+	*cmds = NULL;
 }
 
 t_cmd	*init_new_cmd(void)

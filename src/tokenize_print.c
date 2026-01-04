@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:45:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 22:53:44 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/04 20:00:09 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	print_tokens(t_token *tokens)
 	int	i;
 
 	i = 0;
+	ft_printf("\nshell.tokens:\n");
 	while (tokens)
 	{
 		ft_printf("[%i %s - %s%s%s%s]\n", i,

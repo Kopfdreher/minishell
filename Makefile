@@ -1,8 +1,8 @@
 # |--- Variables --------------------------------|
 
 NAME		= minishell
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address
 
 # Colors
 GREEN		= \033[0;32m

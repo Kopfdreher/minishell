@@ -6,11 +6,11 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/04 18:11:26 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/04 20:21:05 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 /*
 typedef struct s_cmd {
 	char			**args;
@@ -88,6 +88,7 @@ int	parse(t_shell *shell)
 		if (current_token && current_token->type == PIPE)
 			current_token = current_token->next;
 	}
-	print_cmds(shell->cmd_list);
+	if (shell->cmd_list)
+		print_cmds(shell->cmd_list);
 	return (SUCCESS);
 }
