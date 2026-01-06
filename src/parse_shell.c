@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/04 20:21:05 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/06 18:05:48 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	create_cmd(t_shell *shell, t_token **current_token)
 		&& rtrn == SUCCESS)
 		rtrn = add_tokens_to_cmd(&new_cmd, current_token);
 	if (rtrn == FAILURE)
-		return (FAILURE);
+		return (free(new_cmd), FAILURE);
 	if (shell->cmd_list == NULL)
 		shell->cmd_list = new_cmd;
 	else

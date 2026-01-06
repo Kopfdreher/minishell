@@ -78,7 +78,8 @@ int	add_word_token(t_shell *shell, t_token **last_token, int *start)
 		*start += 1;
 	len = get_token_len(&shell->input[*start], word_token);
 	if (len == -1)
-		return (put_error(SYNTAX, "`newline'\n", shell), FAILURE);
+		return (put_error(SYNTAX, "`newline'\n", shell),
+		free(word_token), FAILURE);
 	word_token->value = ft_substr(shell->input, *start, len);
 	if (!word_token->value)
 		return (FAILURE);

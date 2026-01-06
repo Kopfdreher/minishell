@@ -37,6 +37,9 @@ int	main(int argc, char **argv, char **envp)
 		{
 			parse(&shell);
 			// execute(&shell);
+			// if (shell.running == TRUE && tokenize)
+			// 		if (shell.running == TRUE && parse)
+			// 			if (shell.running == TRUE && execute)
 		}
 		// if (shell.running == FALSE)
 		// 	cleanup_cycle(&shell);

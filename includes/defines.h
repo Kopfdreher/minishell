@@ -64,6 +64,7 @@ typedef struct s_token {
 }	t_token;
 
 typedef struct s_arg {
+	char			*arg;
 	t_token			*arg_tokens;
 	struct s_arg	*next;
 }	t_arg;
