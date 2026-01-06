@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/12/31 18:58:21 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/06 22:12:45 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define FAILURE 1
 # define FALSE 0
 # define TRUE 1
+# define ERROR -1
 
 // --- ENUMS ---
 typedef enum e_token_type {

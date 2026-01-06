@@ -25,11 +25,13 @@ INIT_FILES	= init_env init_shell
 TOKEN_FILES	= tokenize_shell tokenize_helper tokenize_print tokenize_word\
 			  tokenize_syntax
 PARSE_FILES	= parse_shell parse_helper parse_token_to_cmd parse_print
+EXEC_FILES	= execute_shell execute_path
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\
 			  $(TOKEN_FILES)\
-			  $(PARSE_FILES))
+			  $(PARSE_FILES)\
+			  $(EXEC_FILES))
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files
