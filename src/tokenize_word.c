@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:09:53 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 22:28:51 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/03 22:14:11 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,17 @@ static int	get_token_len(char *input, t_token *word_token)
 	if (quote != NO_QUOTE)
 	{
 		quote_char = get_quote_char(quote);
-		while (input[len] && input[len] != quote_char)
+		while (input[len])
+		{
+			if (input[len] == quote_char)
+			{
+				if (is_merge(input[len + 1]) == TRUE)
+					word_token->merge = TRUE;
+				return (len);
+			}
 			len++;
-		if (!input[len])
-			return (-1);
-		if (is_merge(input[len + 1]) == TRUE)
-			word_token->merge = TRUE;
-		return (len);
+		}
+		return (-1);
 	}
 	while (input[len] && is_separator(input[len]) == FALSE)
 		len++;
@@ -78,8 +82,7 @@ int	add_word_token(t_shell *shell, t_token **last_token, int *start)
 		*start += 1;
 	len = get_token_len(&shell->input[*start], word_token);
 	if (len == -1)
-		return (put_error(SYNTAX, "`newline'\n", shell),
-		free(word_token), FAILURE);
+		return (put_error(SYNTAX, "`newline'\n", shell), FAILURE);
 	word_token->value = ft_substr(shell->input, *start, len);
 	if (!word_token->value)
 		return (FAILURE);
