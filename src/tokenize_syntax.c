@@ -16,23 +16,29 @@ static const char	*get_unexpected_token(t_token *token)
 {
 	if (!token)
 		return ("`newline'\n");
-	if (token->type == PIPE)
+	else if (token->type == PIPE)
 		return ("`|'\n");
-	if (token->type == REDIR_IN)
+	else if (token->type == REDIR_IN)
 		return ("`<'\n");
-	if (token->type == REDIR_OUT)
+	else if (token->type == REDIR_OUT)
 		return ("`>'\n");
-	if (token->type == APPEND)
+	else if (token->type == APPEND)
 		return ("`>>'\n");
-	if (token->type == HEREDOC)
+	else if (token->type == HEREDOC)
 		return ("`<<'\n");
-	return (NULL);
+	else
+		return (NULL);
 }
 
 static int	report_syntax_error(t_shell *shell, t_token *token)
 {
 	put_error(SYNTAX, get_unexpected_token(token), shell);
 	return (FAILURE);
+}
+
+static int	is_redir(t_token_type type)
+{
+	return (type >= REDIR_IN && type <= HEREDOC);
 }
 
 int	check_syntax(t_shell *shell)
@@ -46,18 +52,12 @@ int	check_syntax(t_shell *shell)
 		return (report_syntax_error(shell, current));
 	while (current)
 	{
-		if (current->type >= REDIR_IN && current->type <= HEREDOC)
-		{
-			if (!current->next || current->next->type != WORD)
-				return (report_syntax_error(shell, current->next));
-		}
-		if (current->type == PIPE)
-		{
-			if (!current->next)
-				return (report_syntax_error(shell, NULL));
-			if (current->next->type == PIPE)
-				return (report_syntax_error(shell, current->next));
-		}
+		if (is_redir(current->type) == TRUE
+			&& (!current->next || current->next->type != WORD))
+			return (report_syntax_error(shell, current->next));
+		if (current->type == PIPE
+			&& (!current->next || current->next->type == PIPE))
+			return (report_syntax_error(shell, current->next));
 		current = current->next;
 	}
 	return (SUCCESS);

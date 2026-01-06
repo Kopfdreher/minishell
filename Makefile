@@ -1,8 +1,8 @@
 # |--- Variables --------------------------------|
 
 NAME		= minishell
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address
 
 # Colors
 GREEN		= \033[0;32m
@@ -24,7 +24,7 @@ ERROR_FILES	= error
 INIT_FILES	= init_env init_shell
 TOKEN_FILES	= tokenize_shell tokenize_helper tokenize_print tokenize_word\
 			  tokenize_syntax
-PARSE_FILES	= parse_shell
+PARSE_FILES	= parse_shell parse_helper parse_token_to_cmd parse_print
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\

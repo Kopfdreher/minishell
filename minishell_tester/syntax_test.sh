@@ -73,6 +73,26 @@ run_test "ls > > file"  "Redir to redir"
 run_test "ls >>> file"  "Triple redir"
 run_test "ls << <"      "Heredoc to redir"
 
+# Heredoc Errors
+run_test "<<"            "Heredoc only"
+run_test "ls <<"         "Heredoc no delimiter"
+run_test "ls << |"       "Heredoc delimiter is pipe"
+run_test "ls << >"       "Heredoc delimiter is redir"
+run_test "ls << <"       "Heredoc delimiter is input"
+run_test "grep << EOF |" "Heredoc pipe trailing" # (Should FAIL if pipe is last)
+
+# Mixed Redirections
+run_test "<>"            "Diamond operator (RW)"
+run_test "ls < > file"   "Input redir into Output token"
+run_test "ls > < file"   "Output redir into Input token"
+run_test ">> <"          "Append into Input token"
+run_test "<< >>"         "Heredoc into Append token"
+
+# Unclosed Quotes
+run_test "echo '"        "Unclosed single quote"
+run_test "echo \" |"     "Unclosed quote before pipe"
+run_test "cat << \"EOF"  "Unclosed quote in heredoc delim"
+
 # Quote Errors (Unclosed)
 # Note: Bash usually waits for input. Minishell should error.
 # We skip comparison here because Bash behavior (interactive wait) differs from 

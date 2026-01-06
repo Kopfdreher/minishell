@@ -17,11 +17,12 @@
 
 // Expander
 void	expand_variables(t_shell *shell);
-void	remove_quotes(t_shell *shell);
 
 // Parser
 int		parse(t_shell *shell);
-t_cmd	*create_cmd_node(void);
-void	add_redir_to_cmd(t_cmd *cmd, t_token *token);
+int		add_tokens_to_cmd(t_cmd **cmd, t_token **current_token);
+void	free_cmds(t_cmd **cmds);
+t_cmd	*init_new_cmd(void);
+void	print_cmds(t_cmd *cmd_list);
 
 #endif
