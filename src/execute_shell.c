@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/07 17:29:07 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/07 18:27:20 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,40 +67,46 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 	exit (126);
 }
 
-static void	redirs(t_cmd *cmd)
+static int	redirs(t_cmd *cmd)
 {
-	t_redir	redir;
-	int		input;
-	int		output;
+	t_redir	*redir;
+	int		fd;
 
 	redir = cmd->redir_list;
 	while (redir)
 	{
 		if (redir->type == REDIR_IN)
-		{
-			input = open(redir->file, O_RDONLY);
-			if (input == ERROR)
-			{
-				put_error;
-			}
-			dup2(input, 0);
-		}
+			fd = open(redir->file, O_RDONLY);
 		else if (redir->type == REDIR_OUT)
-		{
-			output = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(output, 1);
-		}
+			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (redir->type == APPEND)
-		{
-			output = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			dup2(output, 1);
-		}
+			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->type == HEREDOC)
+			fd = open_heredoc(redir);
+		if (fd == ERROR)
+			return (put_error(OPEN, redir->file), 1);
+		if (redir->type == REDIR_IN || redir->type == HEREDOC)
 		{
-			open_heredoc(redir);
+			if (dup2(fd, 0) == ERROR)
+			{
+				put_error(DUP2, fd);
+				close(fd);
+				return (1);
+			}
 		}
+		else if (redir->type == REDIR_OUT || redir->type == APPEND)
+		{
+			if (dup2(fd, 1) == ERROR)
+			{
+				put_error(DUP2, fd);
+				close(fd);
+				return (1);
+			}
+		}
+		close(fd);
 		redir = redir->next;
 	}
+	return (0);
 }
 
 int	execute(t_shell *shell)
@@ -148,6 +154,8 @@ int	execute(t_shell *shell)
 				close(fd[0]);
 				close(fd[1]);
 			}
+			if (redirs(cmd) == FAILURE)
+				exit(1);
 			exec_child(shell, cmd);
 		}
 		else 
