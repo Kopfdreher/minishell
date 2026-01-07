@@ -102,5 +102,6 @@ char	**ft_strarrcpy(char **strarr);
 size_t	ft_strarrlen(char **strarr);
 void	free_strarr(char **strarr);
 char	**ft_lst_to_strarr(t_list **lst);
+void	print_strarr(char **strarr);
 
 #endif
