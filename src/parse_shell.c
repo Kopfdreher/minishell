@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/06 18:05:48 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 18:03:49 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int	create_cmd(t_shell *shell, t_token **current_token)
 		rtrn = add_tokens_to_cmd(&new_cmd, current_token);
 	if (rtrn == FAILURE)
 		return (free(new_cmd), FAILURE);
+	new_cmd->args = args_list_to_strarr(new_cmd->args_list);
 	if (shell->cmd_list == NULL)
 		shell->cmd_list = new_cmd;
 	else
@@ -73,6 +74,7 @@ static int	create_cmd(t_shell *shell, t_token **current_token)
 		last_cmd->next = new_cmd;
 		new_cmd->prev = last_cmd;
 	}
+	
 	return (rtrn);
 }
 

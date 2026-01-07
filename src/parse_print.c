@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 15:53:17 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 18:04:47 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void	print_cmds(t_cmd *cmd_list)
 {
 	int		i;
 	t_cmd	*current_cmd;
-	char	**current_args;
 
 	i = 0;
 	current_cmd = cmd_list;
@@ -124,9 +123,7 @@ void	print_cmds(t_cmd *cmd_list)
 		if (current_cmd->redir_list)
 			print_redir_list(current_cmd->redir_list);
 		ft_printf("\ncmd_list.args: (converted to strarr)\n");
-		current_args = args_list_to_strarr(current_cmd->args_list);
-		print_strarr(current_args);
-		free_strarr(current_args);
+		print_strarr(current_cmd->args);
 		i++;
 		current_cmd = current_cmd->next;
 		ft_printf("----------------------------------------------------\n\n");
