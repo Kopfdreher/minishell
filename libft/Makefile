@@ -21,11 +21,11 @@ OBJS_GNL = ${GNL:.c=.o}
 
 OBJS_STRARR = ${STRARR:.c=.o}
 
-CC = cc
+CC = gcc
 
 RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 .c.o:
 	${CC} ${CFLAGS} -g -c $< -o ${<:.c=.o}
