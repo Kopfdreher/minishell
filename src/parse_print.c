@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/06 18:28:49 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 18:04:47 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,10 @@ void	print_cmds(t_cmd *cmd_list)
 			print_args_list(current_cmd->args_list);
 		if (current_cmd->redir_list)
 			print_redir_list(current_cmd->redir_list);
-		ft_printf("----------------------------------------------------\n\n");
+		ft_printf("\ncmd_list.args: (converted to strarr)\n");
+		print_strarr(current_cmd->args);
 		i++;
 		current_cmd = current_cmd->next;
+		ft_printf("----------------------------------------------------\n\n");
 	}
 }

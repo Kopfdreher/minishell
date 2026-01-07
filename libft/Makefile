@@ -9,7 +9,7 @@ PRINTF = $(addsuffix .c, ft_helper ft_printf put_char put_hex put_int put_string
 GNL = $(addsuffix .c, get_next_line_bonus get_next_line_utils_bonus get_line_len)
 
 STRARR = $(addsuffix .c, ft_lst_to_strarr free_strarr ft_strarrcpy \
-		 ft_strarrlen)
+		 ft_strarrlen print_strarr)
 
 OBJS = ${SRCS:.c=.o}
 
@@ -21,11 +21,11 @@ OBJS_GNL = ${GNL:.c=.o}
 
 OBJS_STRARR = ${STRARR:.c=.o}
 
-CC = cc
+CC = gcc
 
 RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 .c.o:
 	${CC} ${CFLAGS} -g -c $< -o ${<:.c=.o}
