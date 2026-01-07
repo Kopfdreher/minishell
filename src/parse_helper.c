@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 18:08:16 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 21:01:21 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	free_cmds(t_cmd **cmds)
 	*cmds = NULL;
 }
 
-t_cmd	*init_new_cmd(void)
+t_cmd	*init_new_cmd(t_shell *shell)
 {
 	t_cmd	*new_node;
 
@@ -82,5 +82,6 @@ t_cmd	*init_new_cmd(void)
 		return (NULL);
 	new_node->fd_out = STDOUT_FILENO;
 	new_node->pid = -1;
+	new_node->shell = shell;
 	return (new_node);
 }

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:03:16 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/06 18:29:00 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 21:05:09 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	add_arg_to_cmd(t_cmd **cmd, t_token **current_token)
 	if (!new_arg)
 		return (FAILURE);
 	new_arg->arg_tokens = *current_token;
+	new_arg->cmd = *cmd;
 	if ((*cmd)->args_list == NULL)
 		(*cmd)->args_list = new_arg;
 	else
@@ -47,6 +48,7 @@ static int	add_redir_to_cmd(t_cmd **cmd, t_token **current_token)
 	new_redir->type = (*current_token)->type;
 	*current_token = (*current_token)->next;
 	new_redir->file_tokens = *current_token;
+	new_redir->cmd = *cmd;
 	if ((*cmd)->redir_list == NULL)
 		(*cmd)->redir_list = new_redir;
 	else

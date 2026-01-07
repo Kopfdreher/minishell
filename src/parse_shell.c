@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 18:11:54 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 21:00:58 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	create_cmd(t_shell *shell, t_token **current_token)
 	t_cmd	*last_cmd;
 	int		rtrn;
 
-	new_cmd = init_new_cmd();
+	new_cmd = init_new_cmd(shell);
 	if (new_cmd == NULL)
 		return (FAILURE);
 	rtrn = SUCCESS;
