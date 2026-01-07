@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/07 20:30:32 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/08 00:26:42 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,28 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 		exec_builtin(shell, cmd);
 		exit (0);
 	}*/
-	cmd->path = find_path(cmd, shell);
-	if (!cmd->path)
+	if (cmd->args)
 	{
-		write(2, "minishelf: command not found: ", 30);
-		ft_putendl_fd(cmd->args[0], 2);
-		exit (127);
+		cmd->path = find_path(cmd, shell);
+		if (!cmd->path)
+		{
+			write(2, "minishelf: command not found: ", 30);
+			ft_putendl_fd(cmd->args[0], 2);
+			shell->exit_status = 127;
+			exit (127);
+		}
+		execve(cmd->path, cmd->args, shell->env_array);
+		perror("minishell");
+		shell->exit_status = 126;
+		exit (126);
 	}
-	execve(cmd->path, cmd->args, shell->env_array);
-	perror("minishell");
-	//fee cmdpath?;
-	exit (126);
+	exit (0);
 }
 
-static int	redirs(t_cmd *cmd, t_shell *shell)
+static int	redirs(t_redir *redir, t_shell *shell)
 {
-	t_redir	*redir;
 	int		fd;
 
-	redir = cmd->redir_list;
 	fd = -1;
 	while (redir)
 	{
@@ -118,6 +121,7 @@ int	execute(t_shell *shell)
 
 	cmd = shell->cmd_list;
 	prev_fd = -1;
+	
 	while (cmd)
 	{
 		if (cmd->next)
@@ -141,7 +145,7 @@ int	execute(t_shell *shell)
 				if (dup2(prev_fd, 0) == ERROR)
 				{
 					put_error(DUP2, "", shell);
-					exit(3);
+					exit(1);
 				}
 				close(prev_fd);
 			}
@@ -150,13 +154,16 @@ int	execute(t_shell *shell)
 				if (dup2(fd[1], 1) == ERROR)
 				{
 					put_error(DUP2, "", shell);
-					exit(3);
+					exit(1);
 				}
 				close(fd[0]);
 				close(fd[1]);
 			}
-			if (redirs(cmd, shell) == FAILURE)
+			if (redirs(cmd->redir_list, shell) == FAILURE)
+			{
+				shell->exit_status = 1;
 				exit(1);
+			}
 			exec_child(shell, cmd);
 		}
 		else 

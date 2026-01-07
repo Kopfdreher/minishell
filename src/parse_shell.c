@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 18:11:54 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 22:36:38 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	parse(t_shell *shell)
 		if (current_token && current_token->type == PIPE)
 			current_token = current_token->next;
 	}
-	if (shell->cmd_list)
-		print_cmds(shell->cmd_list);
+	//if (shell->cmd_list)
+	//	print_cmds(shell->cmd_list);
 	return (SUCCESS);
 }

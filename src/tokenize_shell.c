@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 12:16:32 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 22:01:12 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/07 22:36:35 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	tokenize(t_shell *shell)
 		else if (create_token(shell, &last_token, &i) == FAILURE)
 			return (FAILURE);
 	}
-	print_tokens(shell->tokens);
+	//print_tokens(shell->tokens);
 	if (check_syntax(shell) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
