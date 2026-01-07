@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/07 18:27:20 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/07 20:30:32 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,29 +67,30 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 	exit (126);
 }
 
-static int	redirs(t_cmd *cmd)
+static int	redirs(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*redir;
 	int		fd;
 
 	redir = cmd->redir_list;
+	fd = -1;
 	while (redir)
 	{
 		if (redir->type == REDIR_IN)
-			fd = open(redir->file, O_RDONLY);
+			fd = open(redir->file_tokens->value, O_RDONLY);
 		else if (redir->type == REDIR_OUT)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(redir->file_tokens->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (redir->type == APPEND)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (redir->type == HEREDOC)
-			fd = open_heredoc(redir);
+			fd = open(redir->file_tokens->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		//else if (redir->type == HEREDOC)
+			//fd = open_heredoc(redir);
 		if (fd == ERROR)
-			return (put_error(OPEN, redir->file), 1);
+			return (put_error(OPEN, redir->file_tokens->value, shell), 1);
 		if (redir->type == REDIR_IN || redir->type == HEREDOC)
 		{
 			if (dup2(fd, 0) == ERROR)
 			{
-				put_error(DUP2, fd);
+				put_error(DUP2, "", shell);
 				close(fd);
 				return (1);
 			}
@@ -98,7 +99,7 @@ static int	redirs(t_cmd *cmd)
 		{
 			if (dup2(fd, 1) == ERROR)
 			{
-				put_error(DUP2, fd);
+				put_error(DUP2, "", shell);
 				close(fd);
 				return (1);
 			}
@@ -124,14 +125,14 @@ int	execute(t_shell *shell)
 			if (pipe(fd) == ERROR)
 			{
 				wait_for_children(shell);
-				return (perror("pipe"), 1);
+				return (put_error(PIPES, "", shell), 1);
 			}
 		}
 		cmd->pid = fork();
 		if (cmd->pid == ERROR)
 		{
 			wait_for_children(shell);
-			return (perror("fork"), 1);
+			return (put_error(FORK, "", shell), 1);
 		}
 		if (cmd->pid == 0)
 		{
@@ -139,7 +140,7 @@ int	execute(t_shell *shell)
 			{
 				if (dup2(prev_fd, 0) == ERROR)
 				{
-					perror("minishell");
+					put_error(DUP2, "", shell);
 					exit(3);
 				}
 				close(prev_fd);
@@ -148,13 +149,13 @@ int	execute(t_shell *shell)
 			{
 				if (dup2(fd[1], 1) == ERROR)
 				{
-					perror("minishell");
+					put_error(DUP2, "", shell);
 					exit(3);
 				}
 				close(fd[0]);
 				close(fd[1]);
 			}
-			if (redirs(cmd) == FAILURE)
+			if (redirs(cmd, shell) == FAILURE)
 				exit(1);
 			exec_child(shell, cmd);
 		}

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 21:50:01 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/07 19:48:35 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ int	main(int argc, char **argv, char **envp)
 			add_history(shell.input);
 		if (tokenize(&shell) == SUCCESS) 
 		{
-			parse(&shell);
-			// execute(&shell);
+			if (parse(&shell) == SUCCESS)
+			{
+				execute(&shell);
+			}
 			// if (shell.running == TRUE && tokenize)
 			// 		if (shell.running == TRUE && parse)
 			// 			if (shell.running == TRUE && execute)

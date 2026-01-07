@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 19:52:44 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/07 19:56:20 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ static const char	*get_error_type(t_error_type type)
 {
 	if (type == SYNTAX)
 		return ("minishell: syntax error near unexpected token ");
+	else if (type == PIPES)
+		return ("minishell: pipe() failed\n");
+	else if (type == FORK)
+		return ("minishell: fork() failed\n");
+	else if (type == DUP2)
+		return ("minishell:dup2() failed\n");
+	else if (type == OPEN)
+		return ("minishell: open() failed\n");
 	return ("");
 }
 
@@ -23,6 +31,8 @@ static int	get_error_num(t_error_type type)
 {
 	if (type == SYNTAX)
 		return (2);
+	if (type == PIPES || type == FORK || type == DUP2 || type == OPEN)
+		return (1);
 	return (0);
 }
 
