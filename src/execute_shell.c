@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/06 22:28:21 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/07 17:29:07 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,50 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 	cmd->path = find_path(cmd, shell);
 	if (!cmd->path)
 	{
-		write(2, "minishell: command not found: ", 30);
+		write(2, "minishelf: command not found: ", 30);
 		ft_putendl_fd(cmd->args[0], 2);
 		exit (127);
 	}
 	execve(cmd->path, cmd->args, shell->env_array);
 	perror("minishell");
-	//free cmdpath?;
+	//fee cmdpath?;
 	exit (126);
+}
+
+static void	redirs(t_cmd *cmd)
+{
+	t_redir	redir;
+	int		input;
+	int		output;
+
+	redir = cmd->redir_list;
+	while (redir)
+	{
+		if (redir->type == REDIR_IN)
+		{
+			input = open(redir->file, O_RDONLY);
+			if (input == ERROR)
+			{
+				put_error;
+			}
+			dup2(input, 0);
+		}
+		else if (redir->type == REDIR_OUT)
+		{
+			output = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			dup2(output, 1);
+		}
+		else if (redir->type == APPEND)
+		{
+			output = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			dup2(output, 1);
+		}
+		else if (redir->type == HEREDOC)
+		{
+			open_heredoc(redir);
+		}
+		redir = redir->next;
+	}
 }
 
 int	execute(t_shell *shell)
@@ -95,12 +131,20 @@ int	execute(t_shell *shell)
 		{
 			if (cmd->prev)
 			{
-				dup2(prev_fd, 0);
+				if (dup2(prev_fd, 0) == ERROR)
+				{
+					perror("minishell");
+					exit(3);
+				}
 				close(prev_fd);
 			}
 			if (cmd->next)
 			{
-				dup2(fd[1], 1);
+				if (dup2(fd[1], 1) == ERROR)
+				{
+					perror("minishell");
+					exit(3);
+				}
 				close(fd[0]);
 				close(fd[1]);
 			}
