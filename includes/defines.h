@@ -74,6 +74,7 @@ typedef struct s_redir {
 	char			*file;
 	t_token			*file_tokens;
 	int				heredoc_fd;
+	int				is_ambiguous;
 	struct s_redir	*next;
 }	t_redir;
 

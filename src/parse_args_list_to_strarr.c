@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 15:18:13 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/07 18:27:29 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,47 +61,6 @@ typedef struct s_shell {
 	int		original_stdout;
 }	t_shell;
 */
-
-static int	merged_token_len(t_token *arg_tokens)
-{
-	int	merged_token_len;
-
-	merged_token_len = 0;
-	while (arg_tokens)
-	{
-		if (arg_tokens->value)
-			merged_token_len += ft_strlen(arg_tokens->value);
-		if (arg_tokens->merge == FALSE)
-			break ;
-		arg_tokens = arg_tokens->next;
-	}
-	return (merged_token_len);
-}
-
-static char	*merge_tokens_to_str(t_token *arg_tokens)
-{
-	int		token_len;
-	char	*str;
-	int		i;
-
-	str = ft_calloc(merged_token_len(arg_tokens) + 1, sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (arg_tokens)
-	{
-		if (arg_tokens->value)
-		{
-			token_len = ft_strlen(arg_tokens->value);
-			ft_memcpy(&str[i], arg_tokens->value, token_len);
-			if (arg_tokens->merge == FALSE)
-				break ;
-			i += token_len;
-		}
-		arg_tokens = arg_tokens->next;
-	}
-	return (str);
-}
 
 static int	put_tokens_into_strarr(t_arg *args_list, char ***strarr)
 {
