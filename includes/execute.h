@@ -32,7 +32,6 @@ void	close_fds(t_cmd *cmd);
 void	setup_signals(int mode);
 
 // Cleanup (Executer specific)
-void	free_cmds(t_cmd **cmds);
 void	free_env_array(char **array);
 
 #endif

@@ -48,6 +48,9 @@ typedef enum e_sig_mode {
 }	t_sig_mode;
 
 // --- STRUCTS ---
+typedef struct s_shell	t_shell;
+typedef struct s_cmd	t_cmd;
+
 typedef struct s_env {
 	char			*name;
 	char			*value;
@@ -67,6 +70,7 @@ typedef struct s_token {
 typedef struct s_arg {
 	char			*arg;
 	t_token			*arg_tokens;
+	t_cmd			*cmd;
 	struct s_arg	*next;
 }	t_arg;
 
@@ -76,6 +80,7 @@ typedef struct s_redir {
 	t_token			*file_tokens;
 	int				heredoc_fd;
 	int				is_ambiguous;
+	t_cmd			*cmd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -90,6 +95,7 @@ typedef struct s_cmd {
 	pid_t			pid;
 	int				fd_in;
 	int				fd_out;
+	t_shell			*shell;
 }	t_cmd;
 
 typedef struct s_shell {
