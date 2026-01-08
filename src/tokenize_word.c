@@ -36,7 +36,7 @@ static char	get_quote_char(t_quote_type quote)
 		return ('"');
 }
 
-static int	get_token_len(char *input, t_token *word_token)
+int	get_token_len(char *input, t_token *word_token)
 {
 	int				len;
 	int				quote_char;

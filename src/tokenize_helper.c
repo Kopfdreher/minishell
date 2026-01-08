@@ -6,11 +6,17 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:22:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/06 17:13:02 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/08 16:24:44 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_whitespace(char c)
+{
+	return (c == ' ' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == '\t');
+}
 
 t_token	*new_token(char	*value, t_token_type type, t_quote_type quote)
 {

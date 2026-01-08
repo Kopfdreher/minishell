@@ -44,12 +44,6 @@ static int	create_token(t_shell *shell, t_token **last_token, int *i)
 		return (add_word_token(shell, last_token, i));
 }
 
-static int	is_whitespace(char c)
-{
-	return (c == ' ' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r' || c == '\t');
-}
-
 int	tokenize(t_shell *shell)
 {
 	int		i;

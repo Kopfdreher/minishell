@@ -6,42 +6,11 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 16:00:41 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/08 17:49:42 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_token	*create_env_tokens(char *env_string)
-{
-	
-}
-
-static t_env	*new_env_node(char *str)
-{
-	t_env	*node;
-	int		i;
-
-	node = ft_calloc(1, sizeof(t_env));
-	if (!node)
-		return (NULL);
-	i = 0;
-	while (str[i] && str[i] != '=')
-		i++;
-	node->name = ft_substr(str, 0, i);
-	if (!node->name)
-		return (free(node), NULL);
-	if (str[i])
-	{
-		node->value = ft_strdup(str + i + 1);
-		if (!node->name)
-			return (free_env_list(&node), NULL);
-	}
-	node->tokens = create_env_tokens(node->value);
-	if (!node->tokens)
-		return (free_env_list(&node), NULL);
-	return (node);
-}
 
 t_env	*init_env(char **envp)
 {

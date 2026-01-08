@@ -25,7 +25,7 @@ int		add_tokens_to_cmd(t_cmd **cmd, t_token **current_token);
 void	free_cmds(t_cmd **cmds);
 t_cmd	*init_new_cmd(t_shell *shell);
 void	print_cmds(t_cmd *cmd_list);
-char	**args_list_to_strarr(t_arg *args_list);
+int		args_list_to_strarr(t_arg *args_list, char ***strarr);
 char	*merge_tokens_to_str(t_token *tokens);
 
 #endif

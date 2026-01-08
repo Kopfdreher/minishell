@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 18:27:29 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/08 21:13:25 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,20 @@ static int	get_args_list_len(t_arg *args_list)
 	return (len);
 }
 
-char	**args_list_to_strarr(t_arg *args_list)
+int	args_list_to_strarr(t_arg *args_list, char ***strarr)
 {
 	int		strarr_len;
-	char	**strarr;
 
 	if (!args_list)
-		return (NULL);
+	{
+		*strarr = NULL;
+		return (SUCCESS);
+	}
 	strarr_len = get_args_list_len(args_list);
-	strarr = ft_calloc(strarr_len + 1, sizeof(char *));
-	if (!strarr)
-		return (NULL);
-	if (put_tokens_into_strarr(args_list, &strarr) == FAILURE)
-		return (NULL);
-	return (strarr);
+	*strarr = ft_calloc(strarr_len + 1, sizeof(char *));
+	if (!*strarr)
+		return (FAILURE);
+	if (put_tokens_into_strarr(args_list, strarr) == FAILURE)
+		return (free_strarr(*strarr), *strarr = 0, FAILURE);
+	return (SUCCESS);
 }

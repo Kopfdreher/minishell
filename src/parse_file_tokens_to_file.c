@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 18:34:06 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 15:33:39 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/08 18:59:05 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_redir {
 	int				is_ambiguous;
 	struct s_redir	*next;
 }	t_redir;
-*/
+
 static int	file_tokens_ambiguous(t_redir **redir)
 {
 	redir->is_ambiguous = TRUE;
@@ -43,3 +43,4 @@ int	parse_file_tokens_to_file(t_redir **redir)
 		return (FAILURE);
 	return (SUCCESS);
 }
+*/

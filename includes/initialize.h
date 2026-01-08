@@ -18,6 +18,5 @@
 void	init_shell(t_shell *shell, char **envp);
 t_env	*init_env(char **envp);
 void	free_env_list(t_env **env_list);
-t_token	*create_env_tokens(char *env_string);
 
 #endif

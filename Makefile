@@ -27,11 +27,13 @@ TOKEN_FILES	= tokenize_shell tokenize_helper tokenize_print tokenize_word\
 PARSE_FILES	= parse_shell parse_helper parse_token_to_cmd parse_print\
 			  parse_args_list_to_strarr parse_tokens_to_str\
 			  parse_file_tokens_to_file
+EXPAND_FILES= expand_env_handling
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\
 			  $(TOKEN_FILES)\
-			  $(PARSE_FILES))
+			  $(PARSE_FILES)\
+			  $(EXPAND_FILES))
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

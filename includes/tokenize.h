@@ -22,6 +22,7 @@ int		tokenize(t_shell *shell);
 t_token	*new_token(char	*value, t_token_type token, t_quote_type quote);
 void	add_token_back(t_token **head, t_token **tail, t_token *new_node);
 void	free_tokens(t_token **tokens);
+int		is_whitespace(char c);
 
 // tokenize_print
 void	print_tokens(t_token *tokens);
@@ -31,5 +32,6 @@ int		check_syntax(t_shell *shell);
 
 //tokenize_word
 int		add_word_token(t_shell *shell, t_token **last_token, int *i);
+int		get_token_len(char *input, t_token *word_token);
 
 #endif
