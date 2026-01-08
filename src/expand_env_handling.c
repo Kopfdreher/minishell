@@ -6,11 +6,21 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 17:45:35 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 20:32:45 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/08 22:09:46 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	get_env_token_len(char *input)
+{
+	int	len;
+
+	len = 0;
+	while (input[len] && input[len] != ' ')
+		len++;
+	return (len);
+}
 
 static int	add_env_token(char *env_value, t_token **env_tokens, int *start)
 {
@@ -21,7 +31,7 @@ static int	add_env_token(char *env_value, t_token **env_tokens, int *start)
 	word_token = new_token(NULL, WORD, NO_QUOTE);
 	if (!word_token)
 		return (FAILURE);
-	len = get_token_len(&env_value[*start], word_token);
+	len = get_env_token_len(&env_value[*start]);
 	word_token->value = ft_substr(env_value, *start, len);
 	if (!word_token->value)
 		return (free_tokens(&word_token), FAILURE);

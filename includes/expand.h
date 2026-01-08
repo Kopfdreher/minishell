@@ -16,5 +16,6 @@
 # include "defines.h"
 
 t_env	*new_env_node(char *str);
+void	env_print(t_env *env);
 
 #endif
