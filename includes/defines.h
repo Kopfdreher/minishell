@@ -51,6 +51,7 @@ typedef enum e_sig_mode {
 typedef struct s_env {
 	char			*name;
 	char			*value;
+	t_token			**tokens;
 	struct s_env	*next;
 }	t_env;
 

@@ -6,29 +6,40 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/02 12:05:53 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/08 16:00:41 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_token	*create_env_tokens(char *env_string)
+{
+	
+}
 
 static t_env	*new_env_node(char *str)
 {
 	t_env	*node;
 	int		i;
 
-	node = malloc(sizeof(t_env));
+	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
 	node->name = ft_substr(str, 0, i);
+	if (!node->name)
+		return (free(node), NULL);
 	if (str[i])
+	{
 		node->value = ft_strdup(str + i + 1);
-	else
-		node->value = NULL;
-	node->next = NULL;
+		if (!node->name)
+			return (free_env_list(&node), NULL);
+	}
+	node->tokens = create_env_tokens(node->value);
+	if (!node->tokens)
+		return (free_env_list(&node), NULL);
 	return (node);
 }
 
@@ -73,6 +84,8 @@ void	free_env_list(t_env **env_list)
 			free(current->name);
 		if (current->value)
 			free(current->value);
+		if (current->tokens)
+			free_tokens(&current->tokens);
 		free(current);
 		current = temp;
 	}
