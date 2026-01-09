@@ -17,5 +17,7 @@
 
 t_env	*new_env_node(char *str);
 void	env_print(t_env *env);
+char	*get_env_value(t_env *env_list, char *name);
+t_env	*get_env_node(t_env *env_list, char *name);
 
 #endif

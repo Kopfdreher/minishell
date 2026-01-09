@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 18:04:47 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:06:48 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	print_cmds(t_cmd *cmd_list)
 {
 	int		i;
 	t_cmd	*current_cmd;
+	t_env	*env_node;
 
 	i = 0;
 	current_cmd = cmd_list;
@@ -125,7 +126,12 @@ void	print_cmds(t_cmd *cmd_list)
 		ft_printf("\ncmd_list.args: (converted to strarr)\n");
 		print_strarr(current_cmd->args);
 		i++;
-		current_cmd = current_cmd->next;
+		ft_printf("env.path.value:\n%s\n", get_env_value(
+			current_cmd->shell->env_list, "X"));
+		env_node = get_env_node(current_cmd->shell->env_list, "X");
+		if (env_node)
+			ft_printf("env.path.node.value:\n%s\n", env_node->value);
 		ft_printf("----------------------------------------------------\n\n");
+		current_cmd = current_cmd->next;
 	}
 }
