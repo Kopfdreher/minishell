@@ -38,7 +38,8 @@ typedef enum e_quote_type {
 }	t_quote_type;
 
 typedef enum e_error_type {
-	SYNTAX
+	SYNTAX,
+	MALLOC
 }	t_error_type;
 
 typedef enum e_sig_mode {
@@ -65,6 +66,7 @@ typedef struct s_token {
 	t_token_type	type;
 	t_quote_type	quote;
 	int				merge;
+	struct s_token	*expand_tokens;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -108,6 +110,7 @@ typedef struct s_shell {
 	char	**env_array;
 	int		exit_status;
 	int		running;
+	int		reprompt;
 	int		original_stdin;
 	int		original_stdout;
 }	t_shell;

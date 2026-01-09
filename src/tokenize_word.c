@@ -82,7 +82,7 @@ int	add_word_token(t_shell *shell, t_token **last_token, int *start)
 		free(word_token), FAILURE);
 	word_token->value = ft_substr(shell->input, *start, len);
 	if (!word_token->value)
-		return (FAILURE);
+		return (free(word_token), FAILURE);
 	add_token_back(&shell->tokens, last_token, word_token);
 	*start += len;
 	if (word_token->quote != NO_QUOTE)

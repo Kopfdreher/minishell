@@ -41,7 +41,7 @@ static int	create_token(t_shell *shell, t_token **last_token, int *i)
 	else if (shell->input[*i] == '|')
 		return (add_operator_token(shell, last_token, i, PIPE));
 	else
-		return (add_word_token(shell, last_token, i));
+		return (add_word_token(shell, last_token, i) == FAILURE);
 }
 
 int	tokenize(t_shell *shell)
@@ -60,6 +60,8 @@ int	tokenize(t_shell *shell)
 		else if (create_token(shell, &last_token, &i) == FAILURE)
 			return (FAILURE);
 	}
+	if (expand_token_list(shell) == FAILURE)
+		return (FAILURE);
 	print_tokens(shell->tokens);
 	if (check_syntax(shell) == FAILURE)
 		return (FAILURE);

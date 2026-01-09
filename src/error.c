@@ -16,6 +16,8 @@ static const char	*get_error_type(t_error_type type)
 {
 	if (type == SYNTAX)
 		return ("minishell: syntax error near unexpected token ");
+	if (type == MALLOC)
+		return ("minishell: malloc failed\n");
 	return ("");
 }
 
@@ -23,7 +25,9 @@ static int	get_error_num(t_error_type type)
 {
 	if (type == SYNTAX)
 		return (2);
-	return (0);
+	if (type == MALLOC)
+		return (1);
+	return (1);
 }
 
 void	put_error(t_error_type type, const char *str, t_shell *shell)
@@ -31,4 +35,5 @@ void	put_error(t_error_type type, const char *str, t_shell *shell)
 	ft_putstr_fd(get_error_type(type), 2);
 	ft_putstr_fd(str, 2);
 	shell->exit_status = get_error_num(type);
+	shell->reprompt = TRUE;
 }

@@ -19,5 +19,10 @@ t_env	*new_env_node(char *str);
 void	env_print(t_env *env);
 char	*get_env_value(t_env *env_list, char *name);
 t_env	*get_env_node(t_env *env_list, char *name);
+t_token	*get_env_tokens(t_env *env_list, char *name);
+int		is_variable_separator(char c);
+int		add_expanded_exit_code(t_token **token, int *i, int exit_code);
+int		expand_token(t_shell *shell, t_token **token);
+int		expand_token_list(t_shell *shell);
 
 #endif

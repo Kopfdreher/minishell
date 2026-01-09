@@ -21,6 +21,7 @@ int		tokenize(t_shell *shell);
 // tokenize_helper
 t_token	*new_token(char	*value, t_token_type token, t_quote_type quote);
 void	add_token_back(t_token **head, t_token **tail, t_token *new_node);
+void	add_token_to_back(t_token **head, t_token *new_node);
 void	free_tokens(t_token **tokens);
 int		is_whitespace(char c);
 

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:22:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 16:24:44 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/09 21:33:23 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	free_tokens(t_token **tokens)
 		next = current->next;
 		if (current->value)
 			free(current->value);
+		if (current->expand_tokens)
+			free_tokens(&current->expand_tokens);
 		free(current);
 		current = next;
 	}
@@ -62,5 +64,22 @@ void	add_token_back(t_token **head, t_token **tail, t_token *new_node)
 		(*tail)->next = new_node;
 		new_node->prev = *tail;
 		*tail = new_node;
+	}
+}
+
+void	add_token_to_back(t_token **head, t_token *new_node)
+{
+	t_token	*tail;
+
+	if (!new_node)
+		return ;
+	if (!*head)
+		*head = new_node;
+	else
+	{
+		tail = *head;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_node;
 	}
 }

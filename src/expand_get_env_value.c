@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 13:20:13 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 14:08:46 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/09 21:34:05 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,19 @@ char	*get_env_value(t_env *env_list, char *name)
 	if (env_node == NULL)
 		return (NULL);
 	return (env_node->value);
+}
+
+t_token	*get_env_tokens(t_env *env_list, char *name)
+{
+	t_env	*env_node;
+
+	env_node = get_env_node(env_list, name);
+	if (env_node == NULL)
+		return (NULL);
+	return (env_node->tokens);
+}
+
+int	is_variable_separator(char c)
+{
+	return (ft_isalnum(c) == FALSE && c != '_');
 }

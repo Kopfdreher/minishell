@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 17:45:35 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 22:09:46 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/09 19:30:10 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,36 @@ static int	add_env_token(char *env_value, t_token **env_tokens, int *start)
 static t_token	*create_env_tokens(char *env_value)
 {
 	int		i;
+	int		trailing_space;
 	t_token	*env_tokens;
+	t_token	*last_token;
 
 	env_tokens = NULL;
 	i = 0;
+	trailing_space = FALSE;
 	if (!env_value)
 		return (NULL);
 	while (env_value[i])
 	{
 		if (env_value[i] == ' ')
+		{
+			trailing_space = TRUE;
 			i++;
-		else if (add_env_token(env_value, &env_tokens, &i) == FAILURE)
+		}
+		else
+		{
+			trailing_space = FALSE;
+			if (add_env_token(env_value, &env_tokens, &i) == FAILURE)
 				return (free_tokens(&env_tokens), NULL);
+		}
 	}
+	if (!env_tokens)
+		return (env_tokens);
+	last_token = env_tokens;
+	while (last_token->next)
+		last_token = last_token->next;
+	if (trailing_space == FALSE)
+		last_token->merge = TRUE;
 	return (env_tokens);
 }
 
