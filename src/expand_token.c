@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:24:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 21:37:40 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/10 23:28:55 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	copy_token(t_token *token, t_token **copy)
 	return (SUCCESS);
 }
 
-static int	copy_token_list(t_token *variable_tokens, t_token **copy_head)
+int	copy_token_list(t_token *variable_tokens, t_token **copy_head)
 {
 	t_token	*current_token;
 	t_token	*copy;
@@ -56,28 +56,13 @@ static int	copy_token_list(t_token *variable_tokens, t_token **copy_head)
 static int	add_variable_tokens(t_token **token, int *i, t_env *env_list,
 				int exit_status)
 {
-	int		len;
-	char	*variable_name;
-	t_token	*variable_tokens;
-	t_token	*copied_tokens;
-
 	*i += 1;
-	len = 0;
 	if ((*token)->value[*i] == '?')
 		return (add_expanded_exit_code(token, i, exit_status));
-	while ((*token)->value[*i + len]
-		&& is_variable_separator((*token)->value[*i + len]) == FALSE)
-		len++;
-	variable_name = ft_substr((*token)->value, *i, len);
-	if (!variable_name)
-		return (FAILURE);
-	variable_tokens = get_env_tokens(env_list, variable_name);
-	free(variable_name);
-	if (copy_token_list(variable_tokens, &copied_tokens) == FAILURE)
-		return (FAILURE);
-	if (copied_tokens)
-		add_token_to_back(&(*token)->expand_tokens, copied_tokens);
-	*i += len;
+	else if ((*token)->quote == NO_QUOTE)
+		return (add_expanded_tokens(token, i, env_list));
+	else if ((*token)->quote == DOUBLE_QUOTE)
+		return (add_expanded_str(token, i, env_list));
 	return (SUCCESS);
 }
 
@@ -110,13 +95,18 @@ int	expand_token(t_shell *shell, t_token **token)
 	if (!token || !*token)
 		return (SUCCESS);
 	i = 0;
-	while ((*token)->value[i])
+	while ((*token)->value && (*token)->value[i])
 	{
-		if ((*token)->value[i] == '$' && (add_variable_tokens(token, &i,
-			shell->env_list, shell->exit_status) == FAILURE))
+		if ((*token)->value[i] == '$')
+		{
+			if (add_variable_tokens(token, &i,shell->env_list, shell->exit_status) == FAILURE)
 				return (free_tokens(&(*token)->expand_tokens), FAILURE);
-		else if (add_sub_token(token, &i) == FAILURE)
+		}
+		else 
+		{
+			if (add_sub_token(token, &i) == FAILURE)
 				return (free_tokens(&(*token)->expand_tokens), FAILURE);
+		}
 	}
 	last_token = (*token)->expand_tokens;
 	if (last_token)
@@ -125,6 +115,8 @@ int	expand_token(t_shell *shell, t_token **token)
 			last_token = last_token->next;
 		if (last_token->merge == TRUE)
 			last_token->merge = (*token)->merge;
+		else
+			(*token)->merge = FALSE;
 	}
 	return (SUCCESS);
 }

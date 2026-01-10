@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 21:49:29 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 21:56:02 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/10 22:40:28 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	expand_token_list(t_shell *shell)
 	current_token = shell->tokens;
 	while (current_token)
 	{
-		if (expand_token(shell, &current_token) == FAILURE)
+		if (current_token->quote != SINGLE_QUOTE
+			&& expand_token(shell, &current_token) == FAILURE)
 			return (FAILURE);
 		current_token = current_token->next;
 	}

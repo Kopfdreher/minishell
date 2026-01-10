@@ -24,5 +24,8 @@ int		is_variable_separator(char c);
 int		add_expanded_exit_code(t_token **token, int *i, int exit_code);
 int		expand_token(t_shell *shell, t_token **token);
 int		expand_token_list(t_shell *shell);
+int		add_expanded_str(t_token **token, int *i, t_env *env_list);
+int		add_expanded_tokens(t_token **token, int *i, t_env *env_list);
+int		copy_token_list(t_token *variable_tokens, t_token **copy_head);
 
 #endif

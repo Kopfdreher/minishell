@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:22:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 21:33:23 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/10 20:03:01 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ void	add_token_to_back(t_token **head, t_token *new_node)
 		while (tail->next)
 			tail = tail->next;
 		tail->next = new_node;
+		new_node->prev = tail;
 	}
 }

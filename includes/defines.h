@@ -59,6 +59,7 @@ typedef struct s_env {
 	t_token			*tokens;
 	int				word_count;
 	struct s_env	*next;
+	struct s_env	*prev;
 }	t_env;
 
 typedef struct s_token {
@@ -83,7 +84,6 @@ typedef struct s_redir {
 	char			*file;
 	t_token			*file_tokens;
 	int				heredoc_fd;
-	int				is_ambiguous;
 	t_cmd			*cmd;
 	struct s_redir	*next;
 }	t_redir;
