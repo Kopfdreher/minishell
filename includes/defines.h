@@ -73,8 +73,10 @@ typedef struct s_token {
 }	t_token;
 
 typedef struct s_arg {
+	char			**args;
 	char			*arg;
 	t_token			*arg_tokens;
+	t_token			*expand_arg_tokens;
 	t_cmd			*cmd;
 	struct s_arg	*next;
 }	t_arg;

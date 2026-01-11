@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 22:07:19 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/11 20:59:17 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,50 @@ static int	get_args_list_len(t_arg *args_list)
 	return (len);
 }
 
+static void	connect_expand_tokens(t_arg *args_list)
+{
+	t_arg	*curr_arg;
+	t_token	*curr_token;
+	t_token	*sub_list;
+	t_token *last_node;
+
+	curr_arg = args_list;
+	while (curr_arg)
+	{
+		curr_token = curr_arg->arg_tokens;
+		last_node = NULL;
+		curr_arg->expand_arg_tokens = NULL;
+		while (curr_token)
+		{
+			sub_list = curr_token->expand_tokens;
+			if (sub_list)
+			{
+				if (curr_arg->expand_arg_tokens == NULL)
+					curr_arg->expand_arg_tokens = sub_list;
+				else
+					last_node->next = sub_list;
+				while (sub_list->next)
+					sub_list = sub_list->next;
+				last_node = sub_list;
+			}
+			curr_token->expand_tokens = NULL;
+			if (curr_token->merge == FALSE)
+				break ;
+			curr_token = curr_token->next;
+		}
+		curr_arg = curr_arg->next;
+	}
+}
+
 int	args_list_to_strarr(t_arg *args_list, char ***strarr)
 {
-	int		strarr_len;
-
 	if (!args_list)
 	{
 		*strarr = NULL;
 		return (SUCCESS);
 	}
-	strarr_len = get_args_list_len(args_list);
-	*strarr = ft_calloc(strarr_len + 1, sizeof(char *));
+	connect_expand_tokens(args_list);
+	*strarr = ft_calloc(get_args_list_len(args_list) + 1, sizeof(char *));
 	if (!*strarr)
 		return (FAILURE);
 	if (put_tokens_into_strarr(args_list, strarr) == FAILURE)

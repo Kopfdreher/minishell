@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 18:26:24 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 21:09:28 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/11 17:23:51 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 static int	merged_token_len(t_token *tokens)
 {
-	int	merged_token_len;
+	int		merged_len;
 
-	merged_token_len = 0;
+	merged_len = 0;
 	while (tokens)
 	{
 		if (tokens->value)
-			merged_token_len += ft_strlen(tokens->value);
-		if (tokens->merge == FALSE)
-			break ;
+		{
+			merged_len += ft_strlen(tokens->value);
+			if (tokens->merge == FALSE)
+				break ;
+		}
 		tokens = tokens->next;
 	}
-	return (merged_token_len);
+	return (merged_len);
 }
 
 char	*merge_tokens_to_str(t_token *tokens)

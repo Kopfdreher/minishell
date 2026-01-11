@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:24:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/10 23:28:55 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/11 15:38:43 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,16 @@ static int	add_sub_token(t_token **token, int *i)
 	t_token	*sub_token;
 
 	len = 0;
-	while ((*token)->value[*i + len] && (*token)->value[*i + len] != '$')
-		len++;
+	if ((*token)->quote != SINGLE_QUOTE)
+	{
+		while ((*token)->value[*i + len] && (*token)->value[*i + len] != '$')
+			len++;
+	}
+	else
+	{
+		while ((*token)->value[*i + len])
+			len++;
+	}
 	sub_value = ft_substr((*token)->value, *i, len);
 	if (!sub_value)
 		return (FAILURE);
@@ -97,7 +105,7 @@ int	expand_token(t_shell *shell, t_token **token)
 	i = 0;
 	while ((*token)->value && (*token)->value[i])
 	{
-		if ((*token)->value[i] == '$')
+		if ((*token)->value[i] == '$' && (*token)->quote != SINGLE_QUOTE)
 		{
 			if (add_variable_tokens(token, &i,shell->env_list, shell->exit_status) == FAILURE)
 				return (free_tokens(&(*token)->expand_tokens), FAILURE);
@@ -115,8 +123,8 @@ int	expand_token(t_shell *shell, t_token **token)
 			last_token = last_token->next;
 		if (last_token->merge == TRUE)
 			last_token->merge = (*token)->merge;
-		else
-			(*token)->merge = FALSE;
+		//else
+		//	(*token)->merge = FALSE;
 	}
 	return (SUCCESS);
 }

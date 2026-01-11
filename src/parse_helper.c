@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 18:58:27 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/11 20:31:02 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	free_args_list(t_arg **args_list)
 	while (current)
 	{
 		next = current->next;
+		if (current->expand_arg_tokens)
+			free_tokens(&current->expand_arg_tokens);
 		free(current);
 		current = next;
 	}
