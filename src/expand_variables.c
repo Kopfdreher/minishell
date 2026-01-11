@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 21:23:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/10 23:44:04 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/11 13:04:04 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,22 @@ int	add_expanded_exit_code(t_token **token, int *i, int exit_code)
 	return (SUCCESS);
 }
 
-static void	pre_merge_correction(t_token **token)
+static void	pre_merge_correction(t_token **token, t_token *expand_tokens)
 {
 	t_token	*current;
-
-	(*token)->prev->merge = FALSE;
-	current = (*token)->prev->expand_tokens;
-	if (current)
+	if (expand_tokens->prev == NULL && (*token)->prev != NULL)
 	{
-		while (current->next)
-			current = current->next;
-		current->merge = FALSE;
+		(*token)->prev->merge = FALSE;
+		current = (*token)->prev->expand_tokens;
+		if (current)
+		{
+			while (current->next)
+				current = current->next;
+			current->merge = FALSE;
+		}
 	}
+	else if (expand_tokens->prev != NULL)
+		expand_tokens->prev->merge = FALSE;
 }
 
 int	add_expanded_tokens(t_token **token, int *i, t_env *env_list)
@@ -61,9 +65,9 @@ int	add_expanded_tokens(t_token **token, int *i, t_env *env_list)
 	free(variable_name);
 	if (copy_token_list(variable_node->tokens, &copied_tokens) == FAILURE)
 		return (FAILURE);
-	if (variable_node->value[0] == ' ' && (*token)->prev != NULL)
-		pre_merge_correction(token);
 	add_token_to_back(&(*token)->expand_tokens, copied_tokens);
+	if (variable_node->value[0] == ' ')
+		pre_merge_correction(token, copied_tokens);
 	*i += len;
 	return (SUCCESS);
 }
