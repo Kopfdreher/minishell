@@ -80,7 +80,6 @@ int	execute(t_shell *shell)
 
 	cmd = shell->cmd_list;
 	prev_fd = -1;
-	
 	while (cmd)
 	{
 		if (cmd->next)
