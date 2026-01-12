@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/12 12:47:20 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/12 17:10:40 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 static const char	*get_error_type(t_error_type type)
 {
 	if (type == SYNTAX)
-		return ("minishell: syntax error near unexpected token ");
+		return ("syntax error near unexpected token ");
 	else if (type == PIPES)
-		return ("minishell: pipe() failed\n");
+		return ("pipe() failed\n");
 	else if (type == FORK)
-		return ("minishell: fork() failed\n");
+		return ("fork() failed\n");
 	else if (type == DUP2)
-		return ("minishell:dup2() failed\n");
+		return ("dup2() failed\n");
 	else if (type == OPEN)
-		return ("minishell: open() failed\n");
+		return ("open() failed\n");
 	else if (type == H_DOC)
-		return ("minishell: warning: here-document delimited by end-of-file (wanted: `");
+		return ("warning: here-document delimited by end-of-file (wanted: `");
 	return ("");
 }
 
