@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/12/31 19:20:38 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/12 16:06:42 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_env(t_shell *shell);
 int	ft_exit(t_shell *shell, char **args);
 
 // Helper to check/run
-int	is_builtin(char *cmd);
-int	exec_builtin(t_cmd *cmd, t_shell *shell);
+int	is_builtin(t_cmd *cmd);
+int	exec_builtin(t_cmd *cmd);
 
 #endif

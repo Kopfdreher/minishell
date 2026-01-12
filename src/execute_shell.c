@@ -49,11 +49,11 @@ int	wait_for_children(t_shell *shell)
 */
 static void	exec_child(t_shell *shell, t_cmd *cmd)
 {
-/*	if (cmd->is_builtin == TRUE)
+	if (is_builtin(cmd) == TRUE)
 	{
-		exec_builtin(shell, cmd);
+		//exec_builtin(shell, cmd);
 		exit (0);
-	}*/
+	}
 	if (cmd->args)
 	{
 		cmd->path = find_path(cmd, shell);
