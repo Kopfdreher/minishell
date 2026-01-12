@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 11:47:50 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/12 17:28:00 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:54:28 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ int	redirs(t_redir *redir, t_shell *shell)
 			fd = open(redir->file_tokens->value, O_RDONLY);
 		else if (redir->type == REDIR_OUT)
 			fd = open(redir->file_tokens->value,
-			 \O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (redir->type == APPEND)
 			fd = open(redir->file_tokens->value, 
-			 \O_WRONLY | O_CREAT | O_APPEND, 0644);
+					O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir->type == HEREDOC)
 			fd = open_heredoc(redir, shell);
 		if (fd == ERROR)
