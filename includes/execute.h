@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:23 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/06 19:12:19 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:45:58 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	handle_pipes(t_cmd *cmd);
 int		check_heredocs(t_shell *shell);
 
 // Redirection
-int		apply_redirections(t_cmd *cmd);
+int		redirs(t_redir *redir, t_shell*shell);
 void	close_fds(t_cmd *cmd);
 
 // Signals

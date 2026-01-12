@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 22:12:28 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:47:47 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum e_error_type {
 	FORK,
 	OPEN,
 	DUP2,
+	H_DOC,
 }	t_error_type;
 
 typedef enum e_sig_mode {

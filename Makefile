@@ -26,7 +26,7 @@ TOKEN_FILES	= tokenize_shell tokenize_helper tokenize_print tokenize_word\
 			  tokenize_syntax
 PARSE_FILES	= parse_shell parse_helper parse_token_to_cmd parse_print\
 			  parse_args_list_to_strarr
-EXEC_FILES	= execute_shell execute_path
+EXEC_FILES	= execute_shell execute_path execute_redirections
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\

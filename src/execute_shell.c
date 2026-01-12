@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/08 00:26:42 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/12 11:59:26 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,47 +70,6 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 		exit (126);
 	}
 	exit (0);
-}
-
-static int	redirs(t_redir *redir, t_shell *shell)
-{
-	int		fd;
-
-	fd = -1;
-	while (redir)
-	{
-		if (redir->type == REDIR_IN)
-			fd = open(redir->file_tokens->value, O_RDONLY);
-		else if (redir->type == REDIR_OUT)
-			fd = open(redir->file_tokens->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (redir->type == APPEND)
-			fd = open(redir->file_tokens->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		//else if (redir->type == HEREDOC)
-			//fd = open_heredoc(redir);
-		if (fd == ERROR)
-			return (put_error(OPEN, redir->file_tokens->value, shell), 1);
-		if (redir->type == REDIR_IN || redir->type == HEREDOC)
-		{
-			if (dup2(fd, 0) == ERROR)
-			{
-				put_error(DUP2, "", shell);
-				close(fd);
-				return (1);
-			}
-		}
-		else if (redir->type == REDIR_OUT || redir->type == APPEND)
-		{
-			if (dup2(fd, 1) == ERROR)
-			{
-				put_error(DUP2, "", shell);
-				close(fd);
-				return (1);
-			}
-		}
-		close(fd);
-		redir = redir->next;
-	}
-	return (0);
 }
 
 int	execute(t_shell *shell)
