@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/11 20:59:17 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:39:42 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,17 @@ static void	connect_expand_tokens(t_arg *args_list)
 	t_arg	*curr_arg;
 	t_token	*curr_token;
 	t_token	*sub_list;
-	t_token *last_node;
 
 	curr_arg = args_list;
 	while (curr_arg)
 	{
 		curr_token = curr_arg->arg_tokens;
-		last_node = NULL;
 		curr_arg->expand_arg_tokens = NULL;
 		while (curr_token)
 		{
 			sub_list = curr_token->expand_tokens;
 			if (sub_list)
-			{
-				if (curr_arg->expand_arg_tokens == NULL)
-					curr_arg->expand_arg_tokens = sub_list;
-				else
-					last_node->next = sub_list;
-				while (sub_list->next)
-					sub_list = sub_list->next;
-				last_node = sub_list;
-			}
+				add_token_to_back(&curr_arg->expand_arg_tokens, sub_list);
 			curr_token->expand_tokens = NULL;
 			if (curr_token->merge == FALSE)
 				break ;
