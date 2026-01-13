@@ -73,7 +73,6 @@ typedef struct s_token {
 }	t_token;
 
 typedef struct s_arg {
-	char			**args;
 	char			*arg;
 	t_token			*arg_tokens;
 	t_token			*expand_arg_tokens;
@@ -95,6 +94,7 @@ typedef struct s_cmd {
 	char			*path;
 	int				is_builtin;
 	t_arg			*args_list;
+	t_token			*expand_arg_tokens;
 	t_redir			*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;

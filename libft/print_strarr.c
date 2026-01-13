@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 15:22:41 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 15:54:18 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:07:40 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ void	print_strarr(char **strarr)
 	i = 0;
 	while (strarr[i])
 	{
-		write(1, "[", 1);
+		//write(1, "[", 1);
 		write(1, strarr[i], ft_strlen(strarr[i]));
-		write(1, "] ", 2);
+		//write(1, "] ", 2);
+		write(1, " ", 1);
 		i++;
 	}
 	write(1, "\n", 1);

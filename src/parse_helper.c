@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/11 20:31:02 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/13 13:06:05 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	free_cmds(t_cmd **cmds)
 			free_args_list(&current->args_list);
 		if (current->redir_list)
 			free_redir_list(&current->redir_list);
+		if (current->expand_arg_tokens)
+			free_tokens(&current->expand_arg_tokens);
 		free(current);
 		current = next;
 	}
