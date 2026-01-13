@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/12 17:28:12 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:58:25 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,30 @@ int	wait_for_children(t_shell *shell)
 */
 static void	exec_child(t_shell *shell, t_cmd *cmd)
 {
+	int		ret;
+	char	*errorstr;
+
 	if (is_builtin(cmd) == TRUE)
 	{
 		exit (0);
 	}
 	if (cmd->args)
 	{
-		cmd->path = find_path(cmd, shell);
-		if (!cmd->path)
+		ret = find_path(cmd, shell->env_list);
+		if (ret == FAILURE)
 		{
-			write(2, "minishelf: command not found: ", 30);
-			ft_putendl_fd(cmd->args[0], 2);
-			shell->exit_status = 127;
+			errorstr = ft_strjoin(cmd->args[0], ": command not found\n");
+			put_error(PATH, errorstr, shell);
+			free (errorstr);
 			exit (127);
 		}
+		else if (ret == ERROR)
+		{
+			put_error(MALLOC, "malloc error", shell);
+		}
 		execve(cmd->path, cmd->args, shell->env_array);
-		perror("minishell");
-		shell->exit_status = 126;
+		perror("");
+		put_error(EXECVE, "", shell);
 		exit (126);
 	}
 	exit (0);
@@ -84,7 +91,7 @@ int	execute(t_shell *shell)
 		if (prev_fd == -1 && !cmd->next && is_builtin(cmd))
 		{
 			//shell->exit_status = exec_builtin;
-			exit(0);	
+			exit(0);
 		}
 		if (cmd->next)
 		{

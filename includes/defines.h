@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/12 12:47:47 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:51:53 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ typedef enum e_error_type {
 	OPEN,
 	DUP2,
 	H_DOC,
+	PATH,
+	EXECVE,
+	MALLOC,
 }	t_error_type;
 
 typedef enum e_sig_mode {
@@ -54,11 +57,6 @@ typedef enum e_sig_mode {
 }	t_sig_mode;
 
 // --- STRUCTS ---
-typedef struct s_env {
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
 
 typedef struct s_token {
 	char			*value;
@@ -68,6 +66,15 @@ typedef struct s_token {
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
+
+typedef struct s_env {
+	char			*name;
+	char			*value;
+	t_token			*tokens;
+	int				word_count;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
 
 typedef struct s_arg {
 	char			*arg;

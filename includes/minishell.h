@@ -36,5 +36,6 @@
 # include "execute.h"
 # include "builtins.h"
 # include "error.h"
+# include "expand.h"
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/12 17:10:40 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:50:17 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ static const char	*get_error_type(t_error_type type)
 		return ("open() failed\n");
 	else if (type == H_DOC)
 		return ("warning: here-document delimited by end-of-file (wanted: `");
+	else if (type == PATH)
+		return ("");
+	else if (type == EXECVE)
+		return ("");
 	return ("");
 }
 
@@ -33,8 +37,10 @@ static int	get_error_num(t_error_type type)
 {
 	if (type == SYNTAX)
 		return (2);
-	if (type == PIPES || type == FORK || type == DUP2 || type == OPEN)
+	if (type == MALLOC || type==PIPES || type == FORK || type == DUP2 || type == OPEN)
 		return (1);
+	if (type == EXECVE)
+		return (126);
 	return (0);
 }
 

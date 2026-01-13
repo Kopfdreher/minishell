@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:23 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/12 12:45:58 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/13 18:48:40 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		execute(t_shell *shell);
 int		wait_for_children(t_shell *shell);
 
 // Logic
-char	*find_path(t_cmd *cmd, t_shell *shell);
+int		find_path(t_cmd *cmd, t_env *env_list);
 void	handle_pipes(t_cmd *cmd);
 int		check_heredocs(t_shell *shell);
 
