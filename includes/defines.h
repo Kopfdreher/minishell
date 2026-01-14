@@ -84,7 +84,9 @@ typedef struct s_redir {
 	t_token_type	type;
 	char			*file;
 	t_token			*file_tokens;
+	t_token			*expand_redir_tokens;
 	int				heredoc_fd;
+	int				is_ambiguous;
 	t_cmd			*cmd;
 	struct s_redir	*next;
 }	t_redir;

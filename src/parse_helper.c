@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/13 13:06:05 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:18:51 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static void	free_redir_list(t_redir **redir_list)
 		next = current->next;
 		if (current->file)
 			free(current->file);
+		if (current->expand_redir_tokens)
+			free_tokens(&current->expand_redir_tokens);
 		free(current);
 		current = next;
 	}

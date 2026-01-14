@@ -27,5 +27,6 @@ t_cmd	*init_new_cmd(t_shell *shell);
 void	print_cmds(t_cmd *cmd_list);
 int		args_list_to_strarr(t_arg *args_list, char ***strarr);
 char	*merge_tokens_to_str(t_token *tokens);
+int		parse_file_tokens_to_file(t_redir *redir);
 
 #endif

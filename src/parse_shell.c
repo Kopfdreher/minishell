@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/11 20:21:03 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:17:53 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	create_cmd(t_shell *shell, t_token **current_token)
 	if (rtrn == FAILURE)
 		return (free_cmds(&new_cmd), FAILURE);
 	if (args_list_to_strarr(new_cmd->args_list, &new_cmd->args) == FAILURE)
+		return (free_cmds(&new_cmd), FAILURE);
+	if (parse_file_tokens_to_file(new_cmd->redir_list) == FAILURE)
 		return (free_cmds(&new_cmd), FAILURE);
 	// new_cmd->args should be somewhere else, here just for testing
 	if (shell->cmd_list == NULL)

@@ -27,6 +27,5 @@ int		expand_token_list(t_shell *shell);
 int		add_expanded_str(t_token **token, int *i, t_env *env_list);
 int		add_expanded_tokens(t_token **token, int *i, t_env *env_list);
 int		copy_token_list(t_token *variable_tokens, t_token **copy_head);
-int		expand_args_list_to_strarr(t_arg *args_list, char ***strarr);
 
 #endif
