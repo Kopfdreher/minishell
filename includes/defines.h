@@ -114,7 +114,6 @@ typedef struct s_shell {
 	char	**env_array;
 	int		exit_status;
 	int		running;
-	int		reprompt;
 	int		original_stdin;
 	int		original_stdout;
 }	t_shell;

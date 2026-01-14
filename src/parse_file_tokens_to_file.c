@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 18:34:06 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 18:10:49 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 21:18:25 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	merge_tokens_to_error_file(t_redir *redir)
 
 static void	connect_expand_tokens(t_redir *redir)
 {
-	t_redir *curr_redir;
+	t_redir	*curr_redir;
 	t_token	*curr_token;
 	t_token	*sub_list;
 
@@ -102,13 +102,13 @@ int	parse_file_tokens_to_file(t_redir *redir)
 		if (file_tokens_ambiguous(redir) == TRUE)
 		{
 			if (merge_tokens_to_error_file(redir) == FAILURE)
-			return (FAILURE);
+				return (FAILURE);
 		}
 		else
 		{
 			redir->file = merge_tokens_to_str(redir->expand_redir_tokens);
 			if (!redir->file)
-			return (FAILURE);
+				return (FAILURE);
 		}
 	}
 	return (SUCCESS);

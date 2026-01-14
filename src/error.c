@@ -35,5 +35,4 @@ void	put_error(t_error_type type, const char *str, t_shell *shell)
 	ft_putstr_fd(get_error_type(type), 2);
 	ft_putstr_fd(str, 2);
 	shell->exit_status = get_error_num(type);
-	shell->reprompt = TRUE;
 }

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:03:16 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 20:42:54 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 21:18:59 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static int	add_redir_to_cmd(t_cmd **cmd, t_token **current_token)
 			last_redir = last_redir->next;
 		last_redir->next = new_redir;
 	}
-//	if (parse_file_tokens_to_file(&new_redir) == FAILURE)
-//		return (FAILURE);
 	while ((*current_token)->merge == TRUE)
 		*current_token = (*current_token)->next;
 	*current_token = (*current_token)->next;

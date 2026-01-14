@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:45:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/10 22:27:23 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 21:38:31 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,38 +52,35 @@ static const char	*get_token_value(char *value)
 static const char	*get_token_merge(int merge)
 {
 	if (merge == TRUE)
-		return (" - MERGE");
+		return ("-Merge");
 	return ("");
 }
 
 void	print_tokens(t_token *tokens)
 {
-	int	i;
-	t_token *current;
+	int		i;
+	t_token	*current;
 
 	i = 0;
 	ft_printf("\nshell.tokens:\n");
 	while (tokens)
 	{
-		ft_printf("[%i]\n[%s - %s%s%s%s]\n", i,
-			get_token_type(tokens->type), get_quote_type(tokens->quote),
-			get_token_value(tokens->value), get_quote_type(tokens->quote),
-			get_token_merge(tokens->merge));
+		ft_printf("[%i]\n[%s - [%s%s%s]%s]\n", i++, get_token_type(tokens->type),
+			get_quote_type(tokens->quote), get_token_value(tokens->value),
+			get_quote_type(tokens->quote), get_token_merge(tokens->merge));
 		current = tokens->expand_tokens;
 		if (current)
 		{
 			ft_printf("[tokens.expanded:");
 			while (current)
 			{
-				ft_printf(" [%s", current->value);
+				ft_printf(" [%s]", current->value);
 				if (current->merge)
-					ft_printf(" Merge", current->value);
-				ft_printf("]", current->value);
+					ft_printf("-Merge", current->value);
 				current = current->next;
 			}
 			ft_printf("]\n");
 		}
 		tokens = tokens->next;
-		i++;
 	}
 }

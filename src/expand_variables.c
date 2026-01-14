@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 21:23:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/11 17:43:56 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 21:57:14 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	add_expanded_exit_code(t_token **token, int *i, int exit_code)
 static void	pre_merge_correction(t_token **token, t_token *expand_tokens)
 {
 	t_token	*current;
+
 	if (expand_tokens->prev == NULL && (*token)->prev != NULL)
 	{
-		//(*token)->prev->merge = FALSE;
 		current = (*token)->prev->expand_tokens;
 		if (current)
 		{
@@ -75,13 +75,29 @@ int	add_expanded_tokens(t_token **token, int *i, t_env *env_list)
 	return (*i += len, SUCCESS);
 }
 
+static int	add_copied_token(t_token **token, char *variable_value)
+{
+	char	*copied_value;
+	t_token	*copied_token;
+
+	copied_value = ft_strdup(variable_value);
+	if (!copied_value)
+		return (FAILURE);
+	if (*copied_value == '\0')
+		return (free(copied_value), copied_value = NULL, SUCCESS);
+	copied_token = new_token(copied_value, WORD, NO_QUOTE);
+	if (!copied_token)
+		return (free(copied_value), FAILURE);
+	copied_token->merge = TRUE;
+	add_token_to_back(&(*token)->expand_tokens, copied_token);
+	return (SUCCESS);
+}
+
 int	add_expanded_str(t_token **token, int *i, t_env *env_list)
 {
 	int		len;
 	char	*variable_name;
 	char	*variable_value;
-	char	*copied_value;
-	t_token	*copied_token;
 
 	len = 0;
 	while ((*token)->value[*i + len]
@@ -96,15 +112,5 @@ int	add_expanded_str(t_token **token, int *i, t_env *env_list)
 	free(variable_name);
 	if (variable_value == NULL)
 		return (*i += len, SUCCESS);
-	copied_value = ft_strdup(variable_value);
-	if (!copied_value)
-		return (FAILURE);
-	if (*copied_value == '\0')
-		return (free(copied_value), copied_value = NULL, SUCCESS);
-	copied_token = new_token(copied_value, WORD, NO_QUOTE);
-	if (!copied_token)
-		return (free(copied_value), FAILURE);
-	copied_token->merge = TRUE;
-	add_token_to_back(&(*token)->expand_tokens, copied_token);
-	return (*i += len, SUCCESS);
+	return (*i += len, add_copied_token(token, variable_value));
 }

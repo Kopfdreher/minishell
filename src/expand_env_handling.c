@@ -6,46 +6,24 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 17:45:35 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 19:30:10 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 22:09:28 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_env_token_len(char *input)
+static t_token	*merge_correction(t_token *env_tokens, int trailing_space)
 {
-	int	len;
-
-	len = 0;
-	while (input[len] && input[len] != ' ')
-		len++;
-	return (len);
-}
-
-static int	add_env_token(char *env_value, t_token **env_tokens, int *start)
-{
-	t_token	*word_token;
 	t_token	*last_token;
-	int		len;
 
-	word_token = new_token(NULL, WORD, NO_QUOTE);
-	if (!word_token)
-		return (FAILURE);
-	len = get_env_token_len(&env_value[*start]);
-	word_token->value = ft_substr(env_value, *start, len);
-	if (!word_token->value)
-		return (free_tokens(&word_token), FAILURE);
-	if (*env_tokens == NULL)
-		*env_tokens = word_token;
-	else
-	{
-		last_token = *env_tokens;
-		while (last_token->next != NULL)
-			last_token = last_token ->next;
-		last_token->next = word_token;
-	}
-	*start += len;
-	return (SUCCESS);
+	if (!env_tokens)
+		return (env_tokens);
+	last_token = env_tokens;
+	while (last_token->next)
+		last_token = last_token->next;
+	if (trailing_space == FALSE)
+		last_token->merge = TRUE;
+	return (env_tokens);
 }
 
 static t_token	*create_env_tokens(char *env_value)
@@ -53,7 +31,6 @@ static t_token	*create_env_tokens(char *env_value)
 	int		i;
 	int		trailing_space;
 	t_token	*env_tokens;
-	t_token	*last_token;
 
 	env_tokens = NULL;
 	i = 0;
@@ -74,14 +51,7 @@ static t_token	*create_env_tokens(char *env_value)
 				return (free_tokens(&env_tokens), NULL);
 		}
 	}
-	if (!env_tokens)
-		return (env_tokens);
-	last_token = env_tokens;
-	while (last_token->next)
-		last_token = last_token->next;
-	if (trailing_space == FALSE)
-		last_token->merge = TRUE;
-	return (env_tokens);
+	return (merge_correction(env_tokens, trailing_space));
 }
 
 static int	get_word_count(char *str)

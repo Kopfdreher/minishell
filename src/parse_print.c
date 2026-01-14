@@ -6,38 +6,11 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 17:47:38 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/14 21:27:43 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-typedef struct s_cmd {
-	char			**args;
-	char			*path;
-	int				is_builtin;
-	t_arg			*args_list;
-	t_redir			*redir_list;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-	pid_t			pid;
-	int				fd_in;
-	int				fd_out;
-}	t_cmd;
-
-typedef struct s_arg {
-	t_token			*arg_tokens;
-	struct s_arg	*next;
-}	t_arg;
-
-typedef struct s_redir {
-	t_token_type	type;
-	char			*file;
-	t_token			*file_tokens;
-	int				heredoc_fd;
-	struct s_redir	*next;
-}	t_redir;
-*/
 
 static void	print_args_list(char **args)
 {
