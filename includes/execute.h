@@ -32,6 +32,6 @@ void	close_fds(t_cmd *cmd);
 void	setup_signals(int mode);
 
 // Cleanup (Executer specific)
-void	free_env_array(char **array);
+int		execute_env_list_to_strarr(t_shell *shell);
 
 #endif
