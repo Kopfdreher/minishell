@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 00:19:03 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:46:47 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (parse(&shell) == SUCCESS)
 			{
-				execute(&shell);
+				shell.exit_status=execute(&shell);
 			}
 			// if (shell.running == TRUE && tokenize)
 			// 		if (shell.running == TRUE && parse)

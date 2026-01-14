@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:50:18 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/13 15:52:39 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:54:07 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,11 @@ int	is_builtin(t_cmd *cmd)
 		return (TRUE);
 	else
 		return (FALSE);
+}
+
+int	exec_builtin(t_cmd *cmd)
+{
+	(void)cmd;
+
+	return (SUCCESS);
 }

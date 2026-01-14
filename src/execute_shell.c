@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/13 20:58:25 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:54:00 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,6 @@ int	wait_for_children(t_shell *shell)
 	return (ret);
 }
 
-/*static void	exec_builtin(shell, cmd)
-{
-}
-*/
 static void	exec_child(t_shell *shell, t_cmd *cmd)
 {
 	int		ret;
@@ -68,10 +64,11 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 		}
 		else if (ret == ERROR)
 		{
-			put_error(MALLOC, "", shell);
+			put_error(MALLOC, "minishell:", shell);
+			exit(1);
 		}
 		execve(cmd->path, cmd->args, shell->env_array);
-		put_error(EXECVE, "", shell);
+		put_error(EXECVE, cmd->path, shell);
 		exit (126);
 	}
 	exit (0);
@@ -88,23 +85,20 @@ int	execute(t_shell *shell)
 	while (cmd)
 	{
 		if (prev_fd == -1 && !cmd->next && is_builtin(cmd))
-		{
-			//shell->exit_status = exec_builtin;
-			exit(0);
-		}
+			return (exec_builtin(cmd));
 		if (cmd->next)
 		{
 			if (pipe(fd) == ERROR)
 			{
 				wait_for_children(shell);
-				return (put_error(PIPES, "", shell), 1);
+				return (put_error(PIPES, "minishell: pipe", shell), 1);
 			}
 		}
 		cmd->pid = fork();
 		if (cmd->pid == ERROR)
 		{
 			wait_for_children(shell);
-			return (put_error(FORK, "", shell), 1);
+			return (put_error(FORK, "minishell: fork", shell), 1);
 		}
 		if (cmd->pid == 0)
 		{
@@ -112,7 +106,7 @@ int	execute(t_shell *shell)
 			{
 				if (dup2(prev_fd, 0) == ERROR)
 				{
-					put_error(DUP2, "", shell);
+					put_error(DUP2, "minishell: dup2", shell);
 					exit(1);
 				}
 				close(prev_fd);
@@ -121,7 +115,9 @@ int	execute(t_shell *shell)
 			{
 				if (dup2(fd[1], 1) == ERROR)
 				{
-					put_error(DUP2, "", shell);
+					close(fd[0]);
+					close(fd[1]);
+					put_error(DUP2, "minishell: dup2", shell);
 					exit(1);
 				}
 				close(fd[0]);
