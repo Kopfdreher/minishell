@@ -68,10 +68,9 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 		}
 		else if (ret == ERROR)
 		{
-			put_error(MALLOC, "malloc error", shell);
+			put_error(MALLOC, "", shell);
 		}
 		execve(cmd->path, cmd->args, shell->env_array);
-		perror("");
 		put_error(EXECVE, "", shell);
 		exit (126);
 	}
