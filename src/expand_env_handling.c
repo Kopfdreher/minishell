@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 17:45:35 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 22:09:28 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 20:37:55 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_token	*merge_correction(t_token *env_tokens, int trailing_space)
 	return (env_tokens);
 }
 
-static t_token	*create_env_tokens(char *env_value)
+t_token	*create_env_tokens(char *env_value)
 {
 	int		i;
 	int		trailing_space;
@@ -54,7 +54,7 @@ static t_token	*create_env_tokens(char *env_value)
 	return (merge_correction(env_tokens, trailing_space));
 }
 
-static int	get_word_count(char *str)
+int	get_word_count(char *str)
 {
 	int	i;
 	int	word_count;
@@ -95,10 +95,10 @@ t_env	*new_env_node(char *str)
 		node->value = ft_strdup(str + i + 1);
 		if (!node->value)
 			return (free_env_list(&node), NULL);
+		node->word_count = get_word_count(node->value);
+		node->tokens = create_env_tokens(node->value);
+		if (node->value && node->word_count && !node->tokens)
+			return (free_env_list(&node), NULL);
 	}
-	node->word_count = get_word_count(node->value);
-	node->tokens = create_env_tokens(node->value);
-	if (node->value && node->word_count && !node->tokens)
-		return (free_env_list(&node), NULL);
 	return (node);
 }

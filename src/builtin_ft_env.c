@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 12:58:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 13:49:13 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:14:26 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	env_parameter_shift(char ***args)
 {
 	char	**new_args;
 
-	if (!*args || ft_strncmp(**args, "env", 4) || !(*args)[1])
+	if (!*args || !(*args)[0] || ft_strncmp(**args, "env", 4) || !(*args)[1])
 		return (SUCCESS);
 	new_args = ft_strarrcpy(&(*args)[1]);
 	if (!new_args)

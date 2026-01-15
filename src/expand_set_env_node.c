@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 22:02:39 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 22:02:48 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:49:23 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,15 @@ int	add_env_token(char *env_value, t_token **env_tokens, int *start)
 	*start += len;
 	return (SUCCESS);
 }
+/*
+int	set_env_node(t_env *env_list, char *name, char *value)
+{
+	t_env	*env_node;
+
+	env_node = get_env_node(env_list, name);
+	if (!env_node)
+	{
+
+	return (SUCCESS);
+}
+*/

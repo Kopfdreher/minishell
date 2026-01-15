@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 14:25:19 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:48:45 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ int	parse(t_shell *shell)
 			current_token = current_token->next;
 	}
 	if (shell->cmd_list)
+	{
 		print_cmds(shell->cmd_list);
+		ft_export(shell, shell->cmd_list->args);
+	}
 	return (SUCCESS);
 }

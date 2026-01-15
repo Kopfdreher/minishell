@@ -28,5 +28,7 @@ int		add_expanded_str(t_token **token, int *i, t_env *env_list);
 int		add_expanded_tokens(t_token **token, int *i, t_env *env_list);
 int		copy_token_list(t_token *variable_tokens, t_token **copy_head);
 int		add_env_token(char *env_value, t_token **env_tokens, int *start);
+t_token	*create_env_tokens(char *env_value);
+int		get_word_count(char *str);
 
 #endif
