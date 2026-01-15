@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 22:24:12 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 22:44:38 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 12:11:08 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	execute_env_list_to_strarr(t_shell *shell)
 	t_env	*curr;
 
 	shell->env_array = ft_calloc(get_env_list_len(shell->env_list) + 1,
-		sizeof(char));
+		sizeof(char *));
 	if (!shell->env_array)
 		return (FAILURE);
 	curr = shell->env_list;
@@ -44,7 +44,7 @@ int	execute_env_list_to_strarr(t_shell *shell)
 		value_len = ft_strlen(curr->value);
 		shell->env_array[i] = ft_calloc(name_len + value_len + 2, sizeof(char));
 		if (!shell->env_array[i])
-			return (free_strarr(shell->env_array), FAILURE);
+			return (free_strarr(&shell->env_array), FAILURE);
 		ft_memcpy(shell->env_array[i], curr->name, name_len);
 		shell->env_array[i][name_len] = '=';
 		ft_memcpy(&(shell->env_array[i])[name_len + 1], curr->value, value_len);

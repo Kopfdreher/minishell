@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 17:18:51 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 12:13:34 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	free_cmds(t_cmd **cmds)
 	{
 		next = current->next;
 		if (current->args)
-			free_strarr(current->args);
+			free_strarr(&current->args);
 		if (current->path)
 			free(current->path);
 		if (current->args_list)
