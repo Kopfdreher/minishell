@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 13:46:19 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 14:11:18 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,38 @@ static int	set_shell_lvl(t_env	*env_list)
 	return (SUCCESS);
 }
 
+void	add_env_node_to_back(t_env **head, t_env *new_node)
+{
+	t_env	*tail;
+
+	if (!new_node)
+		return ;
+	if (!*head)
+		*head = new_node;
+	else
+	{
+		tail = *head;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_node;
+		new_node->prev = tail;
+	}
+}
+
 t_env	*init_env(char **envp)
 {
 	t_env	*head;
 	t_env	*new_node;
-	t_env	*tail;
 	int		i;
 
 	head = NULL;
-	tail = NULL;
 	i = -1;
 	while (envp[++i])
 	{
 		new_node = new_env_node(envp[i]);
-		if (head && !new_node)
+		if (!new_node)
 			return (free_env_list(&head), NULL);
-		if (!head && !new_node)
-			return (NULL);
-		if (!head)
-			head = new_node;
-		else
-			tail->next = new_node;
-		tail = new_node;
+		add_env_node_to_back(&head, new_node);
 	}
 	if (set_shell_lvl(head) == FAILURE)
 		return (free_env_list(&head), NULL);
