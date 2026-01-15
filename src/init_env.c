@@ -6,11 +6,30 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/08 17:49:42 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:46:19 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	set_shell_lvl(t_env	*env_list)
+{
+	t_env	*lvl_node;
+	char	*new_lvl;
+	int		lvl_num;
+
+	lvl_node = get_env_node(env_list, "SHLVL");
+	if (!lvl_node || !lvl_node->value)
+		return (SUCCESS);
+	lvl_num = ft_atoi(lvl_node->value);
+	lvl_num += 1;
+	new_lvl = ft_itoa(lvl_num);
+	if (!new_lvl)
+		return (FAILURE);
+	free(lvl_node->value);
+	lvl_node->value = new_lvl;
+	return (SUCCESS);
+}
 
 t_env	*init_env(char **envp)
 {
@@ -35,6 +54,8 @@ t_env	*init_env(char **envp)
 			tail->next = new_node;
 		tail = new_node;
 	}
+	if (set_shell_lvl(head) == FAILURE)
+		return (free_env_list(&head), NULL);
 	return (head);
 }
 

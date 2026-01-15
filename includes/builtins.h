@@ -15,12 +15,26 @@
 
 # include "defines.h"
 
+// echo
 int	ft_echo(char **args);
+
+// cd
 int	ft_cd(char **args, t_env *env);
+
+// pwd
 int	ft_pwd(void);
+
+// export
 int	ft_export(t_shell *shell, char **args);
+
+// unset
 int	ft_unset(t_shell *shell, char **args);
+
+// env
 int	ft_env(t_shell *shell);
+int	env_parameter_shift(char ***args);
+
+// exit
 int	ft_exit(t_shell *shell, char **args);
 
 // Helper to check/run

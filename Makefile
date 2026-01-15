@@ -31,13 +31,15 @@ EXPAND_FILES= expand_env_handling expand_env_print expand_get_env_value\
 			  expand_token expand_token_list expand_variables\
 			  expand_set_env_node
 EXEC_FILES	= execute_env_list_to_strarr
+BUILT_FILES = builtin_ft_env
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\
 			  $(TOKEN_FILES)\
 			  $(PARSE_FILES)\
 			  $(EXPAND_FILES)\
-			  $(EXEC_FILES))
+			  $(EXEC_FILES)\
+			  $(BUILT_FILES))
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

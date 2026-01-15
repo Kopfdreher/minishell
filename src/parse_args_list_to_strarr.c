@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 12:10:45 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:09:20 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int	args_list_to_strarr(t_arg *args_list, char ***strarr)
 	if (!*strarr)
 		return (FAILURE);
 	if (put_tokens_into_strarr(args_list->cmd, strarr) == FAILURE)
-		return (free_strarr(strarr), *strarr = 0, FAILURE);
+		return (free_strarr(strarr), *strarr = NULL, FAILURE);
+	if (env_parameter_shift(strarr) == FAILURE)
+		return (free_strarr(strarr), *strarr = NULL, FAILURE);
 	return (SUCCESS);
 }
