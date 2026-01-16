@@ -16,14 +16,18 @@ static const char	*get_error_type(t_error_type type)
 {
 	if (type == SYNTAX)
 		return ("minishell: syntax error near unexpected token ");
-	return ("");
+	if (type == MALLOC)
+		return ("minishell: malloc failed\n");
+	return ("minishell: ");
 }
 
 static int	get_error_num(t_error_type type)
 {
 	if (type == SYNTAX)
 		return (2);
-	return (0);
+	if (type == MALLOC)
+		return (1);
+	return (1);
 }
 
 void	put_error(t_error_type type, const char *str, t_shell *shell)

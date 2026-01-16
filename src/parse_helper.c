@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 21:01:21 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 12:13:34 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	free_args_list(t_arg **args_list)
 	while (current)
 	{
 		next = current->next;
+		if (current->expand_arg_tokens)
+			free_tokens(&current->expand_arg_tokens);
 		free(current);
 		current = next;
 	}
@@ -42,6 +44,8 @@ static void	free_redir_list(t_redir **redir_list)
 		next = current->next;
 		if (current->file)
 			free(current->file);
+		if (current->expand_redir_tokens)
+			free_tokens(&current->expand_redir_tokens);
 		free(current);
 		current = next;
 	}
@@ -60,13 +64,15 @@ void	free_cmds(t_cmd **cmds)
 	{
 		next = current->next;
 		if (current->args)
-			free_strarr(current->args);
+			free_strarr(&current->args);
 		if (current->path)
 			free(current->path);
 		if (current->args_list)
 			free_args_list(&current->args_list);
 		if (current->redir_list)
 			free_redir_list(&current->redir_list);
+		if (current->expand_arg_tokens)
+			free_tokens(&current->expand_arg_tokens);
 		free(current);
 		current = next;
 	}

@@ -36,7 +36,7 @@ static char	get_quote_char(t_quote_type quote)
 		return ('"');
 }
 
-static int	get_token_len(char *input, t_token *word_token)
+int	get_token_len(char *input, t_token *word_token)
 {
 	int				len;
 	int				quote_char;
@@ -79,10 +79,10 @@ int	add_word_token(t_shell *shell, t_token **last_token, int *start)
 	len = get_token_len(&shell->input[*start], word_token);
 	if (len == -1)
 		return (put_error(SYNTAX, "`newline'\n", shell),
-		free(word_token), FAILURE);
+			free(word_token), FAILURE);
 	word_token->value = ft_substr(shell->input, *start, len);
 	if (!word_token->value)
-		return (FAILURE);
+		return (free(word_token), FAILURE);
 	add_token_back(&shell->tokens, last_token, word_token);
 	*start += len;
 	if (word_token->quote != NO_QUOTE)

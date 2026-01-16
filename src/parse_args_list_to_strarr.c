@@ -6,146 +6,105 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 15:18:13 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:55:42 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-typedef struct s_token {
-	char			*value;
-	t_token_type	type;
-	t_quote_type	quote;
-	int				merge;
-	struct s_token	*next;
-	struct s_token	*prev;
-}	t_token;
-
-typedef struct s_arg {
-	char			*arg;
-	t_token			*arg_tokens;
-	struct s_arg	*next;
-}	t_arg;
-
-typedef struct s_redir {
-	t_token_type	type;
-	char			*file;
-	t_token			*file_tokens;
-	int				heredoc_fd;
-	struct s_redir	*next;
-}	t_redir;
-
-typedef struct s_cmd {
-	char			**args;
-	char			*path;
-	int				is_builtin;
-	t_arg			*args_list;
-	t_redir			*redir_list;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-	pid_t			pid;
-	int				fd_in;
-	int				fd_out;
-}	t_cmd;
-
-typedef struct s_shell {
-	t_cmd	*cmd_list;
-	t_env	*env_list;
-	t_token	*tokens;
-	char	*input;
-	char	**env_array;
-	int		exit_status;
-	int		running;
-	int		original_stdin;
-	int		original_stdout;
-}	t_shell;
-*/
-
-static int	merged_token_len(t_token *arg_tokens)
-{
-	int	merged_token_len;
-
-	merged_token_len = 0;
-	while (arg_tokens)
-	{
-		if (arg_tokens->value)
-			merged_token_len += ft_strlen(arg_tokens->value);
-		if (arg_tokens->merge == FALSE)
-			break ;
-		arg_tokens = arg_tokens->next;
-	}
-	return (merged_token_len);
-}
-
-static char	*merge_tokens_to_str(t_token *arg_tokens)
-{
-	int		token_len;
-	char	*str;
-	int		i;
-
-	str = ft_calloc(merged_token_len(arg_tokens) + 1, sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (arg_tokens)
-	{
-		if (arg_tokens->value)
-		{
-			token_len = ft_strlen(arg_tokens->value);
-			ft_memcpy(&str[i], arg_tokens->value, token_len);
-			if (arg_tokens->merge == FALSE)
-				break ;
-			i += token_len;
-		}
-		arg_tokens = arg_tokens->next;
-	}
-	return (str);
-}
-
-static int	put_tokens_into_strarr(t_arg *args_list, char ***strarr)
+static int	put_tokens_into_strarr(t_cmd *cmd, char ***strarr)
 {
 	char	**array;
+	t_token	*current;
 	int		i;
 
 	array = *strarr;
+	current = cmd->expand_arg_tokens;
 	i = 0;
-	while (args_list)
+	while (current)
 	{
-		array[i] = merge_tokens_to_str(args_list->arg_tokens);
+		array[i] = merge_tokens_to_str(current);
 		if (!array[i])
-			return (free_strarr(array), FAILURE);
-		args_list = args_list->next;
+			return (FAILURE);
+		while (current->merge == TRUE && current->next)
+			current = current->next;
+		current = current->next;
 		i++;
 	}
 	return (SUCCESS);
 }
 
-static int	get_args_list_len(t_arg *args_list)
+static int	get_args_list_len(t_cmd *cmd)
 {
 	int		len;
+	t_token	*current;
 
 	len = 0;
-	while (args_list)
+	current = cmd->expand_arg_tokens;
+	while (current)
 	{
-		len++;
-		args_list = args_list->next;
+		if (current->merge == FALSE)
+			len++;
+		current = current->next;
 	}
 	return (len);
 }
 
-char	**args_list_to_strarr(t_arg *args_list)
+static void	connect_expand_arg_tokens(t_cmd *cmd)
 {
-	int		strarr_len;
-	char	**strarr;
+	t_arg	*curr_arg;
+	t_token	*sub_list;
 
+	curr_arg = cmd->args_list;
+	while (curr_arg)
+	{
+		sub_list = curr_arg->expand_arg_tokens;
+		if (sub_list)
+			add_token_to_back(&cmd->expand_arg_tokens, sub_list);
+		curr_arg->expand_arg_tokens = NULL;
+		curr_arg = curr_arg->next;
+	}
+}
+
+static void	connect_expand_tokens(t_arg *args_list)
+{
+	t_arg	*curr_arg;
+	t_token	*curr_token;
+	t_token	*sub_list;
+
+	curr_arg = args_list;
+	while (curr_arg)
+	{
+		curr_token = curr_arg->arg_tokens;
+		while (curr_token)
+		{
+			sub_list = curr_token->expand_tokens;
+			if (sub_list)
+				add_token_to_back(&curr_arg->expand_arg_tokens, sub_list);
+			curr_token->expand_tokens = NULL;
+			if (curr_token->merge == FALSE)
+				break ;
+			curr_token = curr_token->next;
+		}
+		curr_arg = curr_arg->next;
+	}
+}
+
+int	args_list_to_strarr(t_arg *args_list, char ***strarr)
+{
 	if (!args_list)
-		return (NULL);
-	strarr_len = get_args_list_len(args_list);
-	strarr = ft_calloc(strarr_len + 1, sizeof(char *));
-	if (!strarr)
-		return (NULL);
-	if (put_tokens_into_strarr(args_list, &strarr) == FAILURE)
-		return (NULL);
-	return (strarr);
+	{
+		*strarr = NULL;
+		return (SUCCESS);
+	}
+	connect_expand_tokens(args_list);
+	connect_expand_arg_tokens(args_list->cmd);
+	*strarr = ft_calloc(get_args_list_len(args_list->cmd) + 1, sizeof(char *));
+	if (!*strarr)
+		return (FAILURE);
+	if (put_tokens_into_strarr(args_list->cmd, strarr) == FAILURE)
+		return (free_strarr(strarr), *strarr = NULL, FAILURE);
+	if (env_parameter_shift(strarr) == FAILURE)
+		return (free_strarr(strarr), *strarr = NULL, FAILURE);
+	return (SUCCESS);
 }
