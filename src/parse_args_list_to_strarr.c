@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:34:18 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 13:09:20 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:55:42 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	put_tokens_into_strarr(t_cmd *cmd, char ***strarr)
 	{
 		array[i] = merge_tokens_to_str(current);
 		if (!array[i])
-			return (free_strarr(&array), FAILURE);
+			return (FAILURE);
 		while (current->merge == TRUE && current->next)
 			current = current->next;
 		current = current->next;
@@ -43,7 +43,7 @@ static int	get_args_list_len(t_cmd *cmd)
 	current = cmd->expand_arg_tokens;
 	while (current)
 	{
-		if (current)
+		if (current->merge == FALSE)
 			len++;
 		current = current->next;
 	}

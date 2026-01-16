@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 21:23:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 21:57:14 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:21:08 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	add_expanded_exit_code(t_token **token, int *i, int exit_code)
 	exit_token = new_token(exit_str, WORD, NO_QUOTE);
 	if (!exit_token)
 		return (free(exit_str), FAILURE);
-	exit_token->merge = TRUE;
+	exit_token->merge = TRUE; // check if correct
 	add_token_to_back(&(*token)->expand_tokens, exit_token);
 	return (SUCCESS);
 }

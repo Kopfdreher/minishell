@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:24:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 16:46:56 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:34:10 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	expand_token(t_shell *shell, t_token **token)
 					shell->exit_status) == FAILURE)
 				return (free_tokens(&(*token)->expand_tokens), FAILURE);
 		}
-		else 
+		else
 		{
 			if (add_sub_token(token, &i) == FAILURE)
 				return (free_tokens(&(*token)->expand_tokens), FAILURE);
