@@ -6,24 +6,24 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 14:32:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 14:32:46 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:54:23 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	add_new_variable(t_shell *shell, char *arg)
+int	add_new_variable(t_env	**env_list, char *arg)
 {
 	t_env	*new_node;
 
 	new_node = new_env_node(arg);
 	if (!new_node)
 		return (FAILURE);
-	add_env_node_to_back(&shell->env_list, new_node);
+	add_env_node_to_back(env_list, new_node);
 	return (SUCCESS);
 }
 
-static int	set_new_value(t_env *curr, char *arg)
+int	set_new_value(t_env *curr, char *arg)
 {
 	int		start;
 	char	*new_value;
@@ -39,20 +39,20 @@ static int	set_new_value(t_env *curr, char *arg)
 		new_value = ft_strdup(&arg[start]);
 		if (!new_value)
 			return (FAILURE);
+		new_word_count = get_word_count(new_value);
+		new_tokens = create_env_tokens(new_value);
+		if (new_word_count && !new_tokens)
+			return (free(new_value), FAILURE);
 		free(curr->value);
-		curr->value = new_value;
-		new_word_count = get_word_count(curr->value);
-		new_tokens = create_env_tokens(curr->value);
-		if (curr->value && new_word_count && !new_tokens)
-			return (FAILURE);
 		free_tokens(&curr->tokens);
+		curr->value = new_value;
 		curr->tokens = new_tokens;
 		curr->word_count = new_word_count;
 	}
 	return (SUCCESS);
 }
 
-static int	get_variable_name(char *arg, char **variable_name)
+int	get_variable_name(char *arg, char **variable_name)
 {
 	int	len;
 
@@ -68,8 +68,6 @@ static int	get_variable_name(char *arg, char **variable_name)
 int	ft_export(t_shell *shell, char **args)
 {
 	int		i;
-	char	*variable_name;
-	t_env	*curr;
 
 	if (!args || !args[0])
 		return (SUCCESS);
@@ -78,19 +76,13 @@ int	ft_export(t_shell *shell, char **args)
 	i = 0;
 	while (args[++i])
 	{
-		if (args[i][0] == '=')
+		if (args[i][0] == '=') // add: is_valid_identifier(args[i]) == FALSE
 		{
-			put_error(ERROR, "export: `=': not a valid identifier", shell);
+			put_error(ERROR, "export: not a valid identifier", shell);
 			continue ;
 		}
-		if (get_variable_name(args[i], &variable_name) == FAILURE)
+		if (set_env_node(&shell->env_list, args[i]) == FAILURE)
 			return (FAILURE);
-		curr = get_env_node(shell->env_list, variable_name);
-		if (curr && set_new_value(curr, args[i]) == FAILURE)
-			return (free(variable_name), FAILURE);
-		if (!curr && add_new_variable(shell, args[i]) == FAILURE)
-			return (free(variable_name), FAILURE);
-		free(variable_name);
 	}
 	return (SUCCESS);
 }

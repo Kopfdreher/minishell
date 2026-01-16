@@ -6,11 +6,24 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 12:21:08 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 15:17:38 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:47:43 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	get_env_list_len(t_env *env_list)
+{
+	int	len;
+
+	len = 0;
+	while (env_list)
+	{
+		len++;
+		env_list = env_list->next;
+	}
+	return (len);
+}
 
 static t_env	**get_ptr_envarr_to_env_list(t_env *env_list, int len)
 {
@@ -40,7 +53,8 @@ static void	print_smallest(t_env ***envarr, int len)
 	{
 		if (!smallest && (*envarr)[i])
 			smallest = &(*envarr)[i];
-		else if ((*envarr)[i] && 0 < ft_strcmp((*smallest)->name, (*envarr)[i]->name))
+		else if ((*envarr)[i]
+				&& 0 < ft_strcmp((*smallest)->name, (*envarr)[i]->name))
 			smallest = &(*envarr)[i];
 	}
 	ft_printf("declare -x %s", (*smallest)->name);

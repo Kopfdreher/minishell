@@ -33,6 +33,5 @@ void	setup_signals(int mode);
 
 // Cleanup (Executer specific)
 int		execute_env_list_to_strarr(t_shell *shell);
-int		get_env_list_len(t_env *env_list);
 
 #endif

@@ -30,5 +30,6 @@ int		copy_token_list(t_token *variable_tokens, t_token **copy_head);
 int		add_env_token(char *env_value, t_token **env_tokens, int *start);
 t_token	*create_env_tokens(char *env_value);
 int		get_word_count(char *str);
+int		set_env_node(t_env **env_list, char *env);
 
 #endif

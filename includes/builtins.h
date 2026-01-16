@@ -27,6 +27,9 @@ int	ft_pwd(void);
 // export
 int	ft_export(t_shell *shell, char **args);
 int	export_print_out(t_env	*env_list);
+int	add_new_variable(t_env	**env_list, char *arg);
+int	set_new_value(t_env *curr, char *arg);
+int	get_variable_name(char *arg, char **variable_name);
 
 // unset
 int	ft_unset(t_shell *shell, char **args);
