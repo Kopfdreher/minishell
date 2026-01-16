@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:13:50 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/12/13 20:11:06 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 12:11:43 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**ft_strarrcpy(char **strarr)
 	{
 		copy[i] = ft_strdup(strarr[i]);
 		if (!copy[i])
-			return (free_strarr(copy), NULL);
+			return (free_strarr(&copy), NULL);
 		i++;
 	}
 	copy[i] = NULL;
