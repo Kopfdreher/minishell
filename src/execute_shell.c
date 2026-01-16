@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/16 20:58:12 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 22:59:11 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 		exec_builtin(cmd, shell);
 		exit (0);
 	}
-	if (cmd->args)
+	if (cmd->args && cmd->args[0])
 	{
 		ret = find_path(cmd, shell->env_list);
 		if (ret == FAILURE)

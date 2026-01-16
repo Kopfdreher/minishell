@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:01:11 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 21:01:58 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 21:47:16 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->original_stdin = dup(STDIN_FILENO);
 	shell->original_stdout = dup(STDOUT_FILENO);
 	shell->env_list = init_env(envp);
-	env_print(shell->env_list);
+	shell->env_array = NULL;
+	//env_print(shell->env_list);
 }

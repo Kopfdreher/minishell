@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 11:47:50 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/14 16:29:13 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 22:59:04 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ int	redirs(t_redir *redir, t_shell *shell)
 	fd = -1;
 	while (redir)
 	{
-		open_redirs(&fd, redir, shell);
+		if (open_redirs(&fd, redir, shell) == FAILURE)
+			return (FAILURE);
 		if (redir->type == REDIR_IN || redir->type == HEREDOC)
 		{
 			if (dup2(fd, 0) == ERROR)

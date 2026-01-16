@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:50:18 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/16 16:50:34 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 22:58:48 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_builtin(t_cmd *cmd)
 {
 	char	*command;
 
-	if (!cmd || !cmd->args)
+	if (!cmd || !cmd->args || !cmd->args[0])
 		return (FALSE);
 	command = cmd->args[0];
 	if ((ft_strncmp(command, "echo", 5) == 0
@@ -35,7 +35,7 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell)
 {
 	char	**commands;
 
-	if (!cmd || !cmd->args)
+	if (!cmd || !cmd->args || !cmd->args[0])
 		return (FALSE);
 	commands = cmd->args;
 	if (ft_strncmp(commands[0], "echo", 5) == 0)
@@ -44,5 +44,11 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell)
 		ft_cd(commands, shell);
 	else if (ft_strncmp(commands[0], "pwd", 4) == 0)
 		ft_pwd(shell);
+	else if (ft_strncmp(commands[0], "export", 7) == 0)
+		ft_export(shell, commands);
+	else if (ft_strncmp(commands[0], "unset", 6) == 0)
+		ft_unset(shell, commands);
+	else if (ft_strncmp(commands[0], "env", 4) == 0)
+		ft_env(shell);
 	return (SUCCESS);
 }
