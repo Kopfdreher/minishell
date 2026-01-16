@@ -26,6 +26,7 @@ int	ft_pwd(void);
 
 // export
 int	ft_export(t_shell *shell, char **args);
+int	export_print_out(t_env	*env_list);
 
 // unset
 int	ft_unset(t_shell *shell, char **args);

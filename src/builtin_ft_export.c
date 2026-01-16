@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 14:32:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 20:41:33 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:32:46 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ int	ft_export(t_shell *shell, char **args)
 	char	*variable_name;
 	t_env	*curr;
 
-	if (!args || !args[0] || !args[1])
+	if (!args || !args[0])
 		return (SUCCESS);
-		//return (export_print_out(shell->env_list));
+	if (!args[1])
+		return (export_print_out(shell->env_list));
 	i = 0;
 	while (args[++i])
 	{

@@ -6,13 +6,13 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 22:24:12 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 18:00:57 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:41:24 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_env_list_len(t_env *env_list)
+int	get_env_list_len(t_env *env_list)
 {
 	int	len;
 
