@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/14 17:54:00 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:58:28 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 
 	if (is_builtin(cmd) == TRUE)
 	{
+		exec_builtin(cmd, shell);
 		exit (0);
 	}
 	if (cmd->args)
@@ -85,7 +86,7 @@ int	execute(t_shell *shell)
 	while (cmd)
 	{
 		if (prev_fd == -1 && !cmd->next && is_builtin(cmd))
-			return (exec_builtin(cmd));
+			return (exec_builtin(cmd, shell));
 		if (cmd->next)
 		{
 			if (pipe(fd) == ERROR)

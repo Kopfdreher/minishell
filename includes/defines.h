@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/13 20:51:53 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:03:28 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef enum e_error_type {
 	PATH,
 	EXECVE,
 	MALLOC,
+	CD,
+	CHDIR,
 }	t_error_type;
 
 typedef enum e_sig_mode {

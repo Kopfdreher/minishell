@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:50:18 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/14 17:54:07 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:50:34 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,18 @@ int	is_builtin(t_cmd *cmd)
 		return (FALSE);
 }
 
-int	exec_builtin(t_cmd *cmd)
+int	exec_builtin(t_cmd *cmd, t_shell *shell)
 {
-	(void)cmd;
+	char	**commands;
 
+	if (!cmd || !cmd->args)
+		return (FALSE);
+	commands = cmd->args;
+	if (ft_strncmp(commands[0], "echo", 5) == 0)
+		ft_echo(commands);
+	else if (ft_strncmp(commands[0], "cd", 3) == 0)
+		ft_cd(commands, shell);
+	else if (ft_strncmp(commands[0], "pwd", 4) == 0)
+		ft_pwd(shell);
 	return (SUCCESS);
 }

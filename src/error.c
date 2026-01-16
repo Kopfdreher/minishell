@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 17:25:47 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:04:47 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@ static const char	*get_error_type(t_error_type type)
 		return ("warning: here-document delimited by end-of-file (wanted: `");
 	else if (type == PATH)
 		return ("");
+	else if (type == CD)
+		return ("cd: ");
 	return ("");
 }
 
 static int	is_system_error(t_error_type type)
 {
 	if (type == PIPES || type == MALLOC || type == FORK 
-		|| type == DUP2 || type == OPEN || type == EXECVE)
+		|| type == DUP2 || type == OPEN || type == EXECVE || type == CHDIR)
 		return (TRUE);
 	else
 		return (FALSE);
@@ -37,7 +39,7 @@ static int	get_error_num(t_error_type type)
 	if (type == SYNTAX)
 		return (2);
 	if (type == MALLOC || type == PIPES || type == FORK
-		|| type == DUP2 || type == OPEN)
+		|| type == DUP2 || type == OPEN || type == CD || type == CHDIR)
 		return (1);
 	if (type == EXECVE)
 		return (126);
