@@ -48,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		free(shell.input);
 		free_cmds(&shell.cmd_list);
 		free_tokens(&shell.tokens);
+		free_strarr(&shell.env_array);
 	}
 	rl_clear_history();
 	free_env_list(&shell.env_list);

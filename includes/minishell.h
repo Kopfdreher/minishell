@@ -33,6 +33,7 @@
 # include "initialize.h"
 # include "tokenize.h"
 # include "parse.h"
+# include "expand.h"
 # include "execute.h"
 # include "builtins.h"
 # include "error.h"

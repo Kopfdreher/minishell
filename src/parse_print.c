@@ -6,62 +6,24 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 18:04:47 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/15 20:32:40 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-typedef struct s_cmd {
-	char			**args;
-	char			*path;
-	int				is_builtin;
-	t_arg			*args_list;
-	t_redir			*redir_list;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-	pid_t			pid;
-	int				fd_in;
-	int				fd_out;
-}	t_cmd;
 
-typedef struct s_arg {
-	t_token			*arg_tokens;
-	struct s_arg	*next;
-}	t_arg;
-
-typedef struct s_redir {
-	t_token_type	type;
-	char			*file;
-	t_token			*file_tokens;
-	int				heredoc_fd;
-	struct s_redir	*next;
-}	t_redir;
-*/
-
-static void	print_args_list(t_arg *args_list)
+static void	print_args_list(char **args)
 {
 	int		i;
-	t_token	*current_token;
 
 	i = 0;
-	while (args_list)
+	while (args[i])
 	{
-		current_token = args_list->arg_tokens;
 		if (i == 0)
 			ft_printf("CMD:");
 		else if (i == 1)
 			ft_printf("\nARGS:");
-		ft_printf(" [");
-		while (current_token)
-		{
-			ft_printf("%s", current_token->value);
-			if (current_token->merge == FALSE)
-				break ;
-			current_token = current_token->next;
-		}
-		ft_printf("]");
-		args_list = args_list->next;
+		ft_printf(" [%s]", args[i]);
 		i++;
 	}
 	ft_printf("\n");
@@ -84,22 +46,16 @@ static const char	*get_redir_type(t_token_type type)
 static void	print_redir_list(t_redir *redir_list)
 {
 	int		i;
-	t_token	*current_token;
 
 	i = 0;
 	while (redir_list)
 	{
-		current_token = redir_list->file_tokens;
 		if (i == 0)
 			ft_printf("REDIRECTIONS:");
-		ft_printf(" [%s:", get_redir_type(redir_list->type));
-		while (current_token)
-		{
-			ft_printf("%s", current_token->value);
-			if (current_token->merge == FALSE)
-				break ;
-			current_token = current_token->next;
-		}
+		ft_printf(" [%s: [%s]", get_redir_type(redir_list->type),
+			redir_list->file);
+		if (redir_list->is_ambiguous == TRUE)
+			ft_printf(" is Ambiguous");
 		ft_printf("]");
 		redir_list = redir_list->next;
 		i++;
@@ -118,14 +74,12 @@ void	print_cmds(t_cmd *cmd_list)
 	while (current_cmd)
 	{
 		ft_printf("- CMD %i --------------------------------------------\n", i);
-		if (current_cmd->args_list)
-			print_args_list(current_cmd->args_list);
+		if (current_cmd->args)
+			print_args_list(current_cmd->args);
 		if (current_cmd->redir_list)
 			print_redir_list(current_cmd->redir_list);
-		ft_printf("\ncmd_list.args: (converted to strarr)\n");
-		print_strarr(current_cmd->args);
 		i++;
-		current_cmd = current_cmd->next;
 		ft_printf("----------------------------------------------------\n\n");
+		current_cmd = current_cmd->next;
 	}
 }

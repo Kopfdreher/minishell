@@ -20,21 +20,29 @@ INC_FILES	= $(addsuffix .h, minishell builtins defines execute parse \
 INCS		= $(addprefix $(INC_DIR)/, $(INC_FILES))
 
 # Source files
-ERROR_FILES		= error
-INIT_FILES		= init_env init_shell
-TOKEN_FILES		= tokenize_shell tokenize_helper tokenize_print tokenize_word\
+ERROR_FILES	= error
+INIT_FILES	= init_env init_shell
+TOKEN_FILES	= tokenize_shell tokenize_helper tokenize_print tokenize_word\
 			  tokenize_syntax
-PARSE_FILES		= parse_shell parse_helper parse_token_to_cmd parse_print\
-			  parse_args_list_to_strarr
-EXEC_FILES		= execute_shell execute_path execute_redirections execute_built_in expand_get_env_value
-BUILT_IN_FILES	= built_in_echo built_in_cd built_in_pwd
+PARSE_FILES	= parse_shell parse_helper parse_token_to_cmd parse_print\
+			  parse_args_list_to_strarr parse_tokens_to_str\
+			  parse_file_tokens_to_file
+EXPAND_FILES= expand_env_handling expand_env_print expand_get_env_value\
+			  expand_token expand_token_list expand_variables\
+			  expand_set_env_node
+EXEC_FILES	= execute_shell execute_path execute_redirections execute_built_in\
+			  execute_env_list_to_strarr
+BUILT_FILES = builtin_ft_env builtin_ft_unset builtin_ft_export\
+			  builtin_ft_export_print_out built_in_echo built_in_cd\
+			  built_in_pwd
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\
 			  $(TOKEN_FILES)\
 			  $(PARSE_FILES)\
+			  $(EXPAND_FILES)\
 			  $(EXEC_FILES)\
-			  $(BUILT_IN_FILES))
+			  $(BUILT_FILES))
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

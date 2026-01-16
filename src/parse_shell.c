@@ -6,64 +6,16 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 13:27:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/07 22:36:38 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 21:02:48 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-typedef struct s_cmd {
-	char			**args;
-	char			*path;
-	int				is_builtin;
-	t_arg			*args_list;
-	t_redir			*redir_list;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-	pid_t			pid;
-	int				fd_in;
-	int				fd_out;
-}	t_cmd;
 
-typedef struct s_token {
-	char			*value;
-	t_token_type	type;
-	t_quote_type	quote;
-	int				merge;
-	struct s_token	*next;
-	struct s_token	*prev;
-}	t_token;
-
-typedef struct s_arg {
-	t_token			*arg_tokens;
-	struct s_arg	*next;
-}	t_arg;
-
-typedef struct s_redir {
-	t_token_type	type;
-	t_token			*file_tokens;
-	char			*file;
-	int				heredoc_fd;
-	struct s_redir	*next;
-}	t_redir;
-*/
-
-static int	create_cmd(t_shell *shell, t_token **current_token)
+static void	add_cmd_to_back(t_cmd *new_cmd, t_shell *shell)
 {
-	t_cmd	*new_cmd;
 	t_cmd	*last_cmd;
-	int		rtrn;
 
-	new_cmd = init_new_cmd();
-	if (new_cmd == NULL)
-		return (FAILURE);
-	rtrn = SUCCESS;
-	while (*current_token && (*current_token)->type != PIPE
-		&& rtrn == SUCCESS)
-		rtrn = add_tokens_to_cmd(&new_cmd, current_token);
-	if (rtrn == FAILURE)
-		return (free(new_cmd), FAILURE);
-	new_cmd->args = args_list_to_strarr(new_cmd->args_list);
 	if (shell->cmd_list == NULL)
 		shell->cmd_list = new_cmd;
 	else
@@ -74,8 +26,28 @@ static int	create_cmd(t_shell *shell, t_token **current_token)
 		last_cmd->next = new_cmd;
 		new_cmd->prev = last_cmd;
 	}
-	
-	return (rtrn);
+}
+
+static int	create_cmd(t_shell *shell, t_token **current_token)
+{
+	t_cmd	*new_cmd;
+	int		rtrn;
+
+	new_cmd = init_new_cmd(shell);
+	if (new_cmd == NULL)
+		return (FAILURE);
+	rtrn = SUCCESS;
+	while (*current_token && (*current_token)->type != PIPE
+		&& rtrn == SUCCESS)
+		rtrn = add_tokens_to_cmd(&new_cmd, current_token);
+	if (rtrn == FAILURE)
+		return (free_cmds(&new_cmd), FAILURE);
+	if (args_list_to_strarr(new_cmd->args_list, &new_cmd->args) == FAILURE)
+		return (free_cmds(&new_cmd), FAILURE);
+	if (parse_file_tokens_to_file(new_cmd->redir_list) == FAILURE)
+		return (free_cmds(&new_cmd), FAILURE);
+	add_cmd_to_back(new_cmd, shell);
+	return (SUCCESS);
 }
 
 int	parse(t_shell *shell)

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 16:03:28 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 20:33:59 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 // --- MACROS ---
 # define SUCCESS 0
 # define FAILURE 1
+# define ERROR -1
 # define FALSE 0
 # define TRUE 1
 # define ERROR -1
@@ -59,15 +60,9 @@ typedef enum e_sig_mode {
 }	t_sig_mode;
 
 // --- STRUCTS ---
-
-typedef struct s_token {
-	char			*value;
-	t_token_type	type;
-	t_quote_type	quote;
-	int				merge;
-	struct s_token	*next;
-	struct s_token	*prev;
-}	t_token;
+typedef struct s_shell	t_shell;
+typedef struct s_cmd	t_cmd;
+typedef struct s_token	t_token;
 
 typedef struct s_env {
 	char			*name;
@@ -78,9 +73,21 @@ typedef struct s_env {
 	struct s_env	*prev;
 }	t_env;
 
+typedef struct s_token {
+	char			*value;
+	t_token_type	type;
+	t_quote_type	quote;
+	int				merge;
+	struct s_token	*expand_tokens;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
+
 typedef struct s_arg {
 	char			*arg;
 	t_token			*arg_tokens;
+	t_token			*expand_arg_tokens;
+	t_cmd			*cmd;
 	struct s_arg	*next;
 }	t_arg;
 
@@ -88,7 +95,10 @@ typedef struct s_redir {
 	t_token_type	type;
 	char			*file;
 	t_token			*file_tokens;
+	t_token			*expand_redir_tokens;
 	int				heredoc_fd;
+	int				is_ambiguous;
+	t_cmd			*cmd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -97,12 +107,14 @@ typedef struct s_cmd {
 	char			*path;
 	int				is_builtin;
 	t_arg			*args_list;
+	t_token			*expand_arg_tokens;
 	t_redir			*redir_list;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 	pid_t			pid;
 	int				fd_in;
 	int				fd_out;
+	t_shell			*shell;
 }	t_cmd;
 
 typedef struct s_shell {

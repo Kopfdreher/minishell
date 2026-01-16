@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:10 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/03 22:05:57 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/16 20:39:00 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "defines.h"
 
-//t_env	*new_env_node(char *str);
+t_env	*new_env_node(char *str);
 void	env_print(t_env *env);
 char	*get_env_value(t_env *env_list, char *name);
 t_env	*get_env_node(t_env *env_list, char *name);
@@ -27,6 +27,9 @@ int		expand_token_list(t_shell *shell);
 int		add_expanded_str(t_token **token, int *i, t_env *env_list);
 int		add_expanded_tokens(t_token **token, int *i, t_env *env_list);
 int		copy_token_list(t_token *variable_tokens, t_token **copy_head);
-int		expand_args_list_to_strarr(t_arg *args_list, char ***strarr);
+int		add_env_token(char *env_value, t_token **env_tokens, int *start);
+t_token	*create_env_tokens(char *env_value);
+int		get_word_count(char *str);
+int		set_env_node(t_env **env_list, char *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 13:20:13 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/09 21:34:05 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/16 21:01:06 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_env	*get_env_node(t_env *env_list, char *name)
 {
 	t_env	*current_node;
 	int		compare_len;
-	
+
 	if (!name)
 		return (NULL);
 	compare_len = ft_strlen(name) + 1;

@@ -6,11 +6,17 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:22:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/06 17:13:02 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/13 13:06:28 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_whitespace(char c)
+{
+	return (c == ' ' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == '\t');
+}
 
 t_token	*new_token(char	*value, t_token_type type, t_quote_type quote)
 {
@@ -38,6 +44,8 @@ void	free_tokens(t_token **tokens)
 		next = current->next;
 		if (current->value)
 			free(current->value);
+		if (current->expand_tokens)
+			free_tokens(&current->expand_tokens);
 		free(current);
 		current = next;
 	}
@@ -56,5 +64,23 @@ void	add_token_back(t_token **head, t_token **tail, t_token *new_node)
 		(*tail)->next = new_node;
 		new_node->prev = *tail;
 		*tail = new_node;
+	}
+}
+
+void	add_token_to_back(t_token **head, t_token *new_node)
+{
+	t_token	*tail;
+
+	if (!new_node)
+		return ;
+	if (!*head)
+		*head = new_node;
+	else
+	{
+		tail = *head;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_node;
+		new_node->prev = tail;
 	}
 }
