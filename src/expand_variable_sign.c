@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_ft_unset.c                                 :+:      :+:    :+:   */
+/*   expand_variable_sign.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 13:58:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/17 18:05:57 by sgavrilo         ###   ########.fr       */
+/*   Created: 2026/01/17 17:08:17 by sgavrilo          #+#    #+#             */
+/*   Updated: 2026/01/17 17:14:15 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_unset(t_shell *shell, char **args)
+int	add_variable_sign(t_token **token)
 {
-	int		i;
-	t_env	*curr;
+	char	*dollar_sign;
+	t_token	*variable_token;
 
-	i = 0;
-	while (args[++i])
-	{
-		curr = get_env_node(shell->env_list, args[i]);
-		if (curr)
-		{
-			if (curr->prev)
-				curr->prev->next = curr->next;
-			else
-				shell->env_list = curr->next;
-			if (curr->next)
-				curr->next->prev = curr->prev;
-			curr->next = NULL;
-			curr->prev = NULL;
-			free_env_list(&curr);
-		}
-	}
+	dollar_sign = ft_calloc(2, sizeof(char));
+	if (!dollar_sign)
+		return (FAILURE);
+	dollar_sign[0] = '$';
+	variable_token = new_token(dollar_sign, WORD, NO_QUOTE);
+	if (!variable_token)
+		return (free(dollar_sign), FAILURE);
+	variable_token->merge = TRUE; // check if correct
+	add_token_to_back(&(*token)->expand_tokens, variable_token);
 	return (SUCCESS);
 }

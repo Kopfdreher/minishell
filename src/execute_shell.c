@@ -49,10 +49,7 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 	char	*errorstr;
 
 	if (is_builtin(cmd) == TRUE)
-	{
-		exec_builtin(cmd, shell);
-		exit (0);
-	}
+		exit (exec_builtin(cmd, shell));
 	if (cmd->args && cmd->args[0])
 	{
 		ret = find_path(cmd, shell->env_list);
@@ -64,6 +61,11 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 			exit (127);
 		}
 		else if (ret == ERROR)
+		{
+			put_error(MALLOC, "minishell:", shell);
+			exit(1);
+		}
+		if (execute_env_list_to_strarr(shell) == FAILURE)
 		{
 			put_error(MALLOC, "minishell:", shell);
 			exit(1);

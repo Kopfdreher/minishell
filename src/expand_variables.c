@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 21:23:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 19:21:08 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/17 17:13:20 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	add_expanded_tokens(t_token **token, int *i, t_env *env_list)
 		&& is_variable_separator((*token)->value[*i + len]) == FALSE)
 		len++;
 	if (len == 0)
-		return (SUCCESS);
+		return (add_variable_sign(token), SUCCESS);
 	variable_name = ft_substr((*token)->value, *i, len);
 	if (!variable_name)
 		return (FAILURE);
@@ -104,7 +104,7 @@ int	add_expanded_str(t_token **token, int *i, t_env *env_list)
 		&& is_variable_separator((*token)->value[*i + len]) == FALSE)
 		len++;
 	if (len == 0)
-		return (SUCCESS);
+		return (add_variable_sign(token), SUCCESS);
 	variable_name = ft_substr((*token)->value, *i, len);
 	if (!variable_name)
 		return (FAILURE);

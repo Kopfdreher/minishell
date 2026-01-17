@@ -63,8 +63,6 @@ int	tokenize(t_shell *shell)
 	if (expand_token_list(shell) == FAILURE)
 		return (FAILURE);
 	//print_tokens(shell->tokens);
-	if (execute_env_list_to_strarr(shell) == FAILURE)
-		return (FAILURE);
 	//print_strarr(shell->env_array);
 	//ft_env(shell);
 	if (check_syntax(shell) == FAILURE)

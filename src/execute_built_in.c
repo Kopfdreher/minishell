@@ -39,16 +39,16 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell)
 		return (FALSE);
 	commands = cmd->args;
 	if (ft_strncmp(commands[0], "echo", 5) == 0)
-		ft_echo(commands);
+		return (ft_echo(commands));
 	else if (ft_strncmp(commands[0], "cd", 3) == 0)
-		ft_cd(commands, shell);
+		return (ft_cd(commands, shell));
 	else if (ft_strncmp(commands[0], "pwd", 4) == 0)
-		ft_pwd(shell);
+		return (ft_pwd(shell));
 	else if (ft_strncmp(commands[0], "export", 7) == 0)
-		ft_export(shell, commands);
+		return (ft_export(shell, commands));
 	else if (ft_strncmp(commands[0], "unset", 6) == 0)
-		ft_unset(shell, commands);
+		return (ft_unset(shell, commands));
 	else if (ft_strncmp(commands[0], "env", 4) == 0)
-		ft_env(shell);
+		return (ft_env(shell));
 	return (SUCCESS);
 }

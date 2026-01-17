@@ -21,7 +21,6 @@
 # define ERROR -1
 # define FALSE 0
 # define TRUE 1
-# define ERROR -1
 
 // --- ENUMS ---
 typedef enum e_token_type {
@@ -51,6 +50,7 @@ typedef enum e_error_type {
 	MALLOC,
 	CD,
 	CHDIR,
+	DEFAULT
 }	t_error_type;
 
 typedef enum e_sig_mode {
