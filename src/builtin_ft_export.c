@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 14:32:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 20:00:53 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/20 10:49:37 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,45 @@ int	get_variable_name(char *arg, char **variable_name)
 	return (SUCCESS);
 }
 
+static int	is_valid_identifier(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isalpha(arg[i]) == FALSE && arg[i] != '_')
+		return (FALSE);
+	while (arg[++i] && arg[i] != '=')
+	{
+		if (ft_isalnum(arg[i]) == FALSE && arg[i] != '_')
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
 int	ft_export(t_shell *shell, char **args)
 {
-	int		i;
+	int	i;
+	int	rtn;
 
 	if (!args || !args[0])
 		return (SUCCESS);
 	if (!args[1])
 		return (export_print_out(shell->env_list));
+	rtn = SUCCESS;
 	i = 0;
 	while (args[++i])
 	{
-		if (args[i][0] == '=') // add: is_valid_identifier(args[i]) == FALSE
+		if (is_valid_identifier(args[i]) == FALSE)
 		{
-			put_error(ERROR, "export: not a valid identifier\n", shell);
+			put_error(DEFAULT, "export: not a valid identifier\n", shell);
+			rtn = FAILURE;
 			continue ;
 		}
 		if (set_env_node(&shell->env_list, args[i]) == FAILURE)
+		{
+			put_error(MALLOC, NULL, shell);
 			return (FAILURE);
+		}
 	}
-	return (SUCCESS);
+	return (rtn);
 }

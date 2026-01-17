@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:58:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 19:50:30 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:05:57 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ int	ft_unset(t_shell *shell, char **args)
 		{
 			if (curr->prev)
 				curr->prev->next = curr->next;
+			else
+				shell->env_list = curr->next;
 			if (curr->next)
 				curr->next->prev = curr->prev;
+			curr->next = NULL;
+			curr->prev = NULL;
 			free_env_list(&curr);
 		}
 	}

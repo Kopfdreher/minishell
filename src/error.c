@@ -38,12 +38,12 @@ static int	get_error_num(t_error_type type)
 {
 	if (type == SYNTAX)
 		return (2);
-	if (type == MALLOC || type == PIPES || type == FORK
+	if (type == MALLOC || type == PIPES || type == FORK || type == DEFAULT
 		|| type == DUP2 || type == OPEN || type == CD || type == CHDIR)
 		return (1);
 	if (type == EXECVE)
 		return (126);
-	return (0);
+	return (1);
 }
 
 void	put_error(t_error_type type, const char *str, t_shell *shell)

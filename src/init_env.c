@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 20:00:36 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 13:05:03 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:05:58 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ static int	set_shell_lvl(t_env	*env_list)
 		return (FAILURE);
 	free(lvl_node->value);
 	lvl_node->value = new_lvl;
+	free(lvl_node->tokens->value);
+	lvl_node->tokens->value = ft_strdup(new_lvl);
+	if (!lvl_node->tokens->value)
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -57,6 +61,13 @@ t_env	*init_env(char **envp)
 
 	head = NULL;
 	i = -1;
+	if (!envp[0])
+	{
+		new_node = new_env_node("_=./minishell");
+		if (!new_node)
+			return (free_env_list(&head), NULL);
+		add_env_node_to_back(&head, new_node);
+	}
 	while (envp[++i])
 	{
 		new_node = new_env_node(envp[i]);

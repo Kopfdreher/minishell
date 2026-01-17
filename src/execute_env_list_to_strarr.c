@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 22:24:12 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 16:44:10 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:01:39 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,16 @@ int	execute_env_list_to_strarr(t_shell *shell)
 	int		i;
 	t_env	*curr;
 
+	if (shell->env_list == NULL)
+		return (SUCCESS);
+	if (shell->env_array)
+		free_strarr(&shell->env_array);
 	shell->env_array = ft_calloc(get_envp_len(shell->env_list) + 1,
 			sizeof(char *));
 	if (!shell->env_array)
 		return (FAILURE);
 	curr = shell->env_list;
-	i = 0;
+	i = -1;
 	while (curr)
 	{
 		if (!curr->value)
@@ -60,9 +64,8 @@ int	execute_env_list_to_strarr(t_shell *shell)
 			curr = curr->next;
 			continue ;
 		}
-		if (merge_env_node_to_str(curr, &(shell->env_array)[i]) == FAILURE)
+		if (merge_env_node_to_str(curr, &(shell->env_array)[++i]) == FAILURE)
 			return (free_strarr(&shell->env_array), FAILURE);
-		i++;
 		curr = curr->next;
 	}
 	return (SUCCESS);
