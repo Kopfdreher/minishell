@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 12:58:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 19:47:37 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/18 15:21:19 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_env(t_shell *shell)
 	curr = shell->env_list;
 	while (curr)
 	{
-		if (curr->value && curr->value[0])
+		if (curr->value)
 			ft_printf("%s=%s\n", curr->name, curr->value);
 		curr = curr->next;
 	}
