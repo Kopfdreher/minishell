@@ -19,7 +19,7 @@ int	ft_pwd(t_shell *shell)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		put_error(MALLOC, "malloc failed", shell);
+		put_error(MALLOC, "", shell);
 		return (FAILURE);
 	}
 	ft_printf("%s\n", pwd);

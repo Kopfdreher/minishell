@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:23 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/13 18:48:40 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:36:36 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		check_heredocs(t_shell *shell);
 
 // Redirection
 int		redirs(t_redir *redir, t_shell*shell);
-void	close_fds(t_cmd *cmd);
+int		open_heredoc(t_redir *heredoc, t_shell *shell);
 
 // Signals
 void	setup_signals(int mode);

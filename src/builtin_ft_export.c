@@ -78,7 +78,7 @@ int	ft_export(t_shell *shell, char **args)
 	{
 		if (args[i][0] == '=') // add: is_valid_identifier(args[i]) == FALSE
 		{
-			put_error(ERROR, "export: not a valid identifier", shell);
+			put_error(ERROR, "export: not a valid identifier\n", shell);
 			continue ;
 		}
 		if (set_env_node(&shell->env_list, args[i]) == FAILURE)

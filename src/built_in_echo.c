@@ -6,11 +6,29 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 13:55:04 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/16 15:00:49 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:15:52 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_n_flag(char *arg)
+{
+	int	i;
+
+	if (arg[0] != '-')
+		return (FALSE);
+	i = 1;
+	if (arg[i] == 0)
+		return (FALSE);
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
 
 int	ft_echo(char **args)
 {
@@ -21,7 +39,7 @@ int	ft_echo(char **args)
 	nl = 1;
 	if (!args)
 		return (FAILURE);
-	while (args[i] && ft_strncmp(args[i], "-n", 3) == SUCCESS)
+	while (args[i] && is_n_flag(args[i]) == TRUE)
 	{
 		nl = 0;
 		i++;
