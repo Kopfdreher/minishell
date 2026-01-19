@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 22:58:39 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/19 21:03:37 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (shell.running == TRUE)
 	{
+		//if (isatty(STDIN_FILENO) == TRUE)
 		shell.input = readline("minishell$ ");
+		//else
+		//	shell.input = get_next_line(STDIN_FILENO);
 		if (!shell.input || !ft_strncmp(shell.input, "exit\0", 5))
 		{
-			write(1, "exit\n", 5);
+			if (isatty(STDIN_FILENO) == TRUE)
+				write(1, "exit\n", 5);
 			shell.running = FALSE;
 		}
 		else if (shell.input[0] != '\0')
@@ -37,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (parse(&shell) == SUCCESS)
 			{
-				shell.exit_status=execute(&shell);
+				shell.exit_status = execute(&shell);
 			}
 			// if (shell.running == TRUE && tokenize)
 			// 		if (shell.running == TRUE && parse)

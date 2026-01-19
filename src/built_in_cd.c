@@ -6,11 +6,38 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 15:41:28 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/16 16:25:02 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:48:35 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	set_pwd(char *pwd, t_shell *shell)
+{
+	char	*cwd;
+	char	*cwd_str;
+
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+	{
+		put_error(MALLOC, "", shell);
+		return (FAILURE);
+	}
+	cwd_str = ft_strjoin(pwd, cwd);
+	free(cwd);
+	if (cwd_str == NULL)
+	{
+		put_error(MALLOC, "", shell);
+		return (FAILURE);
+	}
+	if (set_env_node(&shell->env_list, cwd_str) == FAILURE)
+	{
+		free(cwd_str);
+		return (FAILURE);
+	}
+	free(cwd_str);
+	return (SUCCESS);
+}
 
 int	ft_cd(char **args, t_shell *shell)
 {
@@ -28,10 +55,14 @@ int	ft_cd(char **args, t_shell *shell)
 		dir = getenv("HOME");
 	else
 		dir = args[1];
+	if (set_pwd("OLDPWD=", shell) == FAILURE)
+		return (FAILURE);
 	if (chdir(dir) == ERROR)
 	{
 		put_error(CHDIR, "cd", shell);
 		return (FAILURE);
 	}
+	if (set_pwd("PWD=", shell) == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }

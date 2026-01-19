@@ -31,7 +31,7 @@ EXPAND_FILES= expand_env_handling expand_env_print expand_get_env_value\
 			  expand_token expand_token_list expand_variables\
 			  expand_set_env_node
 EXEC_FILES	= execute_shell execute_path execute_redirections execute_built_in\
-			  execute_env_list_to_strarr
+			  execute_env_list_to_strarr execute_heredoc
 BUILT_FILES = builtin_ft_env builtin_ft_unset builtin_ft_export\
 			  builtin_ft_export_print_out built_in_echo built_in_cd\
 			  built_in_pwd
