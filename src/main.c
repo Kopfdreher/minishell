@@ -25,10 +25,10 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (shell.running == TRUE)
 	{
-		//if (isatty(STDIN_FILENO) == TRUE)
-		shell.input = readline("minishell$ ");
-		//else
-		//	shell.input = get_next_line(STDIN_FILENO);
+		if (isatty(STDIN_FILENO) == TRUE)
+			shell.input = readline("minishell$ ");
+		else
+			shell.input = get_next_line(STDIN_FILENO);
 		if (!shell.input || !ft_strncmp(shell.input, "exit\0", 5))
 		{
 			if (isatty(STDIN_FILENO) == TRUE)
