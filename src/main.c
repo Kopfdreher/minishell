@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/19 21:03:37 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/20 18:49:46 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ volatile sig_atomic_t	g_signal_status = 0;
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
+	int		execute_status;
 
 	(void)argc;
 	(void)argv;
@@ -25,30 +26,28 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (shell.running == TRUE)
 	{
-
 		set_signals(SIG_INTERACTIVE);
-		if (isatty(STDIN_FILENO) == TRUE)
-			shell.input = readline("minishell$ ");
-		else
-			shell.input = get_next_line(STDIN_FILENO);
+		g_signal_status = 0;
+//		if (isatty(STDIN_FILENO) == TRUE)
+		shell.input = readline("minishell$ ");
+	//	else
+	//		shell.input = get_next_line(STDIN_FILENO);
 		if (g_signal_status != 0)
 		{
 			shell.exit_status = g_signal_status;
 			g_signal_status = 0;
 		}
-		if (!shell.input || !ft_strncmp(shell.input, "exit\0", 5))
-		{
-			if (isatty(STDIN_FILENO) == TRUE)
-				write(1, "exit\n", 5);
+		if (!shell.input)
 			shell.running = FALSE;
-		}
 		else if (shell.input[0] != '\0')
 			add_history(shell.input);
 		if (tokenize(&shell) == SUCCESS) 
 		{
 			if (parse(&shell) == SUCCESS)
 			{
-				shell.exit_status = execute(&shell);
+				execute_status = execute(&shell);
+				if (g_signal_status == 0)
+					shell.exit_status = execute_status;
 			}
 			// if (shell.running == TRUE && tokenize)
 			// 		if (shell.running == TRUE && parse)

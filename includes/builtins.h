@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:20:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 20:32:27 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/20 18:12:53 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_env(t_shell *shell);
 int	env_parameter_shift(char ***args);
 
 // exit
-int	ft_exit(t_shell *shell, char **args);
+int	ft_exit(char **args, t_shell *shell);
 
 // Helper to check/run
 int	is_builtin(t_cmd *cmd);

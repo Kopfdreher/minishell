@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:50:18 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/16 22:58:48 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:26:05 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,7 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell)
 		return (ft_unset(shell, commands));
 	else if (ft_strncmp(commands[0], "env", 4) == 0)
 		return (ft_env(shell));
+	else if (ft_strncmp(commands[0], "exit", 5) == 0)
+		return (ft_exit(commands, shell));
 	return (SUCCESS);
 }
