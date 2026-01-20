@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 17:23:14 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/19 17:55:38 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:46:22 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,17 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 	}
 }
 
+static	int	expand_heredoc(t_token *eof)
+{
+	while (eof)
+	{
+		if (eof->quote != NO_QUOTE)
+			return (FALSE);
+		eof = eof->next;
+	}
+	return (TRUE);
+}
+
 int	open_heredoc(t_redir *heredoc, t_shell *shell)
 {
 	int		fd;
@@ -72,13 +83,15 @@ int	open_heredoc(t_redir *heredoc, t_shell *shell)
 
 	eof = heredoc->file_tokens;
 	fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	expand = TRUE;
+	if (fd == ERROR)
+		return (put_error(OPEN, "heredoc", shell), ERROR);
+	expand = expand_heredoc(eof);
 	eof_str = merge_tokens_to_str(eof);
-	while (eof)
+	if (!eof_str)
 	{
-		if (eof->quote != NO_QUOTE)
-			expand = FALSE;
-		eof = eof->next;
+		unlink("/tmp/.heredoc");
+		close(fd);
+		return (put_error(MALLOC, "heredoc", shell), ERROR);
 	}
 	set_signals(SIG_HEREDOC);
 	read_heredoc(fd, expand, eof_str, shell);
@@ -87,5 +100,7 @@ int	open_heredoc(t_redir *heredoc, t_shell *shell)
 	close(fd);
 	fd = open("/tmp/.heredoc", O_RDONLY);
 	unlink("/tmp/.heredoc");
+	if (fd == ERROR)
+		return (put_error(OPEN, "/tmp/.heredoc", shell), ERROR);
 	return (fd);
 }
