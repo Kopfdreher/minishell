@@ -38,5 +38,6 @@
 # include "builtins.h"
 # include "error.h"
 # include "expand.h"
+# include "signals.h"
 
 #endif

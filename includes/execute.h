@@ -28,9 +28,6 @@ int		check_heredocs(t_shell *shell);
 int		redirs(t_redir *redir, t_shell*shell);
 int		open_heredoc(t_redir *heredoc, t_shell *shell);
 
-// Signals
-void	setup_signals(int mode);
-
 // Cleanup (Executer specific)
 int		execute_env_list_to_strarr(t_shell *shell);
 

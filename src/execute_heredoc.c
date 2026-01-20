@@ -49,7 +49,7 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 			error_string = ft_strjoin(eof, "')\n");
 			put_error(H_DOC, error_string, shell);
 			free(error_string);
-			return (0);
+			return (1);
 		}
 		if (ft_strncmp(line, eof, (ft_strlen(eof) + 1)) == SUCCESS)
 		{
@@ -80,7 +80,9 @@ int	open_heredoc(t_redir *heredoc, t_shell *shell)
 			expand = FALSE;
 		eof = eof->next;
 	}
+	set_signals(SIG_HEREDOC);
 	read_heredoc(fd, expand, eof_str, shell);
+	set_signals(SIG_INTERACTIVE);
 	free(eof_str);
 	close(fd);
 	fd = open("/tmp/.heredoc", O_RDONLY);
