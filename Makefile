@@ -16,7 +16,7 @@ INC_DIR		= includes
 
 # Includes 
 INC_FILES	= $(addsuffix .h, minishell builtins defines execute parse \
-			  initialize tokenize error)
+			  initialize tokenize error signals)
 INCS		= $(addprefix $(INC_DIR)/, $(INC_FILES))
 
 # Source files
@@ -35,6 +35,7 @@ EXEC_FILES	= execute_shell execute_path execute_redirections execute_built_in\
 BUILT_FILES = builtin_ft_env builtin_ft_unset builtin_ft_export\
 			  builtin_ft_export_print_out built_in_echo built_in_cd\
 			  built_in_pwd
+SIGNAL_FILES= signals
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\
 			  $(INIT_FILES)\
@@ -42,7 +43,8 @@ SRC_FILES	= $(addsuffix .c, main\
 			  $(PARSE_FILES)\
 			  $(EXPAND_FILES)\
 			  $(EXEC_FILES)\
-			  $(BUILT_FILES))
+			  $(BUILT_FILES)\
+			  $(SIGNAL_FILES))
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object files

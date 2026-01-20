@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-//volatile sig_atomic_t	g_signal_status = 0;
+volatile sig_atomic_t	g_signal_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -25,10 +25,13 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (shell.running == TRUE)
 	{
-		//if (isatty(STDIN_FILENO) == TRUE)
+		set_signals(SIG_INTERACTIVE);
 		shell.input = readline("minishell$ ");
-		//else
-		//	shell.input = get_next_line(STDIN_FILENO);
+		if (g_signal_status != 0)
+		{
+			shell.exit_status = g_signal_status;
+			g_signal_status = 0;
+		}
 		if (!shell.input || !ft_strncmp(shell.input, "exit\0", 5))
 		{
 			if (isatty(STDIN_FILENO) == TRUE)

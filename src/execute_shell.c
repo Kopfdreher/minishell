@@ -12,18 +12,29 @@
 
 #include "minishell.h"
 
-static int	wait_child(pid_t pid)
+static int	wait_child(pid_t pid, int is_last)
 {
 	int	status;
 	int	ret;
+	int	sig;
 
-	ret = 0;
 	if (waitpid(pid, &status, 0) == ERROR)
-		return (perror("waitpid"), 1);
+		return (perror("waitpid"), FAILURE);
+	ret = 0;
 	if (WIFEXITED(status))
 		ret = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		ret = WTERMSIG(status) + 128;
+	{
+		sig = WTERMSIG(status);
+		ret = 128 + sig;
+		if (is_last)
+		{
+			if (sig == SIGINT)
+				write(1, "\n", 1);
+			else if (sig == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+		}
+	}
 	return (ret);
 }
 
@@ -31,13 +42,18 @@ int	wait_for_children(t_shell *shell)
 {
 	t_cmd	*cmd;
 	int		ret;
+	int		is_last;
 
 	cmd = shell->cmd_list;
 	ret = 0;
 	while (cmd)
 	{
+		if (cmd->next == NULL)
+			is_last = TRUE;
+		else
+			is_last = FALSE;
 		if (cmd->pid != ERROR)
-			ret = wait_child(cmd->pid);
+			ret = wait_child(cmd->pid, is_last);
 		cmd = cmd->next;
 	}
 	return (ret);
@@ -105,6 +121,7 @@ int	execute(t_shell *shell)
 		}
 		if (cmd->pid == 0)
 		{
+			set_signals(SIG_EXEC_CHILD);
 			if (cmd->prev)
 			{
 				if (dup2(prev_fd, 0) == ERROR)
@@ -147,5 +164,8 @@ int	execute(t_shell *shell)
 		}
 		cmd = cmd->next;
 	}
-	return (wait_for_children(shell));
+	set_signals(SIG_EXEC_PARENT);
+	shell->exit_status = wait_for_children(shell);
+	set_signals(SIG_INTERACTIVE);
+	return (shell->exit_status);
 }

@@ -55,7 +55,8 @@ typedef enum e_error_type {
 
 typedef enum e_sig_mode {
 	SIG_INTERACTIVE,
-	SIG_EXEC,
+	SIG_EXEC_PARENT,
+	SIG_EXEC_CHILD,
 	SIG_HEREDOC
 }	t_sig_mode;
 
@@ -130,6 +131,6 @@ typedef struct s_shell {
 }	t_shell;
 
 // --- Global ---
-//extern volatile sig_atomic_t	g_signal_status;
+extern volatile sig_atomic_t	g_signal_status;
 
 #endif
