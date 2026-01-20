@@ -31,10 +31,10 @@ EXPAND_FILES= expand_env_handling expand_env_print expand_get_env_value\
 			  expand_token expand_token_list expand_variables\
 			  expand_set_env_node expand_variable_sign
 EXEC_FILES	= execute_shell execute_path execute_redirections execute_built_in\
-			  execute_env_list_to_strarr execute_heredoc
+			  execute_env_list_to_strarr execute_heredoc execute_wait
 BUILT_FILES = builtin_ft_env builtin_ft_unset builtin_ft_export\
 			  builtin_ft_export_print_out built_in_echo built_in_cd\
-			  built_in_pwd
+			  built_in_pwd builtin_ft_exit
 SIGNAL_FILES= signals
 SRC_FILES	= $(addsuffix .c, main\
 			  $(ERROR_FILES)\

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 20:45:13 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/20 18:19:18 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static const char	*get_error_type(t_error_type type)
 		return ("");
 	else if (type == CD)
 		return ("cd: ");
+	else if (type == EXIT)
+		return ("exit: ");
 	return ("");
 }
 
@@ -55,5 +57,6 @@ void	put_error(t_error_type type, const char *str, t_shell *shell)
 		ft_putstr_fd(get_error_type(type), 2);
 		ft_putstr_fd(str, 2);
 	}
-	shell->exit_status = get_error_num(type);
+	if (type != EXIT)
+		shell->exit_status = get_error_num(type);
 }

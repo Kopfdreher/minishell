@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:49:54 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/16 20:59:49 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/20 15:55:11 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ static int	path_from_dirs(char **dirs, char **cmd, char **path)
 	return (FAILURE);
 }
 
+static int	access_check(t_cmd *cmd)
+{
+	if (access(cmd->args[0], F_OK) == 0)
+	{
+		if (access(cmd->args[0], X_OK) == 0)
+		{
+			cmd->path = ft_strdup(cmd->args[0]);
+			return (SUCCESS);
+		}
+		return (126);
+	}
+	cmd->path = NULL;
+	return (127);
+}
+
 int	find_path(t_cmd *cmd, t_env *env_list)
 {
 	char		**dirs;
@@ -46,11 +61,7 @@ int	find_path(t_cmd *cmd, t_env *env_list)
 	if (!cmd || !cmd->args || !cmd->args[0] || !cmd->args[0][0])
 		return (cmd->path = NULL, FAILURE);
 	if (ft_strchr(cmd->args[0], '/'))
-	{
-		if (access(cmd->args[0], X_OK) == 0)
-			return (cmd->path = ft_strdup(cmd->args[0]), SUCCESS);
-		return (cmd->path = NULL, FAILURE);
-	}
+		return (access_check(cmd));
 	path_value = get_env_value(env_list, "PATH");
 	if (!path_value)
 		return (cmd->path = NULL, FAILURE);
