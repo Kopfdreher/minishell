@@ -25,8 +25,12 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (shell.running == TRUE)
 	{
+
 		set_signals(SIG_INTERACTIVE);
-		shell.input = readline("minishell$ ");
+		if (isatty(STDIN_FILENO) == TRUE)
+			shell.input = readline("minishell$ ");
+		else
+			shell.input = get_next_line(STDIN_FILENO);
 		if (g_signal_status != 0)
 		{
 			shell.exit_status = g_signal_status;
