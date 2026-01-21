@@ -46,15 +46,19 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 		line = readline("> ");
 		if (!line)
 		{
-			error_string = ft_strjoin(eof, "')\n");
-			put_error(H_DOC, error_string, shell);
-			free(error_string);
-			return (1);
+			if (g_signal_status != 130)
+			{
+				error_string = ft_strjoin(eof, "')\n");
+				put_error(H_DOC, error_string, shell);
+				free(error_string);
+				return (SUCCESS);
+			}
+			return (FAILURE);
 		}
 		if (ft_strncmp(line, eof, (ft_strlen(eof) + 1)) == SUCCESS)
 		{
 			free(line);
-			return (0);
+			return (SUCCESS);
 		}
 		if (expand == TRUE)
 			line = expand_line(line, shell);
@@ -94,7 +98,13 @@ int	open_heredoc(t_redir *heredoc, t_shell *shell)
 		return (put_error(MALLOC, "heredoc", shell), ERROR);
 	}
 	set_signals(SIG_HEREDOC);
-	read_heredoc(fd, expand, eof_str, shell);
+	if (read_heredoc(fd, expand, eof_str, shell) == FAILURE)
+	{
+		free(eof_str);
+		unlink("/tmp/.heredoc");
+		close(fd);
+		return (FAILURE);
+	}
 	set_signals(SIG_INTERACTIVE);
 	free(eof_str);
 	close(fd);

@@ -44,22 +44,25 @@ int	redirs(t_redir *redir, t_shell *shell)
 {
 	int		fd;
 
-	fd = -1;
 	while (redir)
 	{
+		fd = -1;
 		if (open_redirs(&fd, redir, shell) == FAILURE)
 			return (FAILURE);
-		if (redir->type == REDIR_IN || redir->type == HEREDOC)
+		if (fd != ERROR)
 		{
-			if (dup_redir(fd, 0, shell) == FAILURE)
-				return (FAILURE);
+			if (redir->type == REDIR_IN || redir->type == HEREDOC)
+			{
+				if (dup_redir(fd, 0, shell) == FAILURE)
+					return (FAILURE);
+			}
+			else if (redir->type == REDIR_OUT || redir->type == APPEND)
+			{
+				if (dup_redir(fd, 1, shell) == FAILURE)
+					return (FAILURE);
+			}
+			close(fd);
 		}
-		else if (redir->type == REDIR_OUT || redir->type == APPEND)
-		{
-			if (dup_redir(fd, 1, shell) == FAILURE)
-				return (FAILURE);
-		}
-		close(fd);
 		redir = redir->next;
 	}
 	return (SUCCESS);
