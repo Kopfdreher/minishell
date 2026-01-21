@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 11:47:50 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/20 14:22:23 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/21 19:39:13 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ static int	open_redirs(int *fd, t_redir *redir, t_shell *shell)
 		*fd = open(redir->file, 
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (redir->type == HEREDOC)
-		return (open_heredoc(redir, shell));
+	{
+		*fd = open_heredoc(redir, shell);
+		return (*fd);
+	}
 	if (*fd == ERROR)
 		return (put_error(OPEN, redir->file, shell), 1);
 	return (0);

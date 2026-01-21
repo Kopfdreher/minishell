@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 17:47:29 by sgavrilo          #+#    #+#             */
-/*   Updated: 2025/06/08 18:35:23 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/21 19:21:49 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_atoi(const char *nptr)
 	}
 	while (ft_isdigit((int)*nptr))
 	{
-		nbr = nbr * 10 + *nptr - 48;
+		nbr = nbr * 10 + *nptr - '0';
 		nptr++;
 	}
 	nbr = nbr * sign;
