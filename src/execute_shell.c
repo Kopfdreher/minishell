@@ -62,7 +62,7 @@ static int	handle_lonely_builtin(t_shell *shell)
 	shell->original_stdin = dup(STDIN_FILENO);
 	shell->original_stdout = dup(STDOUT_FILENO);
 	if (redirs(shell->cmd_list->redir_list, shell) == FAILURE)
-		shell->exit_status = 1;
+			shell->exit_status = 1;
 	else 
 		shell->exit_status = exec_builtin(shell->cmd_list, shell);
 	dup2(shell->original_stdin, STDIN_FILENO);
@@ -97,7 +97,11 @@ static void	handle_child(t_shell *shell, t_cmd *cmd, int prev_fd, int fd[])
 		close(fd[1]);
 	}
 	if (redirs(cmd->redir_list, shell) == FAILURE)
+	{
+		if (g_signal_status == 130)
+			exit (130);
 		exit(1);
+	}
 	exec_child(shell, cmd);
 }
 

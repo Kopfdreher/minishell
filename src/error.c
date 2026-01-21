@@ -45,7 +45,7 @@ static int	get_error_num(t_error_type type)
 		return (1);
 	if (type == EXECVE)
 		return (126);
-	return (1);
+	return (0);
 }
 
 void	put_error(t_error_type type, const char *str, t_shell *shell)
