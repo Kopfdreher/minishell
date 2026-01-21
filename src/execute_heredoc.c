@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 17:23:14 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/20 15:33:06 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/21 19:42:16 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 			return (FAILURE);
 		}
 		if (ft_strncmp(line, eof, (ft_strlen(eof) + 1)) == SUCCESS)
-		{
-			free(line);
-			return (SUCCESS);
-		}
+			return (free(line), SUCCESS);
 		if (expand == TRUE)
 			line = expand_line(line, shell);
 		ft_putendl_fd(line, fd);

@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 18:34:06 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/16 18:21:36 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/21 18:29:21 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,25 +91,29 @@ int	parse_file_tokens_to_file(t_redir *redir)
 	if (!redir)
 		return (SUCCESS);
 	connect_expand_tokens(redir);
-	if (redir->type == HEREDOC)
+	while (redir)
 	{
-		redir->file = merge_tokens_to_str(redir->file_tokens);
-		if (!redir->file)
-			return (FAILURE);
-	}
-	else
-	{
-		if (file_tokens_ambiguous(redir) == TRUE)
+		if (redir->type == HEREDOC)
 		{
-			if (merge_tokens_to_error_file(redir) == FAILURE)
+			redir->file = merge_tokens_to_str(redir->file_tokens);
+			if (!redir->file)
 				return (FAILURE);
 		}
 		else
 		{
-			redir->file = merge_tokens_to_str(redir->expand_redir_tokens);
-			if (!redir->file)
-				return (FAILURE);
+			if (file_tokens_ambiguous(redir) == TRUE)
+			{
+				if (merge_tokens_to_error_file(redir) == FAILURE)
+					return (FAILURE);
+			}
+			else
+			{
+				redir->file = merge_tokens_to_str(redir->expand_redir_tokens);
+				if (!redir->file)
+					return (FAILURE);
+			}
 		}
+		redir = redir->next;
 	}
 	return (SUCCESS);
 }
