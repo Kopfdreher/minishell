@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 17:23:14 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/21 19:42:16 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:19:33 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,22 @@ static	int	expand_heredoc(t_token *eof)
 	return (TRUE);
 }
 
+static void	clean_heredoc(int fd, char *eof_str, int o_r)
+{
+	if (eof_str != NULL)
+		free(eof_str);
+	if (o_r == TRUE)
+	{
+		close(fd);
+		fd = open("/tmp/.heredoc", O_RDONLY);
+		unlink("/tmp/.heredoc");
+		return ;
+	}
+	unlink("/tmp/.heredoc");
+	close(fd);
+	return ;
+}
+
 int	open_heredoc(t_redir *heredoc, t_shell *shell)
 {
 	int		fd;
@@ -90,23 +106,14 @@ int	open_heredoc(t_redir *heredoc, t_shell *shell)
 	eof_str = merge_tokens_to_str(eof);
 	if (!eof_str)
 	{
-		unlink("/tmp/.heredoc");
-		close(fd);
+		clean_heredoc(fd, eof_str, 0);
 		return (put_error(MALLOC, "heredoc", shell), ERROR);
 	}
 	set_signals(SIG_HEREDOC);
 	if (read_heredoc(fd, expand, eof_str, shell) == FAILURE)
-	{
-		free(eof_str);
-		unlink("/tmp/.heredoc");
-		close(fd);
-		return (FAILURE);
-	}
+		return (clean_heredoc(fd, eof_str, 0), FAILURE);
 	set_signals(SIG_INTERACTIVE);
-	free(eof_str);
-	close(fd);
-	fd = open("/tmp/.heredoc", O_RDONLY);
-	unlink("/tmp/.heredoc");
+	clean_heredoc(fd, eof_str, 1);
 	if (fd == ERROR)
 		return (put_error(OPEN, "/tmp/.heredoc", shell), ERROR);
 	return (fd);

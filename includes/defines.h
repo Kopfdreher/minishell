@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:58:19 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/20 18:12:05 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:35:57 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef enum e_error_type {
 	DUP2,
 	H_DOC,
 	PATH,
+	CMD,
 	EXECVE,
 	MALLOC,
 	CD,

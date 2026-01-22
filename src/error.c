@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 21:22:25 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/20 18:19:18 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:35:12 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static const char	*get_error_type(t_error_type type)
 		return ("syntax error near unexpected token ");
 	else if (type == H_DOC)
 		return ("warning: here-document delimited by end-of-file (wanted: `");
-	else if (type == PATH)
-		return ("");
 	else if (type == CD)
 		return ("cd: ");
+	else if (type == CMD)
+		return ("");
 	else if (type == EXIT)
 		return ("exit: ");
 	return ("");
@@ -29,7 +29,7 @@ static const char	*get_error_type(t_error_type type)
 
 static int	is_system_error(t_error_type type)
 {
-	if (type == PIPES || type == MALLOC || type == FORK 
+	if (type == PIPES || type == MALLOC || type == FORK || type == PATH 
 		|| type == DUP2 || type == OPEN || type == EXECVE || type == CHDIR)
 		return (TRUE);
 	else
@@ -45,6 +45,8 @@ static int	get_error_num(t_error_type type)
 		return (1);
 	if (type == EXECVE)
 		return (126);
+	if (type == CMD)
+		return (127);
 	return (0);
 }
 

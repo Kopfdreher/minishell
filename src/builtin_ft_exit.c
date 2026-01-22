@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 17:17:44 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/20 19:02:52 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 15:46:19 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_exit(char **args, t_shell *shell)
 		shell->exit_status = 1;
 		return (1);
 	}
-	else if (is_invalid_code(args[1]))
+	else if (is_invalid_code(args[1]) == TRUE)
 	{
 		errorstr = ft_strjoin(args[1], ": numeric argument required\n");
 		put_error(EXIT, errorstr, shell);
