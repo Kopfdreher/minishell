@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 17:17:44 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/22 15:46:19 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:55:43 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_exit(char **args, t_shell *shell)
 		put_error(EXIT, errorstr, shell);
 		free(errorstr);
 		shell->exit_status = 2;
-	}	
+	}
 	else if (args[2])
 	{
 		put_error(EXIT, "too many arguments\n", shell);

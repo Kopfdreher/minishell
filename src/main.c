@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/20 18:49:46 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 22:21:44 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ volatile sig_atomic_t	g_signal_status = 0;
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
-	int		execute_status;
+	int		exec_status;
 
 	(void)argc;
 	(void)argv;
@@ -45,9 +45,9 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (parse(&shell) == SUCCESS)
 			{
-				execute_status = execute(&shell);
+				exec_status = execute(&shell);
 				if (g_signal_status == 0)
-					shell.exit_status = execute_status;
+					shell.exit_status = exec_status;
 			}
 		}
 		// 	cleanup_cycle(&shell);

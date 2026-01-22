@@ -31,6 +31,21 @@ int	is_builtin(t_cmd *cmd)
 		return (FALSE);
 }
 
+int	handle_lonely_builtin(t_shell *shell)
+{
+	shell->original_stdin = dup(STDIN_FILENO);
+	shell->original_stdout = dup(STDOUT_FILENO);
+	if (redirs(shell->cmd_list->redir_list, shell) == FAILURE)
+		shell->exit_status = 1;
+	else 
+		shell->exit_status = exec_builtin(shell->cmd_list, shell);
+	dup2(shell->original_stdin, STDIN_FILENO);
+	dup2(shell->original_stdout, STDOUT_FILENO);
+	close(shell->original_stdin);
+	close(shell->original_stdout);
+	return (shell->exit_status);
+}
+
 int	exec_builtin(t_cmd *cmd, t_shell *shell)
 {
 	char	**commands;
