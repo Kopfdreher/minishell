@@ -37,7 +37,5 @@ int	env_parameter_shift(char ***args)
 		return (FAILURE);
 	free_strarr(args);
 	*args = new_args;
-	if (env_parameter_shift(args) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
+	return (env_parameter_shift(args));
 }

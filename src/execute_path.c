@@ -56,13 +56,12 @@ int	handle_path_ret(int ret, t_shell *shell, t_cmd *cmd)
 	char	*errorstr;
 
 	if (ret == ERROR)
-	{
-		put_error(MALLOC, "minishell:", shell);
-		return (1);
-	}
+		return (put_error(MALLOC, "minishell:", shell), 1);
 	if (ret == FAILURE)
 	{
 		errorstr = ft_strjoin(cmd->args[0], ": command not found\n");
+		if (!errorstr)
+			return (put_error(MALLOC, "minishell:", shell), 1);
 		put_error(CMD, errorstr, shell);
 		free(errorstr);
 		return (127);

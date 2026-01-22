@@ -54,6 +54,7 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 				free(error_string);
 				return (SUCCESS);
 			}
+			free(line);
 			return (FAILURE);
 		}
 		if (ft_strncmp(line, eof, (ft_strlen(eof) + 1)) == SUCCESS)

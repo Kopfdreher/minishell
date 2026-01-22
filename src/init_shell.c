@@ -15,8 +15,6 @@
 void	init_shell(t_shell *shell, char **envp)
 {
 	ft_memset(shell, 0, sizeof(t_shell));
-	shell->original_stdin = dup(STDIN_FILENO);
-	shell->original_stdout = dup(STDOUT_FILENO);
 	shell->env_list = init_env(envp);
 	if (!shell->env_list)
 		return (put_error(MALLOC, "minishell: Malloc failed!", shell));

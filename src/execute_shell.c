@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/22 16:54:18 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:07:23 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	exec_child(t_shell *shell, t_cmd *cmd)
 {
 	int		ret;
+	char	*errorstr;
 
 	if (is_builtin(cmd) == TRUE)
 		exit (exec_builtin(cmd, shell));
@@ -29,7 +30,14 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 			exit(1);
 		}
 		execve(cmd->path, cmd->args, shell->env_array);
-		put_error(EXECVE, cmd->path, shell);
+		errorstr = ft_strjoin(cmd->path, ": Is a directory\n");
+		if (!errorstr)
+		{
+			put_error(MALLOC, "minishell:", shell);
+			exit(1);
+		}
+		put_error(EXECVE, errorstr, shell);
+		free(errorstr);
 		exit (126);
 	}
 	exit (0);

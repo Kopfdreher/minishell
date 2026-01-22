@@ -30,7 +30,7 @@ static const char	*get_error_type(t_error_type type)
 static int	is_system_error(t_error_type type)
 {
 	if (type == PIPES || type == MALLOC || type == FORK || type == PATH 
-		|| type == DUP2 || type == OPEN || type == EXECVE || type == CHDIR)
+		|| type == DUP2 || type == OPEN || type == CHDIR)
 		return (TRUE);
 	else
 		return (FALSE);

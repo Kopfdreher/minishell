@@ -46,7 +46,7 @@ int	ft_cd(char **args, t_shell *shell)
 	dir = NULL;
 	if (!args)
 		return (FAILURE);
-	if (args[2])
+	if (args[1] && args[2])
 	{
 		put_error(CD, "too many arguments\n", shell);
 		return (FAILURE);

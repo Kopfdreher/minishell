@@ -95,7 +95,9 @@ int	ft_export(t_shell *shell, char **args)
 	{
 		if (is_valid_identifier(args[i]) == FALSE)
 		{
-			put_error(DEFAULT, "export: not a valid identifier\n", shell);
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(args[i], 2);
+			put_error(DEFAULT, "': not a valid identifier\n", shell);
 			rtn = FAILURE;
 			continue ;
 		}
