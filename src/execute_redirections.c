@@ -28,8 +28,8 @@ static int	open_redirs(int *fd, t_redir *redir, t_shell *shell)
 		return (*fd);
 	}
 	if (*fd == ERROR)
-		return (put_error(OPEN, redir->file, shell), 1);
-	return (0);
+		return (put_error(OPEN, redir->file, shell), FAILURE);
+	return (SUCCESS);
 }
 
 static int	dup_redir(int fd, int direction, t_shell *shell)

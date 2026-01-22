@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 17:23:14 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/22 18:05:41 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 22:31:12 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 			if (g_signal_status != 130)
 			{
 				error_string = ft_strjoin(eof, "')\n");
+				if (!error_string)
+					return (put_error(MALLOC, "", shell), FAILURE);
 				put_error(H_DOC, error_string, shell);
-				free(line);
-				free(error_string);
-				return (SUCCESS);
+				return (free(line), free(error_string), SUCCESS);
 			}
-			free(line);
-			return (FAILURE);
+			return (free(line), FAILURE);
 		}
 		if (ft_strncmp(line, eof, (ft_strlen(eof) + 1)) == SUCCESS)
 			return (free(line), SUCCESS);

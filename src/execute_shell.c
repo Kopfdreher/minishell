@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:17:49 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/22 18:07:23 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 22:39:28 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 static void	exec_child(t_shell *shell, t_cmd *cmd)
 {
 	int		ret;
-	char	*errorstr;
 
 	if (is_builtin(cmd) == TRUE)
-		exit (exec_builtin(cmd, shell));
+		exit(exec_builtin(cmd, shell));
 	if (cmd->args && cmd->args[0])
 	{
 		ret = find_path(cmd, shell->env_list);
@@ -30,32 +29,24 @@ static void	exec_child(t_shell *shell, t_cmd *cmd)
 			exit(1);
 		}
 		execve(cmd->path, cmd->args, shell->env_array);
-		errorstr = ft_strjoin(cmd->path, ": Is a directory\n");
-		if (!errorstr)
-		{
-			put_error(MALLOC, "minishell:", shell);
-			exit(1);
-		}
-		put_error(EXECVE, errorstr, shell);
-		free(errorstr);
+		ft_putstr_fd(cmd->path, 2);
+		put_error(EXECVE, ": Is a directory\n", shell);
 		exit (126);
 	}
-	exit (0);
+	exit(0);
 }
 
-static int	handle_lonely_builtin(t_shell *shell)
+static void	prep_write_fd(int fd[], t_shell *shell)
 {
-	shell->original_stdin = dup(STDIN_FILENO);
-	shell->original_stdout = dup(STDOUT_FILENO);
-	if (redirs(shell->cmd_list->redir_list, shell) == FAILURE)
-		shell->exit_status = 1;
-	else 
-		shell->exit_status = exec_builtin(shell->cmd_list, shell);
-	dup2(shell->original_stdin, STDIN_FILENO);
-	dup2(shell->original_stdout, STDOUT_FILENO);
-	close(shell->original_stdin);
-	close(shell->original_stdout);
-	return (shell->exit_status);
+	if (dup2(fd[1], 1) == ERROR)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		put_error(DUP2, "minishell: dup2", shell);
+		exit(1);
+	}
+	close(fd[0]);
+	close(fd[1]);
 }
 
 static void	handle_child(t_shell *shell, t_cmd *cmd, int prev_fd, int fd[])
@@ -71,24 +62,27 @@ static void	handle_child(t_shell *shell, t_cmd *cmd, int prev_fd, int fd[])
 		close(prev_fd);
 	}
 	if (cmd->next)
-	{
-		if (dup2(fd[1], 1) == ERROR)
-		{
-			close(fd[0]);
-			close(fd[1]);
-			put_error(DUP2, "minishell: dup2", shell);
-			exit(1);
-		}
-		close(fd[0]);
-		close(fd[1]);
-	}
+		prep_write_fd(fd, shell);
 	if (redirs(cmd->redir_list, shell) == FAILURE)
 	{
 		if (g_signal_status == 130)
-			exit (130);
+			exit(130);
 		exit(1);
 	}
 	exec_child(shell, cmd);
+}
+
+static void	parental_control(int *prev_fd, int fd[], t_cmd *cmd)
+{
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (cmd->next)
+	{
+		close(fd[1]);
+		*prev_fd = fd[0];
+	}
+	else
+		*prev_fd = -1;
 }
 
 int	execute(t_shell *shell)
@@ -103,34 +97,15 @@ int	execute(t_shell *shell)
 	{
 		if (prev_fd == -1 && !cmd->next && is_builtin(cmd))
 			return (handle_lonely_builtin(shell));
-		if (cmd->next)
-		{
-			if (pipe(fd) == ERROR)
-			{
-				wait_for_children(shell);
-				return (put_error(PIPES, "minishell: pipe", shell), 1);
-			}
-		}
+		if (cmd->next && pipe(fd) == ERROR)
+			return (put_error(PIPES, "pipe", shell), wait_for_children(shell));
 		cmd->pid = fork();
 		if (cmd->pid == ERROR)
-		{
-			wait_for_children(shell);
-			return (put_error(FORK, "minishell: fork", shell), 1);
-		}
+			return (put_error(FORK, "fork", shell), wait_for_children(shell));
 		if (cmd->pid == 0)
 			handle_child(shell, cmd, prev_fd, fd);
 		else 
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			if (cmd->next)
-			{
-				close(fd[1]);
-				prev_fd = fd[0];
-			}
-			else
-				prev_fd = -1;
-		}
+			parental_control(&prev_fd, fd, cmd);
 		cmd = cmd->next;
 	}
 	set_signals(SIG_EXEC_PARENT);

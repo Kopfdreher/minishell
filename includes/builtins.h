@@ -44,5 +44,6 @@ int	ft_exit(char **args, t_shell *shell);
 // Helper to check/run
 int	is_builtin(t_cmd *cmd);
 int	exec_builtin(t_cmd *cmd, t_shell *shell);
+int	handle_lonely_builtin(t_shell *shell);
 
 #endif
