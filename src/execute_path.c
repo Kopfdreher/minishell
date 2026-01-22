@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:49:54 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/20 15:55:11 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:10:32 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,28 @@ static int	access_check(t_cmd *cmd)
 	}
 	cmd->path = NULL;
 	return (127);
+}
+
+int	handle_path_ret(int ret, t_shell *shell, t_cmd *cmd)
+{
+	char	*errorstr;
+
+	if (ret == ERROR)
+	{
+		put_error(MALLOC, "minishell:", shell);
+		return (1);
+	}
+	if (ret == FAILURE)
+	{
+		errorstr = ft_strjoin(cmd->args[0], ": command not found\n");
+		put_error(CMD, errorstr, shell);
+		free(errorstr);
+		return (127);
+	}
+	put_error(PATH, cmd->args[0], shell);
+	if (ret == 127)
+		return (127);
+	return (126);
 }
 
 int	find_path(t_cmd *cmd, t_env *env_list)

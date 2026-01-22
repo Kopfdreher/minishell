@@ -6,7 +6,7 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 15:41:28 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/19 18:48:35 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/22 15:48:48 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_cd(char **args, t_shell *shell)
 	dir = NULL;
 	if (!args)
 		return (FAILURE);
-	if (args[1] && args[2])
+	if (args[2])
 	{
 		put_error(CD, "too many arguments\n", shell);
 		return (FAILURE);
