@@ -15,7 +15,7 @@
 
 # include "defines.h"
 
-void	init_shell(t_shell *shell, char **envp);
+int		init_shell(t_shell *shell, int argc, char **argv, char **envp);
 t_env	*init_env(char **envp);
 void	free_env_list(t_env **env_list);
 void	add_env_node_to_back(t_env **head, t_env *new_node);

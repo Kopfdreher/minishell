@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:44:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/20 13:28:56 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/23 10:50:30 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,17 @@ void	handler_heredoc(int sig)
 	}
 }
 
+static void	set_sigaction_to_null(struct sigaction *sa)
+{
+	ft_memset(sa, 0, sizeof(sa));
+	sigemptyset(&sa->sa_mask);
+}
+
 void	set_signals(t_sig_mode	mode)
 {
 	struct sigaction	sa;
 
-	ft_memset(&sa, 0, sizeof(sa));
-	sigemptyset(&sa.sa_mask);
+	set_sigaction_to_null(&sa);
 	if (mode == SIG_INTERACTIVE)
 	{
 		sa.sa_handler = handler_interactive;

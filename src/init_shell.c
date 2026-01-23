@@ -12,14 +12,17 @@
 
 #include "minishell.h"
 
-void	init_shell(t_shell *shell, char **envp)
+int	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 {
+	(void)argc;
+	(void)argv;
 	ft_memset(shell, 0, sizeof(t_shell));
 	shell->env_list = init_env(envp);
 	if (!shell->env_list)
-		return (put_error(MALLOC, "minishell: Malloc failed!", shell));
+		return (put_error(MALLOC, NULL, shell), FAILURE);
 	shell->env_array = NULL;
 	if (execute_env_list_to_strarr(shell) == FAILURE)
-		return (put_error(MALLOC, "minishell: Malloc failed!", shell));
+		return (put_error(MALLOC, NULL, shell), FAILURE);
 	shell->running = TRUE;
+	return (SUCCESS);
 }

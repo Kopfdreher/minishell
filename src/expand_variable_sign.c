@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 17:08:17 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/17 17:14:15 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/23 10:34:12 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	add_variable_sign(t_token **token)
 	variable_token = new_token(dollar_sign, WORD, NO_QUOTE);
 	if (!variable_token)
 		return (free(dollar_sign), FAILURE);
-	variable_token->merge = TRUE; // check if correct
+	variable_token->merge = TRUE;
 	add_token_to_back(&(*token)->expand_tokens, variable_token);
 	return (SUCCESS);
 }

@@ -28,28 +28,18 @@ static int	is_merge(char c)
 	return (TRUE);
 }
 
-static char	get_quote_char(t_quote_type quote)
-{
-	if (quote == SINGLE_QUOTE)
-		return ('\'');
-	else
-		return ('"');
-}
-
 int	get_token_len(char *input, t_token *word_token)
 {
 	int				len;
-	int				quote_char;
 	t_quote_type	quote;
 
 	len = 0;
 	quote = word_token->quote;
 	if (quote != NO_QUOTE)
 	{
-		quote_char = get_quote_char(quote);
 		while (input[len])
 		{
-			if (input[len] == quote_char)
+			if (input[len] == " '\""[quote])
 			{
 				if (is_merge(input[len + 1]) == TRUE)
 					word_token->merge = TRUE;

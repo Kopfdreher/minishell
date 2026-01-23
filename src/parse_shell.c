@@ -62,7 +62,5 @@ int	parse(t_shell *shell)
 		if (current_token && current_token->type == PIPE)
 			current_token = current_token->next;
 	}
-	//if (shell->cmd_list)
-	//	print_cmds(shell->cmd_list);
 	return (SUCCESS);
 }

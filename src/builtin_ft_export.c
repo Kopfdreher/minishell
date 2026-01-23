@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 14:32:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/20 10:49:37 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/23 10:52:05 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,7 @@ int	ft_export(t_shell *shell, char **args)
 			continue ;
 		}
 		if (set_env_node(&shell->env_list, args[i]) == FAILURE)
-		{
-			put_error(MALLOC, NULL, shell);
-			return (FAILURE);
-		}
+			return (put_error(MALLOC, NULL, shell), FAILURE);
 	}
 	return (rtn);
 }
