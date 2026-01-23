@@ -41,6 +41,7 @@ all: ${NAME}
 fclean: clean
 	${RM} ${NAME}
 	${RM} compile_commands.json
+	${RM} -rf .cache
 
 # |--- CompileDB (Magic Rule) -------------------|
 compiledb:
