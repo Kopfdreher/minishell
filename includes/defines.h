@@ -22,6 +22,9 @@
 # define FALSE 0
 # define TRUE 1
 
+// --- Global ---
+extern volatile sig_atomic_t	g_signal_status;
+
 // --- ENUMS ---
 typedef enum e_token_type {
 	WORD,
@@ -63,9 +66,9 @@ typedef enum e_sig_mode {
 }	t_sig_mode;
 
 // --- STRUCTS ---
-typedef struct s_shell	t_shell;
-typedef struct s_cmd	t_cmd;
-typedef struct s_token	t_token;
+typedef struct s_shell			t_shell;
+typedef struct s_cmd			t_cmd;
+typedef struct s_token			t_token;
 
 typedef struct s_env {
 	char			*name;
@@ -131,8 +134,5 @@ typedef struct s_shell {
 	int		original_stdin;
 	int		original_stdout;
 }	t_shell;
-
-// --- Global ---
-extern volatile sig_atomic_t	g_signal_status;
 
 #endif

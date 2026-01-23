@@ -86,6 +86,22 @@ static int	file_tokens_ambiguous(t_redir *redir)
 	return (redir->is_ambiguous);
 }
 
+static int	handle_other_redirs(t_redir *redir)
+{
+	if (file_tokens_ambiguous(redir) == TRUE)
+	{
+		if (merge_tokens_to_error_file(redir) == FAILURE)
+			return (FAILURE);
+	}
+	else
+	{
+		redir->file = merge_tokens_to_str(redir->expand_redir_tokens);
+		if (!redir->file)
+			return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
 int	parse_file_tokens_to_file(t_redir *redir)
 {
 	if (!redir)
@@ -101,17 +117,8 @@ int	parse_file_tokens_to_file(t_redir *redir)
 		}
 		else
 		{
-			if (file_tokens_ambiguous(redir) == TRUE)
-			{
-				if (merge_tokens_to_error_file(redir) == FAILURE)
-					return (FAILURE);
-			}
-			else
-			{
-				redir->file = merge_tokens_to_str(redir->expand_redir_tokens);
-				if (!redir->file)
-					return (FAILURE);
-			}
+			if (handle_other_redirs(redir) == FAILURE)
+				return (FAILURE);
 		}
 		redir = redir->next;
 	}
