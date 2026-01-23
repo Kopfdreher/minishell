@@ -12,20 +12,18 @@ STRARR = $(addsuffix .c, ft_lst_to_strarr free_strarr ft_strarrcpy \
 		 ft_strarrlen print_strarr)
 
 OBJS = ${SRCS:.c=.o}
-
 OBJS_BONUS = ${BONUS:.c=.o}
-
 OBJS_PRINTF = ${PRINTF:.c=.o}
-
 OBJS_GNL = ${GNL:.c=.o}
-
 OBJS_STRARR = ${STRARR:.c=.o}
 
 CC = gcc
-
 RM = rm -f
-
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+
+GREEN = \033[0;32m
+BLUE  = \033[0;36m
+RESET = \033[0m
 
 .c.o:
 	${CC} ${CFLAGS} -g -c $< -o ${<:.c=.o}
@@ -42,5 +40,16 @@ all: ${NAME}
 
 fclean: clean
 	${RM} ${NAME}
+	${RM} compile_commands.json
+
+# |--- CompileDB (Magic Rule) -------------------|
+compiledb:
+	@if which compiledb > /dev/null; then \
+		echo "$(BLUE)|--Generating libft JSONs-----------|$(RESET)"; \
+		compiledb -n make -B; \
+		echo "$(GREEN)|--Libft Database updated!----------|$(RESET)"; \
+	else \
+		echo "Error: compiledb not found. Run: pip3 install compiledb"; \
+	fi
 
 re: fclean all

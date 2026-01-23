@@ -75,7 +75,18 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS)
 		@mkdir -p $(OBJ_DIR)
 		@$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
-# |--- Clean up ---------------------------------|
+# |--- CompileDB (Magic Rule) -------------------|
+compiledb:
+		@if which compiledb > /dev/null; then \
+			echo "$(BLUE)|--Generating JSONs-----------------|$(RESET)"; \
+			compiledb -n make -B; \
+			make compiledb --no-print-directory -C $(LIBFT_DIR); \
+			echo "$(GREEN)|--All Databases updated!-----------|$(RESET)"; \
+		else \
+			echo "Error: compiledb not found. Run: pip3 install compiledb"; \
+		fi
+
+# |--- CleanUp ----------------------------------|
 
 # Remove all Object-Files
 clean:
@@ -88,10 +99,12 @@ clean:
 fclean: clean
 		@echo "$(BLUE)|--Cleaning Executables-------------|$(RESET)"
 		@rm -f $(NAME) > /dev/null
+		@echo "$(BLUE)|--Cleaning JSON-Files--------------|$(RESET)"
+		@rm -f compile_commands.json
 		@make fclean -C $(LIBFT_DIR) > /dev/null
 		@echo "$(GREEN)|--Cleaned successfully!------------|$(RESET)"
 
 # Rebuild
 re: fclean all
 
-.PHONY: clean all re fclean
+.PHONY: clean all re fclean compiledb
