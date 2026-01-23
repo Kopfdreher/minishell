@@ -101,6 +101,7 @@ fclean: clean
 		@rm -f $(NAME) > /dev/null
 		@echo "$(BLUE)|--Cleaning JSON-Files--------------|$(RESET)"
 		@rm -f compile_commands.json
+		@rm -rf .cache
 		@make fclean -C $(LIBFT_DIR) > /dev/null
 		@echo "$(GREEN)|--Cleaned successfully!------------|$(RESET)"
 
