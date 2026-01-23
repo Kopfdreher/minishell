@@ -54,3 +54,31 @@ Start the shell by running:
 ```bash
 ./minishell
 ```
+
+You can now type commands just like in bash (e.g., `ls -l | grep .c`, `cat << EOF`).
+
+## Resources
+
+### References
+
+* [GNU Bash Reference Manual](https://www.gnu.org/software/bash/manual/) - The gold standard for expected behavior.
+* **Man Pages:** `fork(2)`, `execve(2)`, `waitpid(2)`, `pipe(2)`, `dup2(2)`, `sigaction(2)`.
+* [Architecture of a Shell](https://aosabook.org/en/v1/bash.html) - Helpful for understanding the parsing/execution loop.
+
+### AI Usage
+
+AI tools (specifically ChatGPT/Gemini/Claude) were used in this project for the following tasks:
+
+1. **Conceptual Understanding:**
+* Clarifying the difference between "Heap" and "Stack" memory in the context of string literals vs. allocated strings.
+* Understanding the specific behavior of Process Groups and how signals propagate to children vs. parents.
+
+2. **Debugging & Logic:**
+* Designing the `wait_for_children` loop to correctly handle pipeline exit codes (`128 + Signal`).
+* Troubleshooting the "Interrupted System Call" (`EINTR`) error when using `waitpid` alongside signal handlers.
+* Refining the `ft_strjoin_multi` variadic function to ensure memory safety.
+
+3. **Code Structure:**
+* Suggestions for organizing enums and structs to avoid global scope pollution (e.g., separating `enum` definitions from `struct` definitions).
+
+*Note: All code provided by AI was reviewed, tested, and adapted to fit the project's specific coding standard (Norminette) and architecture.*
