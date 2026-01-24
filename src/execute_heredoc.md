@@ -1,204 +1,96 @@
-# 🐛 Heredoc Implementation Issues
+# 🐛 Heredoc Refactor: The "Pre-Process" Strategy
 
-### 1. Multiple Heredocs Failure
+### ❌ Current Issues
 
-Currently, chaining multiple heredocs does not work as expected. The shell fails to process the second delimiter correctly or loses context.
-
-**Reproduction:**
-
-```bash
-minishell$ <<EOF <<EOF
-> hi
-> EOF
-> hi
-> warning: here-document delimited by end-of-file (wanted: `EOF')
-
-```
-
-### 2. Broken Piping Logic
-
-When piping a heredoc into another command, the input processing breaks. It appears the child process (running the heredoc) conflicts with the pipe execution, causing command-not-found errors on the input text itself.
-
-**Reproduction:**
-
-```bash
-minishell$ cat <<EOF | ls
-[ls output]
-ello: command not found
-hleo: command not found
-minishell$ 
-
-```
-
-### 3. Execution Order (Priority Issue)
-
-Bash processes heredoc input **before** attempting to open other redirections or execute commands. Our shell currently processes them in strict linear order or too late in the execution chain.
-
-**Current Behavior:**
-
-```bash
-minishell$ cat <missing <<EOF <missing | ls
-missing: No such file or directory
-
-```
-
-*(The shell errors out immediately on the file open, preventing the user from inputting the heredoc.)*
-
-**Expected Behavior (Bash):**
-
-1. User is prompted for Heredoc input (`<<EOF`).
-2. *Then* the shell attempts to open `<missing`.
-3. *Then* the error is displayed.
+1. **Multiple Heredocs:** Overwriting occurs because filenames aren't unique.
+2. **Broken Piping:** Reading input inside a child process conflicts with TTY/Pipes.
+3. **Priority:** Bash reads heredocs *before* checking other file errors; we currently check too late.
 
 ---
 
-### 💡 Proposed Solution
+### 💡 The Solution: `t_list *heredocs`
 
-**Architecture Change:** Heredoc processing must be the **very first action** taken during the execution phase.
+To solve this efficiently, we will utilize the `t_list *heredocs` in the `t_shell` struct. This generic linked list should store a pointer to **every** heredoc redirection node found during parsing.
 
-**Plan:**
+**Why this makes it easier:**
+Instead of traversing complex command trees to find heredocs, we simply iterate this linear list to process, execute, and clean up everything in one go.
 
-1. Scan the entire command chain for heredocs **before** forking or piping.
-2. Collect all user input and save to temporary files.
-3. Replace `<<` tokens with simple `<` redirections pointing to these temp files.
-4. Proceed with normal execution (pipes, file opens, etc.).
+#### 1. Unique Filename Generator
 
----
-
-Here is the breakdown of why your current approach fails and how the "Pre-Process" architecture fixes it.
-
-### The Problem: Timing and Process Ownership
-
-1. **The Piping Bug:**
-* **Current Behavior:** You execute redirections *inside* the child process (after `fork`).
-* **The Issue:** When you run `cat << EOF | ls`, the `cat` process is a child. It tries to run `readline()`. However, in a pipeline, the terminal control is complex. Often the child does not have the right permissions to read from the TTY, or `readline` gets confused because `stdin` is being messed with by the pipe setup.
-* **The Fix:** You must read the Heredoc in the **Parent** process, *before* any forking happens.
-
-
-2. **Multiple Heredocs (`<< A << B`):**
-* **Current Behavior:** You write to a hardcoded filename `/tmp/.heredoc`.
-* **The Issue:** The second heredoc overwrites the first one because they use the same filename.
-* **The Fix:** Every heredoc needs a **unique filename** (e.g., `.heredoc_0`, `.heredoc_1`).
-
-
-3. **Order of Operations (`< missing << EOF`):**
-* **Current Behavior:** Your `redirs()` loop stops at the first error (`missing`).
-* **The Issue:** The user never gets to type the heredoc input because the code crashed on the missing file first.
-* **The Fix:** Bash scans the *entire* command line for heredocs and collects them **all** first. Only *then* does it try to open files like `missing`.
-
-
-
----
-
-### The Solution: The "Pre-Execution Scan"
-
-You need to split your logic into two phases:
-
-1. **Phase 1 (Parent):** Scan all commands, find all heredocs, read user input, save to unique temp files.
-2. **Phase 2 (Child/Execution):** When execution happens, the heredoc is treated just like a normal input file (because we already saved it).
-
-#### Step 1: Generate Unique Filenames
-
-We need a way to ensure every heredoc gets a different name so they don't overwrite each other.
+We need a static counter to ensure every heredoc gets a unique path (e.g., `/tmp/.heredoc_0`, `/tmp/.heredoc_1`) so they don't overwrite each other.
 
 ```c
-// Helper to generate names like "/tmp/.heredoc_1", "/tmp/.heredoc_2"
-static char *generate_heredoc_filename(void)
+static char *get_unique_filename(void)
 {
     static int i = 0;
-    char *num;
-    char *name;
-
-    num = ft_itoa(i++);
-    name = ft_strjoin("/tmp/.heredoc_", num);
-    free(num);
-    return (name);
+    char *num = ft_itoa(i++);
+    char *name = ft_strjoin("/tmp/.heredoc_", num);
+    return (free(num), name);
 }
 
 ```
 
-#### Step 2: The Heredoc Collector (Phase 1)
+#### 2. The Execution Loop (Phase 1: Parent)
 
-Create a function that runs **before** your execution loop (before `execute_cmds` or pipes).
-
-#### Step 3: Modify `open_heredoc` logic
-
-Your `open_heredoc` (or `process_heredoc` in the new plan) should no longer unlink the file immediately. The file must exist until the child process reads it.
+Before any forking or piping, iterate through `shell->heredocs`. For each node, generate a filename, read the input, and then **convert** the node type.
 
 ```c
-/*
-** Modified version of your open_heredoc
-** It takes the unique filename as an argument
-*/
-int process_heredoc(t_redir *heredoc, char *filename, t_shell *shell)
+int handle_heredocs(t_shell *shell)
 {
-    int     fd;
-    t_token *eof;
-    char    *eof_str;
-    int     expand;
+    t_list  *current = shell->heredocs;
+    t_redir *redir;
+    char    *filename;
 
-    eof = heredoc->file_tokens; // This is currently the delimiter tokens
-    
-    // Open the UNIQUE filename
-    fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-    if (fd == ERROR)
-        return (put_error(OPEN, "heredoc", shell), ERROR);
-
-    // ... (Your expansion and readline logic remains the same) ...
-    
-    set_signals(SIG_HEREDOC);
-    if (read_heredoc(fd, expand, eof_str, shell) == FAILURE)
+    while (current)
     {
-        close(fd);
-        // If interrupted, unlink immediately to clean up
-        unlink(filename); 
-        return (FAILURE);
+        redir = (t_redir *)current->content; // Access the redir node directly
+        filename = get_unique_filename();
+
+        // 1. Read input and save to 'filename'
+        if (process_heredoc(redir, filename, shell) == FAILURE)
+            return (free(filename), FAILURE); // Handle Ctrl+C
+
+        // 2. Mutate the node: It is now a normal input file
+        free(redir->file);
+        redir->file = filename;
+        redir->type = REDIR_IN; // Executor will treat it like "< /tmp/.heredoc_0"
+
+        current = current->next;
     }
-    set_signals(SIG_INTERACTIVE);
-    
-    close(fd); 
-    // DO NOT UNLINK HERE! The child needs to read it later.
     return (SUCCESS);
 }
 
 ```
 
-#### Step 4: Integration in Main Loop
+#### 3. Cleanup Strategy
 
-Call this **before** you start forking or piping.
+Since we stored all references in `shell->heredocs`, cleanup is trivial. We don't need to search the command tree; we just walk the list and unlink the files we created.
 
 ```c
-// In your execute_cmds or main execution logic
-int execute_cmds(t_shell *shell)
+void cleanup_heredocs(t_shell *shell)
 {
-    // 1. PRE-PROCESS HEREDOCS
-    // This happens in the parent, sequentially.
-    // It handles the "order" issue and the "piping" issue.
-    if (handle_heredoc_execution(shell) == FAILURE)
-        return (130); // Stop if Ctrl+C was pressed during heredoc
+    t_list  *current = shell->heredocs;
+    t_redir *redir;
 
-    // 2. NOW EXECUTE PIPELINE
-    // The heredoc nodes have been converted to simple REDIR_IN nodes
-    // pointing to files like /tmp/.heredoc_0.
-    // Your existing redirs() function will just open them naturally!
-    
-    // ... your forking loop ...
-    
-    // 3. CLEANUP
-    // After all children are dead, delete the temp files.
-    cleanup_heredocs(shell); 
+    while (current)
+    {
+        redir = (t_redir *)current->content;
+        // Unlink the unique temp file we generated earlier
+        unlink(redir->file);
+        current = current->next;
+    }
 }
 
 ```
 
-### Cleanup Strategy
+### ✅ Summary of Flow
 
-Since we aren't unlinking immediately, we need a cleanup function at the end of execution to delete `/tmp/.heredoc_0`, `/tmp/.heredoc_1`, etc.
+1. **Parse:** Add every `<<` token to `shell->heredocs`.
+2. **Pre-Exec:** Call `handle_heredocs(shell)` (Parent process).
+* Generates unique `/tmp/.heredoc_N`.
+* Reads user input.
+* Updates token to `REDIR_IN`.
 
-You can iterate through your command list again at the end:
 
-### Summary of fixes
-
-1. **Buggy Piping:** Solved because input is read in the Parent before `fork`.
-2. **Multiple Heredocs:** Solved because we generate unique filenames (`index++`).
-3. **Order of Ops:** Solved because we scan/read heredocs before we try to open any files (`< missing`)
+3. **Exec:** Run pipes/forks. The executor sees normal input files.
+4. **Post-Exec:** Call `cleanup_heredocs(shell)` to unlink files.
