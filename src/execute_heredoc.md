@@ -5,6 +5,56 @@
 1. **Multiple Heredocs:** Overwriting occurs because filenames aren't unique.
 2. **Broken Piping:** Reading input inside a child process conflicts with TTY/Pipes.
 3. **Priority:** Bash reads heredocs *before* checking other file errors; we currently check too late.
+ 
+### 1. Multiple Heredocs Failure
+
+Currently, chaining multiple heredocs does not work as expected. The shell fails to process the second delimiter correctly or loses context.
+
+**Reproduction:**
+
+```bash
+minishell$ <<EOF <<EOF
+> hi
+> EOF
+> hi
+> warning: here-document delimited by end-of-file (wanted: `EOF')
+
+```
+
+### 2. Broken Piping Logic
+
+When piping a heredoc into another command, the input processing breaks. It appears the child process (running the heredoc) conflicts with the pipe execution, causing command-not-found errors on the input text itself.
+
+**Reproduction:**
+
+```bash
+minishell$ cat <<EOF | ls
+[ls output]
+ello: command not found
+hleo: command not found
+minishell$ 
+
+```
+
+### 3. Execution Order (Priority Issue)
+
+Bash processes heredoc input **before** attempting to open other redirections or execute commands. Our shell currently processes them in strict linear order or too late in the execution chain.
+
+**Current Behavior:**
+
+```bash
+minishell$ cat <missing <<EOF <missing | ls
+missing: No such file or directory
+
+```
+
+*(The shell errors out immediately on the file open, preventing the user from inputting the heredoc.)*
+
+**Expected Behavior (Bash):**
+
+1. User is prompted for Heredoc input (`<<EOF`).
+2. *Then* the shell attempts to open `<missing`.
+3. *Then* the error is displayed.
 
 ---
 
