@@ -16,6 +16,7 @@ volatile sig_atomic_t	g_signal_status = 0;
 
 static void	cleanup_cycle(t_shell *shell)
 {
+	free_heredocs_lst(&shell->heredocs);
 	free(shell->input);
 	free_cmds(&shell->cmd_list);
 	free_tokens(&shell->tokens);

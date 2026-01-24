@@ -26,3 +26,31 @@ int	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 	shell->running = TRUE;
 	return (SUCCESS);
 }
+
+void	free_heredocs_lst(t_list **lst)
+{
+	t_list	*next;
+
+	while (*lst)
+	{
+		next = (*lst)->next;
+		free(*lst);
+		*lst = next;
+	}
+	*lst = NULL;
+}
+
+void	print_heredocs(t_shell *shell)
+{
+	t_list	*curr;
+	t_redir	*curr_redir;
+
+	curr = shell->heredocs;
+	while (curr)
+	{
+		curr_redir = curr->content;
+		if (curr_redir && curr_redir->file)
+			ft_printf("%s\n", curr_redir->file);
+		curr = curr->next;
+	}
+}

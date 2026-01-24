@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/15 12:13:34 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/24 18:23:17 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	free_args_list(t_arg **args_list)
 		free(current);
 		current = next;
 	}
-	args_list = NULL;
+	*args_list = NULL;
 }
 
 static void	free_redir_list(t_redir **redir_list)
@@ -49,7 +49,24 @@ static void	free_redir_list(t_redir **redir_list)
 		free(current);
 		current = next;
 	}
-	redir_list = NULL;
+	*redir_list = NULL;
+}
+
+void	add_redir_to_back(t_redir **head, t_redir *new_node)
+{
+	t_redir *tail;
+
+	if (!new_node)
+		return ;
+	if (!*head)
+		*head = new_node;
+	else
+	{
+		tail = *head;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_node;
+	}
 }
 
 void	free_cmds(t_cmd **cmds)

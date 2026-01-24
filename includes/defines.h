@@ -126,6 +126,7 @@ typedef struct s_cmd {
 typedef struct s_shell {
 	t_cmd	*cmd_list;
 	t_env	*env_list;
+	t_list	*heredocs;
 	t_token	*tokens;
 	char	*input;
 	char	**env_array;

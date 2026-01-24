@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:03:16 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/14 21:18:59 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/24 18:35:50 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	add_arg_to_cmd(t_cmd **cmd, t_token **current_token)
 static int	add_redir_to_cmd(t_cmd **cmd, t_token **current_token)
 {
 	t_redir	*new_redir;
-	t_redir	*last_redir;
+	t_list	*heredoc;
 
 	new_redir = ft_calloc(1, sizeof(t_redir));
 	if (!new_redir)
@@ -49,14 +49,11 @@ static int	add_redir_to_cmd(t_cmd **cmd, t_token **current_token)
 	*current_token = (*current_token)->next;
 	new_redir->file_tokens = *current_token;
 	new_redir->cmd = *cmd;
-	if ((*cmd)->redir_list == NULL)
-		(*cmd)->redir_list = new_redir;
-	else
+	add_redir_to_back(&(*cmd)->redir_list, new_redir);
+	if (new_redir->type == HEREDOC)
 	{
-		last_redir = (*cmd)->redir_list;
-		while (last_redir->next != NULL)
-			last_redir = last_redir->next;
-		last_redir->next = new_redir;
+		heredoc = ft_lstnew(new_redir);
+		ft_lstadd_back(&(*cmd)->shell->heredocs, heredoc);
 	}
 	while ((*current_token)->merge == TRUE)
 		*current_token = (*current_token)->next;
