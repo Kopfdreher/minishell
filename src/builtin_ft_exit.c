@@ -34,7 +34,6 @@ int	ft_exit(char **args, t_shell *shell)
 {
 	char	*errorstr;
 
-	ft_putendl_fd("exit", 1);
 	if (!args[1])
 		shell->exit_status = 0;
 	else if (is_invalid_code(args[1]) == TRUE)

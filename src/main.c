@@ -28,6 +28,7 @@ static int	cleanup_exit(t_shell *shell)
 	free_env_list(&shell->env_list);
 	close(shell->original_stdin);
 	close(shell->original_stdout);
+	ft_putendl_fd("exit", 1);
 	return (shell->exit_status);
 }
 
@@ -40,6 +41,8 @@ static void	prompt_cycle(t_shell *shell)
 		shell->exit_status = g_signal_status;
 		g_signal_status = 0;
 	}
+	if (shell->running == FALSE)
+		return ;
 	if (tokenize(shell) == SUCCESS) 
 	{
 		if (parse(shell) == SUCCESS)
