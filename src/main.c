@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 20:37:43 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/22 22:21:44 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:03:46 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,14 @@ static void	prompt_cycle(t_shell *shell)
 	{
 		if (parse(shell) == SUCCESS)
 		{
+			if (preprocess_heredocs(shell) == ERROR)
+			{
+				if (g_signal_status == 130)
+					shell->exit_status = 130;
+				return ;
+			}
 			exec_status = execute(shell);
+			clean_heredocs(shell);
 			if (g_signal_status == 0)
 				shell->exit_status = exec_status;
 		}

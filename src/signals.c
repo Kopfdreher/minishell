@@ -29,8 +29,8 @@ void	handler_heredoc(int sig)
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
-		close(STDIN_FILENO);
 		g_signal_status = 130;
+		close(STDIN_FILENO);
 	}
 }
 

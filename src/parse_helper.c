@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:31:37 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/24 18:23:17 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:04:14 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	free_redir_list(t_redir **redir_list)
 
 void	add_redir_to_back(t_redir **head, t_redir *new_node)
 {
-	t_redir *tail;
+	t_redir	*tail;
 
 	if (!new_node)
 		return ;
