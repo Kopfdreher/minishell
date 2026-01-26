@@ -22,11 +22,6 @@ static int	open_redirs(int *fd, t_redir *redir, t_shell *shell)
 	else if (redir->type == APPEND)
 		*fd = open(redir->file, 
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (redir->type == HEREDOC)
-	{
-		*fd = open_heredoc(redir, shell);
-		return (*fd);
-	}
 	if (*fd == ERROR)
 		return (put_error(OPEN, redir->file, shell), FAILURE);
 	return (SUCCESS);

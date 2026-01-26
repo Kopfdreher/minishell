@@ -6,7 +6,7 @@
 <!-- By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+       -->
 <!--                                              +#+#+#+#+#+   +#+          -->
 <!-- Created: 2026/01/22 18:07:56 by alago-ga          #+#    #+#            -->
-<!-- Updated: 2026/01/22 18:08:27 by alago-ga         ###   ########.fr      -->
+<!-- Updated: 2026/01/26 22:42:08 by alago-ga         ###   ########.fr      -->
 <!--                                                                         -->
 <!-- *********************************************************************** -->
 
@@ -64,6 +64,8 @@ You can now type commands just like in bash (e.g., `ls -l | grep .c`, `cat << EO
 * [GNU Bash Reference Manual](https://www.gnu.org/software/bash/manual/) - The gold standard for expected behavior.
 * **Man Pages:** `fork(2)`, `execve(2)`, `waitpid(2)`, `pipe(2)`, `dup2(2)`, `sigaction(2)`.
 * [Architecture of a Shell](https://aosabook.org/en/v1/bash.html) - Helpful for understanding the parsing/execution loop.
+* [CodeVault](www.youtube.com/@CodeVault) - Course on unix processes used for understanding execution.
+* [hhp3](https://www.youtube.com/@hhp3) - Videos on Shell helped as an introduction to the project.
 
 ### AI Usage
 
@@ -72,11 +74,15 @@ AI tools (specifically ChatGPT/Gemini/Claude) were used in this project for the 
 1. **Conceptual Understanding:**
 * Clarifying the difference between "Heap" and "Stack" memory in the context of string literals vs. allocated strings.
 * Understanding the specific behavior of Process Groups and how signals propagate to children vs. parents.
+* Comparing ways in which bash, zsh and other shells handle heredocs.
+* Helping with understanding why built in functions needed to be handled differently.
 
 2. **Debugging & Logic:**
 * Designing the `wait_for_children` loop to correctly handle pipeline exit codes (`128 + Signal`).
 * Troubleshooting the "Interrupted System Call" (`EINTR`) error when using `waitpid` alongside signal handlers.
 * Refining the `ft_strjoin_multi` variadic function to ensure memory safety.
+* Handeling more than one heredoc and improving exit codes.
+* Creating minishell tests and finding edge cases to check.
 
 3. **Code Structure:**
 * Suggestions for organizing enums and structs to avoid global scope pollution (e.g., separating `enum` definitions from `struct` definitions).

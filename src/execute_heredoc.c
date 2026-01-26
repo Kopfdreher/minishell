@@ -6,13 +6,13 @@
 /*   By: alago-ga <alago-ga@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 17:23:14 by alago-ga          #+#    #+#             */
-/*   Updated: 2026/01/22 22:31:12 by alago-ga         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:23:50 by alago-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand_line(char *line, t_shell *shell)
+char	*expand_line(char *line, t_shell *shell)
 {
 	t_token	*temp;
 	char	*exp_line;
@@ -36,26 +36,36 @@ static char	*expand_line(char *line, t_shell *shell)
 	return (exp_line);
 }
 
-static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
+static int	handle_exit(t_shell *shell, int stdin_tmp, char *eof, char *line)
 {
-	char	*line;
 	char	*error_string;
 
+	if (g_signal_status != 130)
+	{
+		error_string = ft_strjoin(eof, "')\n");
+		if (!error_string)
+			return (put_error(MALLOC, "", shell), FAILURE);
+		put_error(H_DOC, error_string, shell);
+		return (free(error_string), free(line), SUCCESS);
+	}
+	if (dup2(stdin_tmp, STDIN_FILENO) == ERROR)
+		return (put_error(DUP2, "", shell), ERROR);
+	return (free(line), FAILURE);
+}
+
+int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
+{
+	char	*line;
+	int		stdin_tmp;
+
+	stdin_tmp = dup(STDIN_FILENO);
+	if (stdin_tmp == ERROR)
+		return (put_error(DEFAULT, "dup failed", shell), ERROR);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
-		{
-			if (g_signal_status != 130)
-			{
-				error_string = ft_strjoin(eof, "')\n");
-				if (!error_string)
-					return (put_error(MALLOC, "", shell), FAILURE);
-				put_error(H_DOC, error_string, shell);
-				return (free(line), free(error_string), SUCCESS);
-			}
-			return (free(line), FAILURE);
-		}
+			return (handle_exit(shell, stdin_tmp, eof, line));
 		if (ft_strncmp(line, eof, (ft_strlen(eof) + 1)) == SUCCESS)
 			return (free(line), SUCCESS);
 		if (expand == TRUE)
@@ -65,7 +75,7 @@ static int	read_heredoc(int fd, int expand, char *eof, t_shell *shell)
 	}
 }
 
-static	int	expand_heredoc(t_token *eof)
+int	expand_heredoc(t_token *eof)
 {
 	while (eof)
 	{
@@ -74,48 +84,4 @@ static	int	expand_heredoc(t_token *eof)
 		eof = eof->next;
 	}
 	return (TRUE);
-}
-
-static void	clean_heredoc(int fd, char *eof_str, int o_r)
-{
-	if (eof_str != NULL)
-		free(eof_str);
-	if (o_r == TRUE)
-	{
-		close(fd);
-		fd = open("/tmp/.heredoc", O_RDONLY);
-		unlink("/tmp/.heredoc");
-		return ;
-	}
-	unlink("/tmp/.heredoc");
-	close(fd);
-	return ;
-}
-
-int	open_heredoc(t_redir *heredoc, t_shell *shell)
-{
-	int		fd;
-	t_token	*eof;
-	char	*eof_str;
-	int		expand;
-
-	eof = heredoc->file_tokens;
-	fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	if (fd == ERROR)
-		return (put_error(OPEN, "heredoc", shell), ERROR);
-	expand = expand_heredoc(eof);
-	eof_str = merge_tokens_to_str(eof);
-	if (!eof_str)
-	{
-		clean_heredoc(fd, eof_str, 0);
-		return (put_error(MALLOC, "heredoc", shell), ERROR);
-	}
-	set_signals(SIG_HEREDOC);
-	if (read_heredoc(fd, expand, eof_str, shell) == FAILURE)
-		return (clean_heredoc(fd, eof_str, 0), FAILURE);
-	set_signals(SIG_INTERACTIVE);
-	clean_heredoc(fd, eof_str, 1);
-	if (fd == ERROR)
-		return (put_error(OPEN, "/tmp/.heredoc", shell), ERROR);
-	return (fd);
 }
