@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:24:33 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/27 20:43:15 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/27 21:27:11 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	add_variable_tokens(t_token **token, int *i, t_env *env_list,
 	if ((*token)->value[*i] == '?')
 		return (add_expanded_exit_code(token, i, exit_status));
 	else if ((*token)->quote == NO_QUOTE)
-		
 		return (add_expanded_tokens(token, i, env_list));
 	else if ((*token)->quote == DOUBLE_QUOTE)
 		return (add_expanded_str(token, i, env_list));
