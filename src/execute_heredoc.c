@@ -17,7 +17,7 @@ char	*expand_line(char *line, t_shell *shell)
 	t_token	*temp;
 	char	*exp_line;
 
-	temp = new_token(ft_strdup(line), WORD, NO_QUOTE);
+	temp = new_token(ft_strdup(line), WORD, DOUBLE_QUOTE);
 	if (!temp)
 		return (line);
 	if (expand_token(shell, &temp) == FAILURE)
@@ -30,7 +30,7 @@ char	*expand_line(char *line, t_shell *shell)
 		exp_line = merge_tokens_to_str(temp->expand_tokens);
 	}
 	else
-		exp_line = ft_strdup(line);
+		exp_line = ft_strdup("");
 	free_tokens(&temp);
 	free(line);
 	return (exp_line);
