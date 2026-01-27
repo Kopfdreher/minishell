@@ -20,8 +20,9 @@ static int	set_pwd(char *pwd, t_shell *shell)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
-		put_error(MALLOC, "", shell);
-		return (FAILURE);
+		cwd = ft_strdup(get_env_value(shell->env_list, "PWD"));
+		if (cwd == NULL)
+		return (put_error(MALLOC, "", shell), FAILURE);
 	}
 	cwd_str = ft_strjoin(pwd, cwd);
 	free(cwd);
