@@ -19,6 +19,12 @@ int	ft_pwd(t_shell *shell)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
+		pwd = get_env_value(shell->env_list, "PWD");
+		if (pwd != NULL)
+		{
+			ft_printf("%s\n", pwd);
+			return (SUCCESS);
+		}
 		put_error(MALLOC, "", shell);
 		return (FAILURE);
 	}
