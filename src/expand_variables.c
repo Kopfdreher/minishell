@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 21:23:45 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/27 20:14:30 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/27 20:54:34 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static void	pre_merge_correction(t_token **token, t_token *expand_tokens)
 {
 	t_token	*current;
 
-	if ((!expand_tokens || expand_tokens->prev == NULL) && (*token)->prev != NULL)
+	if (expand_tokens == NULL)
+		return ;
+	if (expand_tokens->prev == NULL && (*token)->prev != NULL)
 	{
 		current = (*token)->prev->expand_tokens;
 		if (current)
@@ -43,7 +45,7 @@ static void	pre_merge_correction(t_token **token, t_token *expand_tokens)
 			current->merge = FALSE;
 		}
 	}
-	else if (expand_tokens && expand_tokens->prev != NULL)
+	else if (expand_tokens->prev != NULL)
 		expand_tokens->prev->merge = FALSE;
 }
 
