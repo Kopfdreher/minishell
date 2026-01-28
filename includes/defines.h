@@ -55,6 +55,7 @@ typedef enum e_error_type {
 	CD,
 	CHDIR,
 	EXIT,
+	EXPORT,
 	DEFAULT
 }	t_error_type;
 

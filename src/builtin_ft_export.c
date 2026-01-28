@@ -6,7 +6,7 @@
 /*   By: sgavrilo <sgavrilo@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 14:32:47 by sgavrilo          #+#    #+#             */
-/*   Updated: 2026/01/23 10:52:05 by sgavrilo         ###   ########.fr       */
+/*   Updated: 2026/01/28 13:33:16 by sgavrilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ int	ft_export(t_shell *shell, char **args)
 		{
 			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(args[i], 2);
-			put_error(DEFAULT, "': not a valid identifier\n", shell);
-			rtn = FAILURE;
+			put_error(EXPORT, "': not a valid identifier\n", shell);
+			rtn = 2;
 			continue ;
 		}
 		if (set_env_node(&shell->env_list, args[i]) == FAILURE)

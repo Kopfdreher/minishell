@@ -41,7 +41,8 @@ static int	get_error_num(t_error_type type)
 	if (type == SYNTAX)
 		return (2);
 	if (type == MALLOC || type == PIPES || type == FORK || type == DEFAULT
-		|| type == DUP2 || type == OPEN || type == CD || type == CHDIR)
+		|| type == DUP2 || type == OPEN || type == CD || type == CHDIR
+		|| type == EXPORT)
 		return (1);
 	if (type == EXECVE)
 		return (126);
