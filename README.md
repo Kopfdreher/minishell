@@ -13,7 +13,7 @@
 *This project has been created as part of the 42 curriculum by Ariel Lago Garcia
 and Sergej Gavrilov.*
 
-# Minishell
+# Minishell (building our own shell)
 
 ## Description
 Minishell is a project that aims to create a simple shell, inspired by bash. It is a major milestone in the 42 curriculum, serving as an introduction to processes, file descriptors, and intricate memory management in C.
