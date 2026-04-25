@@ -15,6 +15,8 @@ and Sergej Gavrilov.*
 
 # Minishell (building our own shell)
 
+<img src="minishell-banner.png" width="100%">
+
 ## Description
 Minishell is a project that aims to create a simple shell, inspired by bash. It is a major milestone in the 42 curriculum, serving as an introduction to processes, file descriptors, and intricate memory management in C.
 
